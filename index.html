@@ -336,7 +336,35 @@
   .veredicto-mal { background:#fdecea; color: var(--rojo); }
   .veredicto-neutro { background:#fff4e0; color:#b36b00; }
   .ficha-liquidacion input[type="month"] { padding: 3px 6px; font-size: 12.5px; font-weight:700; }
+  .barra-nube { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; background:#1b1e2e; color:#e8eaf3; border-radius:10px; padding:8px 12px; margin-bottom: 14px; font-size: 12.5px; }
+  .barra-nube-botones { margin-left:auto; display:flex; gap:6px; flex-wrap:wrap; }
+  .estado-nube { font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,0.1); }
+  .estado-en-linea { background: rgba(0,168,89,0.25); color:#d9ffe9; }
+  .estado-error { background: rgba(192,57,43,0.35); color:#ffe3df; }
+  .estado-conectando { background: rgba(255,212,0,0.25); color:#fff6c9; }
+  .usuario-nube { color:#c9cde0; font-weight:600; }
+  .banner-lectura { display:none; background:#eceafa; border:1px solid var(--borde); color: var(--azul); border-radius:8px; padding:10px 14px; margin-bottom: 16px; font-size:13px; }
+  body.solo-lectura .solo-editor { display:none !important; }
+  body.solo-lectura .banner-lectura { display:block; }
+  .ficha-fecha { display:block; font-size:11px; font-weight:600; color: var(--gris-suave); }
+  .lista-actividad { list-style:none; margin:0; padding:0; max-height: 320px; overflow-y:auto; font-size: 12.5px; }
+  .lista-actividad li { padding: 7px 4px; border-bottom: 1px solid var(--borde); }
+  .lista-actividad li.vacio { border:none; }
+  .act-fecha { color: var(--gris-suave); font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .act-detalle { color: var(--gris-suave); }
+  .aviso-flotante { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, calc(100% + 40px)); visibility: hidden; max-width: min(92vw, 560px); background:#1b1e2e; color:#fff;
+    padding: 10px 16px; border-radius: 8px; font-size: 13px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); transition: transform .25s ease; z-index: 500; }
+  .aviso-flotante.visible { transform: translate(-50%, 0); visibility: visible; }
+  .aviso-err { background: var(--rojo); }
+  dialog { border: none; border-radius: 12px; padding: 0; width: min(92vw, 440px); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+  dialog::backdrop { background: rgba(20,22,40,0.45); }
+  .form-dialogo { padding: 20px; display:flex; flex-direction:column; gap: 10px; }
+  .form-dialogo h2 { margin:0; font-size: 16px; color: var(--azul); }
+  .form-dialogo label { display:flex; flex-direction:column; gap:4px; font-size:12px; font-weight:700; }
+  .form-dialogo input, .form-dialogo textarea { padding: 8px 10px; border:1px solid var(--borde); border-radius:6px; font: inherit; font-size:13px; }
+  .form-dialogo textarea { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; resize: vertical; }
   @media (max-width: 600px) {
+    .barra-nube-botones { margin-left: 0; }
     .contenido { padding: 16px; }
     .barra-tabla input[type="search"], select { min-width: 0; width: 100%; }
     .campo-inline { flex-direction: column; align-items: stretch; width: 100%; }
@@ -346,11 +374,22 @@
 </head>
 <body>
 <main class="contenido">
+  <div class="barra-nube">
+    <span class="estado-nube" id="estadoNube">…</span>
+    <span class="usuario-nube" id="usuarioNube"></span>
+    <span class="barra-nube-botones">
+      <button type="button" class="btn-agregar btn-chico" id="btnLogin" style="display:none">🔑 Iniciar sesión para subir</button>
+      <button type="button" class="btn-secundario btn-chico" id="btnLogout" style="display:none">Cerrar sesión</button>
+      <button type="button" class="btn-secundario btn-chico" id="btnConexion">⚙️ Conexión</button>
+    </span>
+  </div>
   <h1>Liquidación de Inventario</h1>
   <p class="subtitulo">Importa el PDF "Acuerdo de liquidación de inventario" de cada camión. Las liquidaciones se guardan por periodo (mes) y al final verás cómo queda cada una y el periodo completo.</p>
 
+  <div class="banner-lectura">👁 Estás en <strong>modo lectura</strong>: ves en tiempo real todo lo que se sube. Para importar o modificar, inicia sesión.</div>
+
   <!-- 1. IMPORTAR -->
-  <div class="panel">
+  <div class="panel solo-editor">
     <h2>1. Importar liquidaciones (PDF)</h2>
     <div class="zona-drop" id="zonaDrop" tabindex="0" role="button">
       <div class="zona-drop-icono">📄</div>
@@ -387,9 +426,9 @@
       <div class="grupo-botones">
         <button type="button" class="btn-agregar" id="btnExportarExcel">⬇️ Exportar a Excel</button>
         <button type="button" class="btn-secundario" id="btnRespaldo">💾 Respaldo</button>
-        <button type="button" class="btn-secundario" id="btnRestaurar">♻️ Restaurar</button>
+        <button type="button" class="btn-secundario solo-editor" id="btnRestaurar">♻️ Restaurar</button>
         <input type="file" id="inputRespaldo" accept=".json,application/json">
-        <button type="button" class="btn-peligro" id="btnEliminarPeriodo">🗑 Eliminar periodo</button>
+        <button type="button" class="btn-peligro solo-editor" id="btnEliminarPeriodo">🗑 Eliminar periodo</button>
       </div>
     </div>
     <div class="stat-tiles" id="tilesPeriodo"></div>
@@ -480,7 +519,44 @@
     </div>
     <div class="caja-resumen" id="resumenPeriodo"></div>
   </div>
+  <!-- ACTIVIDAD -->
+  <div class="panel" id="panelActividad" style="display:none">
+    <h2>Actividad reciente</h2>
+    <ul class="lista-actividad" id="listaActividad"></ul>
+  </div>
 </main>
+
+<div class="aviso-flotante" id="avisoFlotante" role="status" aria-live="polite"></div>
+
+<dialog id="dlgLogin">
+  <form id="formLogin" class="form-dialogo">
+    <h2>Iniciar sesión</h2>
+    <p class="ayuda-guardar">Usa el usuario creado en Supabase (Authentication → Users).</p>
+    <label>Correo<input type="email" id="loginEmail" required autocomplete="username"></label>
+    <label>Contraseña<input type="password" id="loginClave" required autocomplete="current-password"></label>
+    <p class="contador" id="loginMensaje"></p>
+    <div class="grupo-botones">
+      <button type="submit" class="btn-agregar" value="entrar">Entrar</button>
+      <button type="submit" class="btn-secundario" value="cancelar" formnovalidate>Cancelar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlgConexion">
+  <form id="formConexion" class="form-dialogo">
+    <h2>Conexión a Supabase</h2>
+    <p class="ayuda-guardar">Supabase → Project Settings → API. Copia la <strong>Project URL</strong> y la <strong>anon public key</strong> (nunca la service_role).</p>
+    <label>Project URL<input type="url" id="cfgUrl" placeholder="https://xxxxx.supabase.co"></label>
+    <label>Anon public key<textarea id="cfgKey" rows="3" placeholder="eyJhbGciOi..."></textarea></label>
+    <p class="contador" id="cfgMensaje"></p>
+    <div class="grupo-botones">
+      <button type="submit" class="btn-agregar" value="guardar">Guardar y conectar</button>
+      <button type="submit" class="btn-secundario" value="quitar" formnovalidate>Quitar conexión</button>
+      <button type="submit" class="btn-secundario" value="cancelar" formnovalidate>Cancelar</button>
+    </div>
+  </form>
+</dialog>
+
 
 <script>/**
  * @licstart The following is the entire license notice for the
@@ -572,8 +648,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  */function n(e){return e>=65&&e<=90||95===e||e>=97&&e<=122||e>=192&&e<=214||e>=216&&e<=246||e>=248&&e<=767||e>=880&&e<=893||e>=895&&e<=8191||e>=8204&&e<=8205||e>=8304&&e<=8591||e>=11264&&e<=12271||e>=12289&&e<=55295||e>=63744&&e<=64975||e>=65008&&e<=65533||e>=65536&&e<=983039}Object.defineProperty(r,"__esModule",{value:!0}),r.NC_NAME_START_CHAR="A-Z_a-z\xc0-\xd6\xd8-\xf6\xf8-\u02ff\u0370-\u037d\u037f-\u1fff\u200c-\u200d\u2070-\u218f\u2c00-\u2fef\u3001-\ud7ff\uf900-\ufdcf\ufdf0-\ufffd\ud800\udc00-\udb7f\udfff",r.NC_NAME_CHAR="-"+r.NC_NAME_START_CHAR+".0-9\xb7\u0300-\u036f\u203f-\u2040",r.NC_NAME_START_CHAR_RE=new RegExp("^["+r.NC_NAME_START_CHAR+"]$","u"),r.NC_NAME_CHAR_RE=new RegExp("^["+r.NC_NAME_CHAR+"]$","u"),r.NC_NAME_RE=new RegExp("^["+r.NC_NAME_START_CHAR+"]["+r.NC_NAME_CHAR+"]*$","u"),r.isNCNameStartChar=n,r.isNCNameChar=function(e){return n(e)||45===e||46===e||e>=48&&e<=57||183===e||e>=768&&e<=879||e>=8255&&e<=8256}},{}]},{},[15])(15)}));
 //# sourceMappingURL=exceljs.min.js.map
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 (function () {
+  /* =====================================================================
+     CONEXIÓN A SUPABASE
+     Pega aquí la "Project URL" y la "anon public key" de tu proyecto
+     (Supabase → Project Settings → API). Así, cualquiera que abra este
+     archivo verá los datos en la nube sin configurar nada.
+     Si los dejas vacíos, se pueden poner desde el botón "⚙️ Conexión".
+  ===================================================================== */
+  const SUPABASE_CONFIG = {
+    url: '',
+    anonKey: ''
+  };
+
   const CLAVE_LIQUIDACIONES = 'liquidacionesInventarioDB';
   const CLAVE_PRECIOS = 'liquidacionesPreciosEnvases';
   const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -584,6 +673,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   let periodoSel = null;          // 'YYYY-MM' o 'todos'
   let idAbierto = null;           // id de la liquidación en detalle
   let filtroEstado = 'todos';
+  let periodoManual = false;     // true si el usuario eligió el periodo a mano
   let filtroLiqTabla = { productos: 'dif', bloqueados: 'dif', vacios: 'dif' };
   let datosLiqAbiertos = { productos: [], bloqueados: [], vacios: [] };
 
@@ -651,7 +741,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (!l.periodo) l.periodo = periodoDeFecha(l.fechaEntrega) || (l.fechaImportacion || '').slice(0, 7) || periodoActual();
     if (!l.id) l.id = 'liq_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
   }
-  function guardar() {
+  function guardarLocal() {
     try { localStorage.setItem(CLAVE_LIQUIDACIONES, JSON.stringify(liquidaciones)); }
     catch (e) { alert('No se pudo guardar en este navegador (almacenamiento lleno o bloqueado). Usa "Respaldo" para no perder los datos.'); }
   }
@@ -822,6 +912,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     lista.innerHTML = '<li class="msg-info">Leyendo ' + plural(archivos.length, 'archivo') + '…</li>';
     const msgs = [];
     let importados = 0, ultimoPeriodo = null;
+    const cambiados = [];
 
     for (const f of Array.from(archivos)) {
       if (!/\.pdf$/i.test(f.name) && f.type !== 'application/pdf') {
@@ -847,6 +938,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           archivo: f.name
         }, d);
         if (idx !== -1) liquidaciones[idx] = reg; else liquidaciones.push(reg);
+        cambiados.push(reg);
         importados++; if (!ultimoPeriodo || periodo > ultimoPeriodo) ultimoPeriodo = periodo;
         msgs.push([totalFilas ? 'ok' : 'warn',
           `${f.name}: ${d.conductor || '(sin conductor)'} · viaje ${d.numViaje || '-'} · ${plural(totalFilas, 'ítem')} → ${etiquetaPeriodo(periodo)}` +
@@ -856,7 +948,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         msgs.push(['err', f.name + ': no se pudo leer (' + err.message + ').']);
       }
     }
-    if (importados) { guardar(); periodoSel = ultimoPeriodo; renderTodo(); }
+    if (importados) {
+      periodoSel = ultimoPeriodo;
+      nubeGuardar(cambiados);
+      registrarActividad('importó', plural(cambiados.length, 'liquidación', 'liquidaciones') + ': ' +
+        cambiados.map(function (r) { return (r.conductor || '?') + ' v.' + (r.numViaje || '-') + ' (' + etiquetaPeriodo(r.periodo) + ')'; }).join(', '));
+      renderTodo();
+    }
     lista.innerHTML = msgs.map(function (m) {
       const icono = m[0] === 'ok' ? '✅' : m[0] === 'warn' ? '⚠️' : '❌';
       return `<li class="msg-${m[0]}">${icono} ${escaparHtml(m[1])}</li>`;
@@ -887,7 +985,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $(par[0]).addEventListener('change', function () {
       const v = parseFloat(this.value);
       precios[par[1]] = isNaN(v) || v < 0 ? 0 : v;
-      guardarPrecios(); pintarPrecios(); renderTodo();
+      guardarPrecios(); nubeGuardarPrecios(); pintarPrecios(); renderTodo();
+      registrarActividad('cambió precios', `Botella S/ ${precios.botella.toFixed(2)}, Caja Plast S/ ${precios.cajaPlast.toFixed(2)}, Bot S/ ${precios.bot.toFixed(2)}`);
     });
   });
 
@@ -896,13 +995,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const conteo = {};
     liquidaciones.forEach(function (l) { conteo[l.periodo] = (conteo[l.periodo] || 0) + 1; });
     const periodos = Object.keys(conteo).sort().reverse();
-    if (!periodoSel || (periodoSel !== 'todos' && !conteo[periodoSel])) periodoSel = periodos[0] || 'todos';
+    if (!periodoSel || (periodoSel === 'todos' && !periodoManual && periodos.length) || (periodoSel !== 'todos' && !conteo[periodoSel])) periodoSel = periodos[0] || 'todos';
     $('selPeriodo').innerHTML = periodos.map(function (p) {
       return `<option value="${p}">${etiquetaPeriodo(p)} (${conteo[p]})</option>`;
     }).join('') + `<option value="todos">Todos los periodos (${liquidaciones.length})</option>`;
     $('selPeriodo').value = periodoSel;
   }
-  $('selPeriodo').addEventListener('change', function () { periodoSel = this.value; cerrarDetalle(); renderTodo(); });
+  $('selPeriodo').addEventListener('change', function () { periodoSel = this.value; periodoManual = true; cerrarDetalle(); renderTodo(); });
 
   function totalesPeriodo(lista) {
     const t = { liqs: lista.length, conductores: {}, conDif: 0, undFalt: 0, undSobr: 0, soles: 0, botella: 0, cajaPlast: 0, bot: 0 };
@@ -960,7 +1059,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <td class="${claseSigno(x.m.envases.soles)}">${fmtSoles(x.m.envases.soles)}</td>
           <td class="celda-acciones">
             <button type="button" class="btn-secundario btn-chico" data-ver="${l.id}">Ver detalle</button>
-            <button type="button" class="btn-eliminar" data-eliminar="${l.id}">Eliminar</button>
+            <button type="button" class="btn-eliminar solo-editor" data-eliminar="${l.id}">Eliminar</button>
           </td></tr>`;
       }).join('');
     $('contadorLiq').textContent = `${plural(filas.length, 'liquidación', 'liquidaciones')}` +
@@ -983,7 +1082,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const l = liquidaciones.find(function (x) { return x.id === id; });
       if (l && confirm(`¿Eliminar la liquidación de ${l.conductor || '(sin conductor)'} (viaje ${l.numViaje || '-'})? No se puede deshacer.`)) {
         liquidaciones = liquidaciones.filter(function (x) { return x.id !== id; });
-        guardar();
+        nubeEliminar([id]);
+        registrarActividad('eliminó', `liquidación de ${l.conductor || '?'} v.${l.numViaje || '-'} (${etiquetaPeriodo(l.periodo)})`);
         if (idAbierto === id) cerrarDetalle();
         renderTodo();
       }
@@ -1075,7 +1175,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     return lineas.join('\n');
   }
 
-  function abrirDetalle(id) {
+  function abrirDetalle(id, sinDesplazar) {
     const l = liquidaciones.find(function (x) { return x.id === id; });
     if (!l) return;
     idAbierto = id;
@@ -1087,11 +1187,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       <div><div class="campo-ficha-label">Fecha de entrega</div><div class="campo-ficha-valor">${escaparHtml(l.fechaEntrega)}</div></div>
       <div><div class="campo-ficha-label">Fecha de revisión</div><div class="campo-ficha-valor">${escaparHtml(l.fechaRevision)}</div></div>
       <div><div class="campo-ficha-label">Revisor</div><div class="campo-ficha-valor">${escaparHtml(l.revisor)}</div></div>
-      <div><div class="campo-ficha-label">Periodo</div><div class="campo-ficha-valor"><input type="month" id="cambiarPeriodo" value="${l.periodo}" title="Mover a otro periodo"></div></div>
+      <div><div class="campo-ficha-label">Periodo</div><div class="campo-ficha-valor"><input type="month" id="cambiarPeriodo" value="${l.periodo}" title="Mover a otro periodo" ${puedeEditar() ? '' : 'disabled'}></div></div>
+      <div><div class="campo-ficha-label">Subido por</div><div class="campo-ficha-valor">${escaparHtml(l.subidoPor || '—')}<span class="ficha-fecha">${l.actualizado ? fechaHora(l.actualizado) : ''}</span></div></div>
     `;
     $('cambiarPeriodo').addEventListener('change', function () {
       if (!/^\d{4}-\d{2}$/.test(this.value)) return;
-      l.periodo = this.value; guardar(); periodoSel = l.periodo; renderTodo(); abrirDetalle(l.id);
+      const antes = l.periodo;
+      l.periodo = this.value; nubeGuardar([l]); periodoSel = l.periodo; renderTodo(); abrirDetalle(l.id, true);
+      registrarActividad('movió', `${l.conductor || '?'} v.${l.numViaje || '-'} de ${etiquetaPeriodo(antes)} a ${etiquetaPeriodo(l.periodo)}`);
     });
     $('tilesDetalle').innerHTML = `
       <div class="stat-tile stat-hero"><div class="stat-label">Productos revisados</div><div class="stat-valor">${m.total}</div></div>
@@ -1123,7 +1226,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
     $('panelDetalle').style.display = 'block';
     renderTabla();
-    $('panelDetalle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!sinDesplazar) $('panelDetalle').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function cerrarDetalle() {
     idAbierto = null;
@@ -1292,13 +1395,16 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const d = JSON.parse(txt);
       const nuevas = Array.isArray(d) ? d : (d.liquidaciones || []);
       let agregadas = 0, actualizadas = 0;
+      const cambiados = [];
       nuevas.forEach(function (n) {
+        cambiados.push(n);
         normalizarRegistro(n);
         const i = liquidaciones.findIndex(function (l) { return l.id === n.id; });
         if (i !== -1) { liquidaciones[i] = n; actualizadas++; } else { liquidaciones.push(n); agregadas++; }
       });
-      if (d.precios) { precios = Object.assign(precios, d.precios); guardarPrecios(); pintarPrecios(); }
-      guardar(); renderTodo();
+      if (d.precios) { precios = Object.assign(precios, d.precios); guardarPrecios(); nubeGuardarPrecios(); pintarPrecios(); }
+      nubeGuardar(cambiados); renderTodo();
+      registrarActividad('restauró respaldo', `${agregadas} nuevas, ${actualizadas} actualizadas`);
       alert(`Respaldo restaurado: ${agregadas} nuevas, ${actualizadas} actualizadas.`);
     }).catch(function (err) { alert('El archivo de respaldo no es válido: ' + err.message); })
       .then(function () { e.target.value = ''; });
@@ -1309,7 +1415,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (!confirm(`¿Eliminar las ${lista.length} liquidaciones de ${etiquetaPeriodo(periodoSel)}? Te recomiendo descargar un respaldo antes. No se puede deshacer.`)) return;
     const ids = {}; lista.forEach(function (l) { ids[l.id] = true; });
     liquidaciones = liquidaciones.filter(function (l) { return !ids[l.id]; });
-    guardar(); cerrarDetalle(); periodoSel = null; renderTodo();
+    nubeEliminar(Object.keys(ids));
+    registrarActividad('eliminó periodo', `${etiquetaPeriodo(periodoSel)} (${plural(lista.length, 'liquidación', 'liquidaciones')})`);
+    cerrarDetalle(); periodoSel = null; renderTodo();
   });
 
   /* ---------- inicio ---------- */
@@ -1321,9 +1429,324 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (idAbierto && !liquidaciones.some(function (l) { return l.id === idAbierto; })) cerrarDetalle();
   }
 
+  /* =====================================================================
+     NUBE (Supabase): datos compartidos + tiempo real + actividad
+  ===================================================================== */
+  const CLAVE_CONFIG_NUBE = 'liquidacionesSupabaseConfig';
+  const CLAVE_PENDIENTES = 'liquidacionesPendientesNube';
+  const CLAVE_SYNC_INICIAL = 'liquidacionesNubeSincronizada';
+  let sb = null;                 // cliente de Supabase
+  let usuario = null;            // usuario con sesión (editor)
+  let estadoNube = 'local';      // local | conectando | en-linea | error
+  let pendientes = { up: {}, del: {} };
+  let actividad = [];
+  let sincronizando = false;
+  let canal = null;
+
+  function configNube() {
+    let c = { url: SUPABASE_CONFIG.url, anonKey: SUPABASE_CONFIG.anonKey };
+    try {
+      const g = JSON.parse(localStorage.getItem(CLAVE_CONFIG_NUBE) || 'null');
+      if (g && g.url && g.anonKey) c = g;
+    } catch (e) { /* */ }
+    return c;
+  }
+  function puedeEditar() { return !sb || !!usuario; }
+  function nombreUsuario() {
+    if (!usuario) return sb ? null : 'Este equipo';
+    const md = usuario.user_metadata || {};
+    return md.nombre || md.full_name || usuario.email;
+  }
+  function fechaHora(iso) {
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    return d.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit' }) + ' ' +
+      d.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+  }
+  function guardarPendientes() {
+    try { localStorage.setItem(CLAVE_PENDIENTES, JSON.stringify(pendientes)); } catch (e) { /* */ }
+  }
+  function numPendientes() { return Object.keys(pendientes.up).length + Object.keys(pendientes.del).length; }
+
+  /* ---- escritura ---- */
+  function nubeGuardar(registros) {
+    const ahora = new Date().toISOString();
+    registros.forEach(function (r) {
+      r.subidoPor = nombreUsuario() || r.subidoPor || '';
+      r.actualizado = ahora;
+      if (sb) { pendientes.up[r.id] = true; delete pendientes.del[r.id]; }
+    });
+    guardarLocal();
+    if (sb) { guardarPendientes(); sincronizarPendientes(); }
+  }
+  function nubeEliminar(ids) {
+    guardarLocal();
+    if (!sb) return;
+    ids.forEach(function (id) { pendientes.del[id] = true; delete pendientes.up[id]; });
+    guardarPendientes();
+    sincronizarPendientes();
+  }
+  function nubeGuardarPrecios() {
+    if (!sb || !usuario) return;
+    sb.from('liquidaciones_config').upsert({ clave: 'precios', valor: precios, actualizado_por: nombreUsuario() })
+      .then(function (r) { if (r.error) console.error('Precios no guardados en la nube:', r.error); });
+  }
+  function registrarActividad(accion, detalle) {
+    if (!sb || !usuario) return;
+    sb.from('liquidaciones_actividad').insert({ accion: accion, detalle: detalle, usuario: nombreUsuario() })
+      .then(function (r) { if (r.error) console.error('Actividad no registrada:', r.error); });
+  }
+  function filaNube(l) {
+    return {
+      id: l.id, periodo: l.periodo, conductor: l.conductor || null, num_viaje: l.numViaje || null,
+      placa: l.placa || null, fecha_entrega: l.fechaEntrega || null, datos: l,
+      subido_por: l.subidoPor || null, updated_at: l.actualizado || new Date().toISOString()
+    };
+  }
+
+  async function sincronizarPendientes() {
+    if (!sb || !usuario || sincronizando || !numPendientes()) { pintarEstadoNube(); return; }
+    sincronizando = true;
+    try {
+      const upIds = Object.keys(pendientes.up);
+      if (upIds.length) {
+        const filas = liquidaciones.filter(function (l) { return pendientes.up[l.id]; }).map(filaNube);
+        for (let i = 0; i < filas.length; i += 200) {
+          const r = await sb.from('liquidaciones').upsert(filas.slice(i, i + 200));
+          if (r.error) throw r.error;
+        }
+        upIds.forEach(function (id) { delete pendientes.up[id]; });
+      }
+      const delIds = Object.keys(pendientes.del);
+      if (delIds.length) {
+        for (let i = 0; i < delIds.length; i += 200) {
+          const r = await sb.from('liquidaciones').delete().in('id', delIds.slice(i, i + 200));
+          if (r.error) throw r.error;
+        }
+        delIds.forEach(function (id) { delete pendientes.del[id]; });
+      }
+      guardarPendientes();
+      if (estadoNube === 'error') estadoNube = 'en-linea';
+    } catch (err) {
+      console.error('Error al sincronizar con Supabase:', err);
+      estadoNube = 'error';
+      aviso('No se pudo subir a la nube: ' + (err.message || err) + '. Se reintentará automáticamente.', 'err');
+    } finally {
+      sincronizando = false;
+      pintarEstadoNube();
+    }
+  }
+
+  /* ---- lectura ---- */
+  async function descargarDeNube() {
+    let filas = [], desde = 0;
+    for (;;) {
+      const r = await sb.from('liquidaciones').select('datos').order('id').range(desde, desde + 999);
+      if (r.error) throw r.error;
+      filas = filas.concat(r.data || []);
+      if (!r.data || r.data.length < 1000) break;
+      desde += 1000;
+    }
+    const remotas = filas.map(function (f) { return f.datos; }).filter(Boolean);
+    remotas.forEach(normalizarRegistro);
+    const idsRemotos = {};
+    remotas.forEach(function (r) { idsRemotos[r.id] = true; });
+
+    // La primera vez, lo que solo estaba en este equipo se marca para subir (no se pierde).
+    let primera = false;
+    try { primera = !localStorage.getItem(CLAVE_SYNC_INICIAL); } catch (e) { /* */ }
+    if (primera) {
+      liquidaciones.forEach(function (l) { if (!idsRemotos[l.id]) pendientes.up[l.id] = true; });
+      try { localStorage.setItem(CLAVE_SYNC_INICIAL, '1'); } catch (e) { /* */ }
+      guardarPendientes();
+    }
+    const locales = liquidaciones.filter(function (l) { return pendientes.up[l.id]; });
+    const idsLocales = {};
+    locales.forEach(function (l) { idsLocales[l.id] = true; });
+    liquidaciones = remotas.filter(function (r) { return !pendientes.del[r.id] && !idsLocales[r.id]; }).concat(locales);
+    guardarLocal();
+
+    const pr = await sb.from('liquidaciones_config').select('valor').eq('clave', 'precios');
+    if (!pr.error && pr.data && pr.data[0] && pr.data[0].valor) {
+      precios = Object.assign(precios, pr.data[0].valor); guardarPrecios(); pintarPrecios();
+    }
+    const ac = await sb.from('liquidaciones_actividad').select('*').order('created_at', { ascending: false }).limit(50);
+    if (!ac.error) actividad = ac.data || [];
+  }
+
+  /* ---- tiempo real ---- */
+  let temporizadorRender = null;
+  function renderDiferido() {
+    clearTimeout(temporizadorRender);
+    temporizadorRender = setTimeout(function () {
+      renderTodo();
+      if (idAbierto) abrirDetalle(idAbierto, true);
+    }, 150);
+  }
+  function aplicarCambioRemoto(p) {
+    if (p.eventType === 'DELETE') {
+      const id = p.old && p.old.id;
+      if (!id) return;
+      liquidaciones = liquidaciones.filter(function (l) { return l.id !== id; });
+    } else {
+      const d = p.new && p.new.datos;
+      if (!d || pendientes.up[d.id]) return;
+      normalizarRegistro(d);
+      const i = liquidaciones.findIndex(function (l) { return l.id === d.id; });
+      if (i !== -1) liquidaciones[i] = d; else liquidaciones.push(d);
+      if (!periodoSel || (periodoSel === 'todos' && !periodoManual)) periodoSel = d.periodo;
+    }
+    guardarLocal();
+    renderDiferido();
+  }
+  function suscribir() {
+    if (canal) sb.removeChannel(canal);
+    canal = sb.channel('liquidaciones-en-vivo')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'liquidaciones' }, aplicarCambioRemoto)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'liquidaciones_config' }, function (p) {
+        if (p.new && p.new.clave === 'precios' && p.new.valor) {
+          precios = Object.assign(precios, p.new.valor); guardarPrecios(); pintarPrecios(); renderDiferido();
+        }
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'liquidaciones_actividad' }, function (p) {
+        if (!p.new) return;
+        actividad.unshift(p.new); actividad = actividad.slice(0, 50);
+        renderActividad();
+        if (!usuario || p.new.usuario !== nombreUsuario()) aviso(`${p.new.usuario || 'Alguien'} ${p.new.accion}: ${p.new.detalle || ''}`, 'info');
+      })
+      .subscribe(function (status) {
+        if (status === 'SUBSCRIBED') { if (estadoNube !== 'error') estadoNube = 'en-linea'; }
+        else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') estadoNube = 'error';
+        pintarEstadoNube();
+      });
+  }
+
+  /* ---- interfaz ---- */
+  function pintarEstadoNube() {
+    const badge = $('estadoNube');
+    const n = numPendientes();
+    const textos = {
+      'local': '💾 Solo este equipo (sin nube)',
+      'conectando': '🟡 Conectando…',
+      'en-linea': '🟢 En línea · tiempo real',
+      'error': '🔴 Sin conexión con la nube'
+    };
+    badge.textContent = textos[estadoNube] + (sb && n ? ` · ${n} pendiente${n === 1 ? '' : 's'}` : '');
+    badge.className = 'estado-nube estado-' + estadoNube;
+    $('usuarioNube').textContent = usuario ? '👤 ' + nombreUsuario() : (sb ? '👁 Modo lectura' : '');
+    $('btnLogin').style.display = sb && !usuario ? '' : 'none';
+    $('btnLogout').style.display = sb && usuario ? '' : 'none';
+    document.body.classList.toggle('solo-lectura', !puedeEditar());
+    ['precioBotella', 'precioCajaPlast', 'precioBot'].forEach(function (id) { $(id).disabled = !puedeEditar(); });
+    $('panelActividad').style.display = sb ? '' : 'none';
+  }
+
+  function renderActividad() {
+    const ul = $('listaActividad');
+    if (!actividad.length) { ul.innerHTML = '<li class="vacio">Todavía no hay movimientos registrados.</li>'; return; }
+    ul.innerHTML = actividad.map(function (a) {
+      return `<li><span class="act-fecha">${fechaHora(a.created_at)}</span>
+        <strong>${escaparHtml(a.usuario || '—')}</strong> ${escaparHtml(a.accion)}
+        <span class="act-detalle">${escaparHtml(a.detalle || '')}</span></li>`;
+    }).join('');
+  }
+
+  let temporizadorAviso = null;
+  function aviso(texto, tipo) {
+    const t = $('avisoFlotante');
+    t.textContent = texto;
+    t.className = 'aviso-flotante visible aviso-' + (tipo || 'info');
+    clearTimeout(temporizadorAviso);
+    temporizadorAviso = setTimeout(function () { t.className = 'aviso-flotante'; }, 5000);
+  }
+
+  $('btnLogin').addEventListener('click', function () { $('dlgLogin').showModal(); $('loginEmail').focus(); });
+  $('btnLogout').addEventListener('click', async function () {
+    await sb.auth.signOut();
+  });
+  $('formLogin').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (e.submitter && e.submitter.value === 'cancelar') { $('dlgLogin').close(); return; }
+    const msg = $('loginMensaje');
+    msg.textContent = 'Ingresando…';
+    const r = await sb.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginClave').value });
+    if (r.error) { msg.textContent = '❌ ' + (r.error.message === 'Invalid login credentials' ? 'Correo o contraseña incorrectos.' : r.error.message); return; }
+    msg.textContent = '';
+    $('loginClave').value = '';
+    $('dlgLogin').close();
+  });
+
+  $('btnConexion').addEventListener('click', function () {
+    const c = configNube();
+    $('cfgUrl').value = c.url || '';
+    $('cfgKey').value = c.anonKey || '';
+    $('dlgConexion').showModal();
+  });
+  $('formConexion').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const accion = e.submitter && e.submitter.value;
+    if (accion === 'cancelar') { $('dlgConexion').close(); return; }
+    try {
+      if (accion === 'quitar') localStorage.removeItem(CLAVE_CONFIG_NUBE);
+      else {
+        const url = $('cfgUrl').value.trim().replace(/\/+$/, '');
+        const key = $('cfgKey').value.trim();
+        if (!/^https:\/\/.+/.test(url) || key.length < 20) { $('cfgMensaje').textContent = 'Revisa la URL (https://…supabase.co) y la anon key.'; return; }
+        localStorage.setItem(CLAVE_CONFIG_NUBE, JSON.stringify({ url: url, anonKey: key }));
+      }
+    } catch (err) { /* */ }
+    location.reload();
+  });
+
+  async function alCambiarSesion(sesion) {
+    const antes = usuario && usuario.id;
+    usuario = sesion ? sesion.user : null;
+    pintarEstadoNube();
+    if (idAbierto) abrirDetalle(idAbierto, true);
+    renderTabla();
+    if (usuario && usuario.id !== antes) sincronizarPendientes();
+  }
+
+  async function iniciarNube() {
+    const c = configNube();
+    if (!c.url || !c.anonKey) { estadoNube = 'local'; pintarEstadoNube(); return; }
+    if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
+      estadoNube = 'error'; pintarEstadoNube();
+      aviso('No se pudo cargar la librería de Supabase (¿sin internet?). Trabajando con los datos de este equipo.', 'err');
+      return;
+    }
+    try { pendientes = Object.assign({ up: {}, del: {} }, JSON.parse(localStorage.getItem(CLAVE_PENDIENTES) || '{}')); } catch (e) { /* */ }
+    sb = window.supabase.createClient(c.url, c.anonKey);
+    estadoNube = 'conectando'; pintarEstadoNube();
+
+    const ses = await sb.auth.getSession();
+    usuario = ses.data && ses.data.session ? ses.data.session.user : null;
+    sb.auth.onAuthStateChange(function (_ev, sesion) { alCambiarSesion(sesion); });
+    pintarEstadoNube();
+
+    try {
+      await descargarDeNube();
+      estadoNube = 'en-linea';
+    } catch (err) {
+      console.error('Error al descargar de Supabase:', err);
+      estadoNube = 'error';
+      aviso('No se pudo leer la nube: ' + (err.message || err) + '. Revisa la conexión o las tablas.', 'err');
+    }
+    renderTodo(); renderActividad(); pintarEstadoNube();
+    suscribir();
+    sincronizarPendientes();
+    setInterval(function () { if (numPendientes()) sincronizarPendientes(); }, 30000);
+    window.addEventListener('online', function () {
+      descargarDeNube().then(function () { estadoNube = 'en-linea'; renderTodo(); renderActividad(); }).catch(function () { /* */ })
+        .then(function () { sincronizarPendientes(); });
+    });
+  }
+
+
   cargar();
   pintarPrecios();
   renderTodo();
+  iniciarNube();
 
 })();
 </script>
