@@ -327,6 +327,54 @@
   .btn-chico { padding: 5px 10px; font-size: 12px; }
   .celda-acciones { white-space: nowrap; }
   .tabla-mapa tbody tr.fila-activa { background: #fff8c4; }
+  .fila-contador { display:flex; align-items:center; justify-content:space-between; gap:8px; margin: 0 0 6px 0; }
+  .fila-contador .contador { margin: 0; }
+  .tabla-compacta { max-height: 290px; overflow: auto; }
+  .tabla-compacta.expandida { max-height: none; }
+  .tabla-compacta table { min-width: 640px; font-size: 12px; }
+  .tabla-compacta thead th { padding: 6px 8px; z-index: 1; }
+  .tabla-compacta tbody td { padding: 4px 8px; vertical-align: middle; white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+  .tabla-compacta .badge { padding: 1px 7px; font-size: 10.5px; }
+  .fila-clic { cursor: pointer; }
+  .btn-icono { padding: 3px 9px; font-size: 11.5px; }
+  .tabs { display:flex; gap: 4px; border-bottom: 2px solid var(--borde); margin: 4px 0 18px 0; }
+  .tab { background: transparent; color: var(--gris-suave); border-radius: 8px 8px 0 0; padding: 10px 18px; font-size: 14px; margin-bottom: -2px; border-bottom: 3px solid transparent; }
+  .tab.activo { color: var(--azul); border-bottom-color: var(--azul); background: #fff; }
+  .grupo-fecha { align-items: center; gap: 14px; }
+  .dias-ctl { display:flex; gap: 6px; overflow-x: auto; padding: 2px 0 12px 0; margin-bottom: 6px; }
+  .chip-dia { flex: 0 0 auto; border: 1px solid var(--borde); background: #fff; color: var(--gris-texto); border-radius: 999px; padding: 4px 11px; font-size: 11.5px; }
+  .chip-dia span { color: var(--gris-suave); font-weight: 500; }
+  .chip-dia.activo { background: var(--azul); color: #fff; border-color: var(--azul); }
+  .chip-dia.activo span { color: #d8daf5; }
+  .tabla-ctl { max-height: 360px; }
+  .tabla-ctl table { min-width: 1500px; }
+  .tabla-ctl thead tr:first-child th { top: 0; }
+  .tabla-ctl thead tr:nth-child(2) th { top: 27px; }
+  .fila-grupo th { padding: 5px 8px !important; font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em; background: #2c2f6e; text-align: center; }
+  .fila-grupo th.grupo-liq { background: #5a5fb8; } .fila-grupo th.grupo-env { background: #00804a; }
+  .celda-larga { max-width: 200px !important; }
+  .txt-suave { color: #9aa0b0; }
+  .falta-dato { color: var(--rojo); font-size: 11px; font-weight: 700; }
+  .aviso-precio { cursor: help; }
+  .est-sin { background: #eef0f4; color: #5b6170; } .est-pend { background: #fdecea; color: var(--rojo); }
+  .est-ok { background: #d4f4e2; color: #00804a; } .est-parcial { background: #e5f6d8; color: #4d7c0f; }
+  .est-mal { background: var(--rojo); color: #fff; } .est-sobr { background: #ffe9b3; color: #8a5a00; }
+  .tabla-ctl tbody tr.fila-est-mal td:first-child, .tabla-ctl tbody tr.fila-est-pend td:first-child { box-shadow: inset 3px 0 0 var(--rojo); }
+  .tabla-ctl tbody tr.fila-est-ok td:first-child, .tabla-ctl tbody tr.fila-est-parcial td:first-child { box-shadow: inset 3px 0 0 var(--verde); }
+  .tabla-ctl tbody tr.fila-est-sobr td:first-child { box-shadow: inset 3px 0 0 #ffc000; }
+  .catalogo summary { cursor: pointer; font-size: 14px; color: var(--azul); }
+  .buscador-cat { padding: 7px 10px; border: 1px solid var(--borde); border-radius: 6px; font: inherit; font-size: 13px; width: 100%; max-width: 320px; margin: 8px 0; }
+  .grid-catalogo { display:grid; grid-template-columns: 3fr 2fr; gap: 14px; }
+  .grid-catalogo table { min-width: 0 !important; }
+  .grid-catalogo tbody td { white-space: normal; }
+  .input-precio { width: 80px; padding: 3px 6px; border: 1px solid var(--borde); border-radius: 5px; font: inherit; font-size: 12px; }
+  .dlg-ancho { width: min(94vw, 720px); max-height: 92vh; }
+  .grid-form { display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .grid-form .span-2 { grid-column: span 2; }
+  .form-dialogo fieldset { border: 1px solid var(--borde); border-radius: 8px; padding: 8px 12px 12px; margin: 0; }
+  .form-dialogo legend { font-size: 12px; font-weight: 800; color: var(--azul); padding: 0 4px; }
+  .form-dialogo select { min-width: 0; width: 100%; }
+  @media (max-width: 760px) { .grid-catalogo { grid-template-columns: 1fr; } .grid-form .span-2 { grid-column: auto; } }
   tfoot td { padding: 9px 8px; font-weight: 800; background: #eef0fb; border-top: 2px solid var(--azul); }
   .stat-valor-soles { font-size: 22px !important; }
   .caja-resumen { margin-top: 18px; border:1px solid var(--borde); border-left: 4px solid var(--azul); border-radius: 8px; padding: 14px 16px; background:#fbfbff; }
@@ -362,7 +410,8 @@
   .form-dialogo h2 { margin:0; font-size: 16px; color: var(--azul); }
   .form-dialogo label { display:flex; flex-direction:column; gap:4px; font-size:12px; font-weight:700; }
   .form-dialogo input, .form-dialogo textarea { padding: 8px 10px; border:1px solid var(--borde); border-radius:6px; font: inherit; font-size:13px; }
-  .form-dialogo textarea { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; resize: vertical; }
+  .form-dialogo textarea { resize: vertical; }
+  #cfgKey { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; }
   @media (max-width: 600px) {
     .barra-nube-botones { margin-left: 0; }
     .contenido { padding: 16px; }
@@ -384,10 +433,16 @@
     </span>
   </div>
   <h1>Liquidación de Inventario</h1>
-  <p class="subtitulo">Importa el PDF "Acuerdo de liquidación de inventario" de cada camión. Las liquidaciones se guardan por periodo (mes) y al final verás cómo queda cada una y el periodo completo.</p>
+  <p class="subtitulo">Importa el PDF "Acuerdo de liquidación de inventario" de cada camión. Las liquidaciones se guardan por periodo (mes) y cada una genera su registro en el control diario de anomalías.</p>
 
   <div class="banner-lectura">👁 Estás en <strong>modo lectura</strong>: ves en tiempo real todo lo que se sube. Para importar o modificar, inicia sesión.</div>
 
+  <div class="tabs" id="tabs" role="tablist">
+    <button type="button" class="tab activo" data-tab="liq" role="tab">📦 Liquidaciones</button>
+    <button type="button" class="tab" data-tab="ctl" role="tab">📋 Control diario</button>
+  </div>
+
+  <div id="vistaLiq">
   <!-- 1. IMPORTAR -->
   <div class="panel solo-editor">
     <h2>1. Importar liquidaciones (PDF)</h2>
@@ -404,7 +459,8 @@
         <span class="ayuda-guardar">Vacío = automático, según la fecha de entrega del PDF.</span>
       </div>
       <details class="precios-envases">
-        <summary>⚙️ Precios de envases</summary>
+        <summary>⚙️ Precios por defecto de envases</summary>
+        <p class="ayuda-guardar" style="margin:6px 0 0">Se usan solo si el envase no está en el catálogo de la pestaña Control diario.</p>
         <div class="grid-precios">
           <label>Botella (S/)<input type="number" step="0.01" min="0" id="precioBotella"></label>
           <label>Caja Plast (S/)<input type="number" step="0.01" min="0" id="precioCajaPlast"></label>
@@ -445,8 +501,11 @@
         <button type="button" class="chip-filtro-liq" data-filtro="sin">Sin diferencias</button>
       </div>
     </div>
-    <p class="contador" id="contadorLiq"></p>
-    <div class="tabla-wrap">
+    <div class="fila-contador">
+      <p class="contador" id="contadorLiq"></p>
+      <button type="button" class="btn-secundario btn-chico" id="btnExpandirLista" style="display:none">⤢ Ver todas</button>
+    </div>
+    <div class="tabla-wrap tabla-compacta" id="wrapListaLiq">
       <table class="tabla-mapa">
         <thead>
           <tr>
@@ -519,6 +578,96 @@
     </div>
     <div class="caja-resumen" id="resumenPeriodo"></div>
   </div>
+  </div><!-- /vistaLiq -->
+
+  <div id="vistaCtl" style="display:none">
+    <div class="panel">
+      <h2>Control diario de anomalías en liquidaciones</h2>
+      <div class="barra-tabla">
+        <div class="grupo-botones grupo-fecha">
+          <div class="campo campo-inline">
+            <label for="selPeriodoCtl">Periodo</label>
+            <select id="selPeriodoCtl"></select>
+          </div>
+          <div class="campo campo-inline">
+            <label for="fechaCtl">Día</label>
+            <input type="date" id="fechaCtl">
+            <button type="button" class="btn-secundario btn-chico" id="btnHoyCtl">Hoy</button>
+          </div>
+        </div>
+        <div class="grupo-botones">
+          <button type="button" class="btn-agregar solo-editor" id="btnAgregarCtl">+ Agregar registro</button>
+          <button type="button" class="btn-secundario solo-editor" id="btnGenerarCtl">↻ Generar desde PDF</button>
+          <button type="button" class="btn-secundario solo-editor" id="btnImportarExcelCtl">📥 Importar Excel</button>
+          <input type="file" id="inputExcelCtl" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+          <button type="button" class="btn-secundario" id="btnExportarCtl">⬇️ Exportar Excel</button>
+        </div>
+      </div>
+      <div class="dias-ctl" id="diasCtl"></div>
+      <div class="stat-tiles" id="tilesCtl"></div>
+    </div>
+
+    <div class="panel">
+      <div class="barra-tabla">
+        <input type="search" id="buscadorCtl" placeholder="Buscar placa, reparto, producto, comentario...">
+        <div class="grupo-botones" id="filtroCtl">
+          <button type="button" class="chip-filtro-liq activo" data-filtro="todos">Todos</button>
+          <button type="button" class="chip-filtro-liq" data-filtro="anom">Con anomalías</button>
+          <button type="button" class="chip-filtro-liq" data-filtro="pend">Pendientes de cobro</button>
+        </div>
+      </div>
+      <div class="fila-contador">
+        <p class="contador" id="contadorCtl"></p>
+        <button type="button" class="btn-secundario btn-chico" id="btnExpandirCtl" style="display:none">⤢ Ver todas</button>
+      </div>
+      <div class="tabla-wrap tabla-compacta tabla-ctl" id="wrapCtl">
+        <table class="tabla-mapa">
+          <thead>
+            <tr class="fila-grupo">
+              <th colspan="6"></th>
+              <th colspan="4" class="grupo-liq">Anomalías reparto · LÍQUIDO</th>
+              <th colspan="4" class="grupo-env">Anomalías reparto · ENVASES</th>
+              <th colspan="2"></th>
+            </tr>
+            <tr>
+              <th>Fecha</th><th>Conductor</th><th>Placa</th><th>Reparto</th><th>BK</th><th>Viaje</th>
+              <th>Producto</th><th>Cant.</th><th>Monto</th><th>Responsable</th>
+              <th>Sobrantes vacíos</th><th>Faltantes vacíos</th><th>A pagar</th><th>Pagado / No pagado</th>
+              <th>Comentario</th><th class="solo-editor"></th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoCtl"></tbody>
+        </table>
+      </div>
+      <p class="ayuda-guardar">Haz clic en una fila para completar reparto, BK, responsable, estado de pago y comentario.</p>
+      <div class="caja-resumen" id="resumenCtl"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Por reparto (periodo)</h2>
+      <div class="tabla-wrap tabla-compacta">
+        <table class="tabla-mapa">
+          <thead><tr><th>Reparto</th><th>Viajes</th><th>Con anomalías</th><th>A pagar</th><th>Cobrado</th><th>Pendiente</th></tr></thead>
+          <tbody id="cuerpoRepartoCtl"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <details class="catalogo">
+        <summary><strong>📚 Catálogo de precios</strong> <span class="contador" id="resumenCatalogo"></span></summary>
+        <p class="ayuda-guardar">Precios usados para valorizar faltantes de líquido y de envases. Se cargan con "Importar Excel" (hoja Productos) o se editan aquí.</p>
+        <input type="search" id="buscadorCat" placeholder="Buscar producto..." class="buscador-cat">
+        <div class="grid-catalogo">
+          <div class="tabla-wrap tabla-compacta"><table class="tabla-mapa">
+            <thead><tr><th>Cod</th><th>Producto lleno</th><th>Precio</th></tr></thead><tbody id="cuerpoCatLlenos"></tbody></table></div>
+          <div class="tabla-wrap tabla-compacta"><table class="tabla-mapa">
+            <thead><tr><th></th><th>Envase vacío</th><th>Precio</th></tr></thead><tbody id="cuerpoCatVacios"></tbody></table></div>
+        </div>
+      </details>
+    </div>
+  </div><!-- /vistaCtl -->
+
   <!-- ACTIVIDAD -->
   <div class="panel" id="panelActividad" style="display:none">
     <h2>Actividad reciente</h2>
@@ -527,6 +676,55 @@
 </main>
 
 <div class="aviso-flotante" id="avisoFlotante" role="status" aria-live="polite"></div>
+
+<dialog id="dlgCtl" class="dlg-ancho">
+  <form id="formCtl" class="form-dialogo">
+    <h2 id="tituloDlgCtl">Registro</h2>
+    <p class="ayuda-guardar" id="origenCtl"></p>
+    <div class="grid-form">
+      <label>Fecha<input type="date" id="ctl_fecha" required></label>
+      <label>Conductor<input type="text" id="ctl_conductor"></label>
+      <label>Placa<input type="text" id="ctl_placa" list="listaPlacas"></label>
+      <label>Reparto<input type="text" id="ctl_reparto" placeholder="Nombre"></label>
+      <label>BK<input type="text" id="ctl_bk"></label>
+      <label>Viaje<input type="text" id="ctl_viaje"></label>
+    </div>
+    <fieldset><legend>Anomalías de líquido</legend>
+      <div class="grid-form">
+        <label class="span-2">Producto<textarea id="ctl_producto" rows="2" placeholder="S/N si no hay"></textarea></label>
+        <label>Cantidad (unid.)<input type="text" id="ctl_cantidad"></label>
+        <label>Monto (S/)<input type="number" step="0.01" min="0" id="ctl_montoLiquido"></label>
+        <label class="span-2">Responsable<input type="text" id="ctl_responsable" list="listaResponsables"></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>Anomalías de envases</legend>
+      <div class="grid-form">
+        <label class="span-2">Sobrantes vacíos<textarea id="ctl_sobrantes" rows="2"></textarea></label>
+        <label class="span-2">Faltantes vacíos<textarea id="ctl_faltantes" rows="2"></textarea></label>
+        <label>Monto a pagar (S/)<input type="number" step="0.01" min="0" id="ctl_montoPagar"></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>Pago</legend>
+      <div class="grid-form">
+        <label>Estado<select id="ctl_estado">
+          <option value="sin">Sin anomalías</option><option value="pendiente">Pendiente</option><option value="pagado">Pagado</option>
+          <option value="parcial">Pago parcial</option><option value="no_pagado">No pagado</option><option value="sobrante">Sobrante</option>
+        </select></label>
+        <label id="campoPagado">Monto pagado (S/)<input type="number" step="0.01" min="0" id="ctl_montoPagado"></label>
+        <label class="span-2">Comentario<textarea id="ctl_comentario" rows="2" placeholder="Ej.: Se pagó a Walter / Descuento a toda la tripulación"></textarea></label>
+      </div>
+    </fieldset>
+    <datalist id="listaResponsables">
+      <option value="S/N"><option value="SOBRANTE"><option value="TRIPULACION"><option value="AUXILIARES"><option value="CORREO REALIZADO"><option value="Faltante en carga">
+    </datalist>
+    <datalist id="listaPlacas"></datalist>
+    <div class="grupo-botones">
+      <button type="submit" class="btn-agregar" value="guardar" id="btnGuardarCtl">Guardar</button>
+      <button type="submit" class="btn-secundario" value="cancelar" formnovalidate>Cerrar</button>
+      <button type="submit" class="btn-peligro solo-editor" value="eliminar" id="btnEliminarCtlDlg" formnovalidate>Eliminar</button>
+    </div>
+  </form>
+</dialog>
 
 <dialog id="dlgLogin">
   <form id="formLogin" class="form-dialogo">
@@ -797,8 +995,19 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
     const idxCabecera = todasLineas.findIndex(function (l) { return /Nombre del conductor/i.test(l); });
     if (idxCabecera !== -1 && todasLineas[idxCabecera + 1]) {
+      // Fila de datos: "<conductor (puede tener espacios)> <nº viaje> <placa> <fecha entrega> <fecha revisión>".
+      // Se ubican las fechas y se cuenta hacia atrás, así el nombre del conductor puede tener varias palabras.
       const partes = todasLineas[idxCabecera + 1].trim().split(/\s+/);
-      if (partes.length >= 5) {
+      const esFecha = function (t) { return /^\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}$/.test(t) || /^\d{4}-\d{2}-\d{2}$/.test(t); };
+      const iFecha = partes.findIndex(esFecha);
+      if (iFecha >= 3) {
+        const fechas = partes.slice(iFecha).filter(esFecha);
+        resultado.conductor = partes.slice(0, iFecha - 2).join(' ');
+        resultado.numViaje = partes[iFecha - 2];
+        resultado.placa = partes[iFecha - 1];
+        resultado.fechaEntrega = fechas[0] || '';
+        resultado.fechaRevision = fechas[1] || '';
+      } else if (partes.length >= 5) {
         resultado.conductor = partes[0];
         resultado.numViaje = partes[1];
         resultado.placa = partes[2];
@@ -857,7 +1066,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     function total(coincide, precio) {
       const items = vacios.filter(coincide);
       const suma = items.reduce(function (a, it) { return a + it.diferencia; }, 0);
-      return { suma: suma, n: items.length, precio: precio, soles: suma * precio };
+      const s = items.reduce(function (a, it) { return a + it.diferencia * precioVacio(it.nombre); }, 0);
+      return { suma: suma, n: items.length, precio: precio, soles: s };
     }
     const botella = total(function (it) { return it.nombre.trim().toUpperCase().indexOf('BOTELLA') === 0; }, precios.botella);
     const cajaPlast = total(function (it) { return it.nombre.trim().toUpperCase().indexOf('CAJA PLAST') !== -1; }, precios.cajaPlast);
@@ -951,6 +1161,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (importados) {
       periodoSel = ultimoPeriodo;
       nubeGuardar(cambiados);
+      controlDesdeLiquidaciones(cambiados);
       registrarActividad('importó', plural(cambiados.length, 'liquidación', 'liquidaciones') + ': ' +
         cambiados.map(function (r) { return (r.conductor || '?') + ' v.' + (r.numViaje || '-') + ' (' + etiquetaPeriodo(r.periodo) + ')'; }).join(', '));
       renderTodo();
@@ -992,14 +1203,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   /* ---------- periodo ---------- */
   function renderSelectorPeriodo() {
-    const conteo = {};
+    const conteo = {}, conteoCtl = {};
     liquidaciones.forEach(function (l) { conteo[l.periodo] = (conteo[l.periodo] || 0) + 1; });
-    const periodos = Object.keys(conteo).sort().reverse();
-    if (!periodoSel || (periodoSel === 'todos' && !periodoManual && periodos.length) || (periodoSel !== 'todos' && !conteo[periodoSel])) periodoSel = periodos[0] || 'todos';
+    control.forEach(function (r) { if (r.periodo) conteoCtl[r.periodo] = (conteoCtl[r.periodo] || 0) + 1; });
+    const todos = {};
+    Object.keys(conteo).concat(Object.keys(conteoCtl)).forEach(function (p) { todos[p] = true; });
+    const periodos = Object.keys(todos).sort().reverse();
+    if (!periodoSel || (periodoSel === 'todos' && !periodoManual && periodos.length) || (periodoSel !== 'todos' && !todos[periodoSel])) periodoSel = periodos[0] || 'todos';
     $('selPeriodo').innerHTML = periodos.map(function (p) {
-      return `<option value="${p}">${etiquetaPeriodo(p)} (${conteo[p]})</option>`;
+      return `<option value="${p}">${etiquetaPeriodo(p)} (${conteo[p] || 0})</option>`;
     }).join('') + `<option value="todos">Todos los periodos (${liquidaciones.length})</option>`;
     $('selPeriodo').value = periodoSel;
+    $('selPeriodoCtl').innerHTML = periodos.map(function (p) {
+      return `<option value="${p}">${etiquetaPeriodo(p)} (${conteoCtl[p] || 0})</option>`;
+    }).join('') + `<option value="todos">Todos los periodos (${control.length})</option>`;
+    $('selPeriodoCtl').value = periodoSel;
   }
   $('selPeriodo').addEventListener('change', function () { periodoSel = this.value; periodoManual = true; cerrarDetalle(); renderTodo(); });
 
@@ -1050,7 +1268,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         const l = x.l, n = x.m.conDiferencia;
         const badge = n === 0 ? '<span class="badge badge-si">Sin diferencias</span>'
           : `<span class="badge badge-alerta">${plural(n, 'diferencia')}</span>`;
-        return `<tr class="${l.id === idAbierto ? 'fila-activa' : ''}">
+        return `<tr class="fila-clic${l.id === idAbierto ? ' fila-activa' : ''}" data-ver="${l.id}" title="Ver detalle">
           <td>${escaparHtml(l.conductor)}</td>
           <td>${escaparHtml(l.numViaje)}</td>
           <td>${escaparHtml(l.placa)}</td>
@@ -1058,15 +1276,23 @@ https://github.com/nodeca/pako/blob/main/LICENSE
           <td>${badge}</td>
           <td class="${claseSigno(x.m.envases.soles)}">${fmtSoles(x.m.envases.soles)}</td>
           <td class="celda-acciones">
-            <button type="button" class="btn-secundario btn-chico" data-ver="${l.id}">Ver detalle</button>
-            <button type="button" class="btn-eliminar solo-editor" data-eliminar="${l.id}">Eliminar</button>
+            <button type="button" class="btn-secundario btn-icono" data-ver="${l.id}" title="Ver detalle">Ver</button>
+            <button type="button" class="btn-eliminar btn-icono solo-editor" data-eliminar="${l.id}" title="Eliminar">🗑</button>
           </td></tr>`;
       }).join('');
+    const largo = filas.length > 8;
+    $('btnExpandirLista').style.display = largo ? '' : 'none';
+    if (!largo) $('wrapListaLiq').classList.remove('expandida');
+    $('btnExpandirLista').textContent = $('wrapListaLiq').classList.contains('expandida') ? '⤡ Contraer' : '⤢ Ver todas';
     $('contadorLiq').textContent = `${plural(filas.length, 'liquidación', 'liquidaciones')}` +
       (filas.length !== total ? ` (de ${total} en ${etiquetaPeriodo(periodoSel)})` : ` en ${etiquetaPeriodo(periodoSel)}`);
   }
 
   $('buscador').addEventListener('input', renderTabla);
+  $('btnExpandirLista').addEventListener('click', function () {
+    $('wrapListaLiq').classList.toggle('expandida');
+    renderTabla();
+  });
   $('filtroEstado').addEventListener('click', function (e) {
     const b = e.target.closest('[data-filtro]'); if (!b) return;
     filtroEstado = b.getAttribute('data-filtro');
@@ -1074,10 +1300,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     renderTabla();
   });
   $('cuerpoLiq').addEventListener('click', function (e) {
-    const ver = e.target.closest('[data-ver]');
-    if (ver) { abrirDetalle(ver.getAttribute('data-ver')); return; }
     const del = e.target.closest('[data-eliminar]');
-    if (del) {
+    if (!del) {
+      const ver = e.target.closest('[data-ver]');
+      if (ver) abrirDetalle(ver.getAttribute('data-ver'));
+      return;
+    }
+    {
       const id = del.getAttribute('data-eliminar');
       const l = liquidaciones.find(function (x) { return x.id === id; });
       if (l && confirm(`¿Eliminar la liquidación de ${l.conductor || '(sin conductor)'} (viaje ${l.numViaje || '-'})? No se puede deshacer.`)) {
@@ -1136,7 +1365,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
   function chipEnvase(etiqueta, d) {
     return `<div class="total-envase-chip">
-      <span class="etiqueta">${etiqueta} · ${plural(d.n, 'ítem')} · S/ ${d.precio.toFixed(2)} c/u</span>
+      <span class="etiqueta">${etiqueta} · ${plural(d.n, 'ítem')}</span>
       <span class="valor ${claseSigno(d.suma)}">${fmtNum(d.suma)}</span>
       <span class="costo ${claseSigno(d.soles)}">${fmtSoles(d.soles)}</span></div>`;
   }
@@ -1386,7 +1615,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   });
   $('btnRespaldo').addEventListener('click', function () {
     const fecha = new Date().toISOString().slice(0, 10);
-    descargar(`respaldo_liquidaciones_${fecha}.json`, JSON.stringify({ version: 2, precios: precios, liquidaciones: liquidaciones }, null, 1), 'application/json');
+    descargar(`respaldo_liquidaciones_${fecha}.json`, JSON.stringify({ version: 3, precios: precios, liquidaciones: liquidaciones, control: control, catalogo: catalogo, flota: flota }, null, 1), 'application/json');
   });
   $('btnRestaurar').addEventListener('click', function () { $('inputRespaldo').click(); });
   $('inputRespaldo').addEventListener('change', function (e) {
@@ -1403,8 +1632,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         if (i !== -1) { liquidaciones[i] = n; actualizadas++; } else { liquidaciones.push(n); agregadas++; }
       });
       if (d.precios) { precios = Object.assign(precios, d.precios); guardarPrecios(); nubeGuardarPrecios(); pintarPrecios(); }
+      (d.control || []).forEach(function (n) {
+        const i = control.findIndex(function (r) { return r.id === n.id; });
+        if (i !== -1) control[i] = n; else control.push(n);
+        cambiados.push(n);
+      });
+      if (d.catalogo && d.catalogo.llenos) { catalogo = d.catalogo; guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo); }
+      if (d.flota) { flota = d.flota; guardarFlotaLocal(); nubeGuardarConfig('flota', flota); }
       nubeGuardar(cambiados); renderTodo();
-      registrarActividad('restauró respaldo', `${agregadas} nuevas, ${actualizadas} actualizadas`);
+      registrarActividad('restauró respaldo', `${agregadas} liquidaciones nuevas, ${actualizadas} actualizadas, ${(d.control || []).length} registros de control`);
       alert(`Respaldo restaurado: ${agregadas} nuevas, ${actualizadas} actualizadas.`);
     }).catch(function (err) { alert('El archivo de respaldo no es válido: ' + err.message); })
       .then(function () { e.target.value = ''; });
@@ -1426,8 +1662,777 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     renderTilesPeriodo();
     renderTabla();
     renderResumenPeriodo();
+    renderControl();
+    renderCatalogo();
     if (idAbierto && !liquidaciones.some(function (l) { return l.id === idAbierto; })) cerrarDetalle();
   }
+
+  /* =====================================================================
+     CONTROL DIARIO DE ANOMALÍAS (formato del Excel "Liquidaciones_Segsol")
+  ===================================================================== */
+  const CLAVE_CONTROL = 'liquidacionesControlDiario';
+  const CLAVE_CATALOGO = 'liquidacionesCatalogo';
+  const CLAVE_FLOTA = 'liquidacionesFlota';
+  const CLAVE_TAB = 'liquidacionesPestana';
+  const CATALOGO_BASE = {"llenos": [{"cod": "Gu450", "nombre": "GUARANA 450ML PET 15X1 RA", "precio": 1.67}, {"cod": "Pi1000", "nombre": "PILSEN CALLAO RB 1000L HUACHIPA 12X1.", "precio": 7.94}, {"cod": "Cr1000", "nombre": "CRISTAL 1000ML RT 12 CP-HUACHIPA.", "precio": 7.49}, {"cod": "Pi473", "nombre": "PILSEN CALLAO LATA 473 6X1.", "precio": 4.74}, {"cod": "Cr650", "nombre": "CRISTAL 650ML RT 12 CP", "precio": 5.63}, {"cod": "Ca355", "nombre": "Cartavio Hit Pina Colada 355ml 1x1", "precio": 4.43}, {"cod": "Pi473", "nombre": "PILSEN CALLAO FRESH 473ML AL 6P", "precio": 4.74}, {"cod": "Pi305", "nombre": "PILSEN CALLAO TERMO 305ML NR 6X1", "precio": 3.4}, {"cod": "Go473", "nombre": "GOLDEN 473ML LATA AL 6X1", "precio": 3.43}, {"cod": "Gu3010", "nombre": "GUARANA 3010ML PET 4X1 RA.", "precio": 7.21}, {"cod": "Pi355", "nombre": "PILSEN CALLAO FRESH 355ML AL 6P", "precio": 3.83}, {"cod": "Pi630", "nombre": "PILSEN CALLAO 630ML RT 12 CP", "precio": 5.64}, {"cod": "Gu300", "nombre": "GUARANA 300ML PET 15X1 PRECIO", "precio": 0.94}, {"cod": "CuR473", "nombre": "CUSQUEÑA ROJA 473ML AL 6P", "precio": 5.15}, {"cod": "Vi300", "nombre": "VIVA 300ML PET 15P", "precio": 0.83}, {"cod": "Cu310", "nombre": "CUSQ NEGRA 310ML NR-CT 6P", "precio": 3.82}, {"cod": "Cu310", "nombre": "CUSQ NEGRA 310ML NR-TM 6P", "precio": 3.82}, {"cod": "Cu620", "nombre": "CUSQ TRIGO 620ML RT 12P", "precio": 6.45}, {"cod": "Mi355", "nombre": "MIKES MARACUYA 355ML 6X1", "precio": 5.42}, {"cod": "Fl355", "nombre": "FLYING FISH 355ML AL 6P", "precio": 4.17}, {"cod": "Cu310", "nombre": "CUSQ TRIGO 310ML RT 24P", "precio": 3.38}, {"cod": "Cu310", "nombre": "CUSQ TRIGO 310ML NR-TM 6P", "precio": 3.82}, {"cod": "CuT473", "nombre": "CUSQUEÑA TRIGO 473ML 6X1", "precio": 5.15}, {"cod": "Mi355", "nombre": "MIKES HARD LEMONADE 355 ML SLK 6P", "precio": 5.42}, {"cod": "Mi355", "nombre": "MIKES ARANDANOS 355ML AL 6P", "precio": 5.42}, {"cod": "Gu1000", "nombre": "GUARANA 1000ML PET 6X1 RA", "precio": 2.92}, {"cod": "Ci625", "nombre": "Cielo Agua de Mesa sin Gas 625ml 15x1", "precio": 0.8}, {"cod": "CuC310", "nombre": "CUSQUEÑA CERO 310ML 6P NR", "precio": 3.9}, {"cod": "Pi275", "nombre": "Piscano Surtido 275ml6x1", "precio": 5.4}, {"cod": "Ro250", "nombre": "Ron Cartavio Black 250ml 1x1", "precio": 8.4}, {"cod": "CuN355", "nombre": "CUSQ NEGRA 355ML AL 6P", "precio": 4.25}, {"cod": "Co210", "nombre": "CORONITA 210ML NR 6PX1.", "precio": 2.92}, {"cod": "Gu2000", "nombre": "GUARANA 2000ML PET 6X1 RA", "precio": 5.32}, {"cod": "Cr355", "nombre": "CRISTAL 355ML AL 6Px1.", "precio": 3.4}, {"cod": "Pi355", "nombre": "PILSEN CALLAO 355ML AL 6PX1.", "precio": 3.83}, {"cod": "CuD355", "nombre": "CUSQ DORADA 355ML AL 6P", "precio": 4.25}, {"cod": "Pi355", "nombre": "PILSEN CALLAO 355ML AL 12X1 VERDE.", "precio": 3.83}, {"cod": "CuT355", "nombre": "CUSQ TRIGO 355ML AL 6P", "precio": 4.25}, {"cod": "Co355", "nombre": "CORONA CERO 355ML 6X1 H", "precio": 4.25}, {"cod": "St330", "nombre": "STELLA ARTOIS 330ML NR 6P-A", "precio": 4.17}, {"cod": "Mi355", "nombre": "MIKES FRESA 355ML 6X1", "precio": 5.42}, {"cod": "Co330", "nombre": "CORONA EXTRA 330ML NR 6P H", "precio": 4.17}, {"cod": "Wa27", "nombre": "Wafer Nik Vainilla 27g 24x1", "precio": 0.57}, {"cod": "Bo15", "nombre": "Bon o Bon Leche 15gr 30x1", "precio": 0.84}, {"cod": "GuPi300", "nombre": "GUARANA PIÑA 300ML PET 15X1 RA", "precio": 0.94}, {"cod": "Go473", "nombre": "GOLDEN 473ML 6X1 PROMO", "precio": 3.43}, {"cod": "Gu300", "nombre": "GUARANA 300ML PET 15X1 RA", "precio": 0.94}, {"cod": "CuT310", "nombre": "CUSQ TRIGO 310ML NR-CT 6P", "precio": 3.82}, {"cod": "Vi3010", "nombre": "VIVA BACKUS 3010ML PET4X1", "precio": 5.17}, {"cod": "Co473", "nombre": "CORONA EXTRA 473ML AL 6P", "precio": 5.15}, {"cod": "Gu450", "nombre": "GUARANA ZERO 450ML PET 15P DXT", "precio": 1.67}, {"cod": "Vi750", "nombre": "Vino Borgoña Queirolo 750ml 1x1", "precio": 13.95}, {"cod": "Cr473", "nombre": "CRISTAL 473ML AL 6Px1", "precio": 4.33}, {"cod": "Gu3010", "nombre": "GUARANA PIÑA 3010ML PET 4P", "precio": 7.21}, {"cod": "CuN620", "nombre": "CUSQ NEGRA 620ML RT 12P", "precio": 6.46}, {"cod": "CuN473", "nombre": "CUSQUEÑA NEGRA 473ML AL 6P", "precio": 5.15}, {"cod": "Fo473", "nombre": "Four Loko Maracuya 473ml 6x1", "precio": 9.02}, {"cod": "Vi750", "nombre": "Vino Rosé Queirolo 750ml 1x1", "precio": 13.95}, {"cod": "Pi700", "nombre": "Pisco Sour Tabernero Maracuya 700ml 1x1", "precio": 16.2}, {"cod": "Po108", "nombre": "PO Oreo Rollo Galleta 108gr 5x1", "precio": 2.18}, {"cod": "Pi305", "nombre": "PILSEN CALLAO 305ML RT 24X1", "precio": 2.97}, {"cod": "Ta750", "nombre": "Tabernero Rose Semiseco 750ml 1x1", "precio": 13.85}, {"cod": "Ma330", "nombre": "MALTIN POWER RA 330 12X1", "precio": 1.25}, {"cod": "Al15", "nombre": "Alto MayoCafe Instantaneo Gourmet15GR10", "precio": 2.47}, {"cod": "Pi473", "nombre": "PILSEN CALLAO 473ML 6X1 VERANO", "precio": 4.76}, {"cod": "Po40", "nombre": "PO Picaras Clasicas 40gr 16x1", "precio": 0.95}, {"cod": "Vi750", "nombre": "Vino Magdalena Queirolo 750ml 1x1", "precio": 13.95}, {"cod": "Ci1", "nombre": "Cielo Agua de Mesa sin Gas 1L 12x1", "precio": 1.67}, {"cod": "Cu310", "nombre": "CUSQ NEGRA 310ML RT 24P", "precio": 3.38}, {"cod": "Pi269", "nombre": "PILSEN CALLAO LTA 269ML AL 6X1.", "precio": 2.83}, {"cod": "Cu355", "nombre": "CUSQUEÑA CERO TRIGO SLEEK 355ML 6P", "precio": 4.33}, {"cod": "Cr500", "nombre": "CRISTALINA 500ML PET 15X1", "precio": 0.82}, {"cod": "Bu5", "nombre": "Bubbaloo Chicle Fresa 5.1g 70un 2x1", "precio": 10.79}, {"cod": "Po70", "nombre": "PO Ritz Taco 70g 4x1", "precio": 1.42}, {"cod": "Am7", "nombre": "AM Cafe Inst Gourmet 7gr 2x8", "precio": 1.31}, {"cod": "Ci2", "nombre": "Cielo Agua de Mesa sin Gas 2.5L 6x1", "precio": 2.5}, {"cod": "Su50", "nombre": "Sublime Extremo 50gr 15x1", "precio": 3.17}, {"cod": "Ne29", "nombre": "Nestle Triangulo Clasico 29g 20x1", "precio": 2.12}, {"cod": "Fl355", "nombre": "FLYING FISH 355ML NR 6P", "precio": 4.17}, {"cod": "Mi355", "nombre": "MIKES APPLE 355ML AL 6P", "precio": 5.42}, {"cod": "Pi355", "nombre": "Piscano Maracuya 355ml 6x1", "precio": 5.4}, {"cod": "Po63", "nombre": "PO Costa Vizzio 63gr 5x1", "precio": 4.29}, {"cod": "Ta56", "nombre": "Takis Original 56gr 6x1", "precio": 2.08}, {"cod": "Fl140", "nombre": "Florida Filete de Atun 140g 6x1", "precio": 5.86}, {"cod": "Go650", "nombre": "GOLDEN 650ML RT 12 CP", "precio": 4.38}, {"cod": "H&2", "nombre": "H&S Suave y M Ant 2en1 Sachet 18ml 12x1", "precio": 0.83}, {"cod": "Ch36", "nombre": "Chocosoda 36GR 6x1", "precio": 1.11}, {"cod": "Po37", "nombre": "PO Galleta Vainilla Field 37gr 12x1", "precio": 0.83}, {"cod": "Ba700", "nombre": "Ballantines Finest Pack 700ml+200ml 1x1", "precio": 51.55}, {"cod": "Co820", "nombre": "Compass Duraznos Mitades 820g 2x1", "precio": 7.2}, {"cod": "Fl140", "nombre": "Florida Grated de Atun 140gr 6x1", "precio": 3.91}, {"cod": "Ta56", "nombre": "Takis Fuego 56gr 6x1", "precio": 2.08}, {"cod": "Ta56", "nombre": "Takis Xplosion 56gr 6x1", "precio": 2.08}, {"cod": "Po26", "nombre": "PO Club Social Regular 26gr 12x1", "precio": 0.8}, {"cod": "Bu355", "nombre": "BUDWEISER 355ML 6X1 SLK", "precio": 3.94}, {"cod": "Tr5", "nombre": "Trident 5S Fresh Herbal 8.5G 18X1", "precio": 1.15}, {"cod": "Po10", "nombre": "PO Nosotras Toalla Hig Alas Gel 10u 3x1", "precio": 4.13}, {"cod": "Ca355", "nombre": "Cartavio Hit Mojito 355ml 1x1", "precio": 4.43}, {"cod": "Fo473", "nombre": "Four Loko Purple 473ml 6x1", "precio": 9.0}, {"cod": "Cu310", "nombre": "CUSQUEÑA DORADA 310ML NRCT 6P", "precio": 3.83}, {"cod": "Go25", "nombre": "Gomas Ambrosito 25gr 12x1", "precio": 0.63}, {"cod": "Co150", "nombre": "Colgate Triple Accion 150ml 1x1", "precio": 10.21}, {"cod": "Ch275", "nombre": "Chilcano Bar Maracuya 275ml 1x1", "precio": 4.94}, {"cod": "Pr110", "nombre": "Protex Jabon Avena 110gr 6x1", "precio": 3.65}, {"cod": "Pr75", "nombre": "Protex Jabon de Avena 75gr 6x1", "precio": 2.67}, {"cod": "Wa6", "nombre": "Wafer Nik Vainilla 6X6X72G", "precio": 1.21}, {"cod": "Ro1", "nombre": "Ron Cartavio Black 1lt 1x1", "precio": 24.6}, {"cod": "Cu310", "nombre": "CUSQUEÑA DORADA 310ML NRTM 6P NI25", "precio": 3.82}, {"cod": "Cu310", "nombre": "CUSQ DORADA 310ML NR-TM 6P", "precio": 3.82}, {"cod": "Or108", "nombre": "Oreo Rollo Golden 108gr 5x1", "precio": 2.18}, {"cod": "In750", "nombre": "Intipalka Malbec 750ml 1x1", "precio": 28.2}, {"cod": "Po33", "nombre": "PO Chocman Chocolate 33.5gr 12x1", "precio": 0.72}, {"cod": "Ca250", "nombre": "Cartavio Superior 250ml 1x1", "precio": 8.4}, {"cod": "Cu310", "nombre": "CUSQ DORADA 310ML NR-CT 6P", "precio": 3.82}, {"cod": "Ta750", "nombre": "Tabernero Borgona Semiseco 750ml 1x1", "precio": 13.85}, {"cod": "Ru355", "nombre": "Russkaya Wild Sex On The Beach 355ml 1x1", "precio": 4.43}, {"cod": "Ro750", "nombre": "Ron Cartavio Black 750ml 1x1", "precio": 21.33}, {"cod": "Ha25", "nombre": "Halls Mora 25gr 12x1", "precio": 1.15}, {"cod": "Cu620", "nombre": "CUSQ DORADA 620ML RT 12P", "precio": 6.45}, {"cod": "Pi46", "nombre": "Picaras Mini Clasica 46gr 6x1", "precio": 1.23}, {"cod": "Fo473", "nombre": "Four Loko Sandia 473ml 6x1", "precio": 9.0}, {"cod": "Ma140", "nombre": "Marinero Trozos Atun 140gr 6x1", "precio": 4.26}, {"cod": "Lo625", "nombre": "Loa Agua Saborizada Piña 625ml 15x1", "precio": 1.2}, {"cod": "Lo625", "nombre": "Loa Agua Saborizada Limón 625ml 15x1", "precio": 1.2}, {"cod": "Cr305", "nombre": "CRISTAL 305ML RT 24X1", "precio": 2.58}, {"cod": "Ma500", "nombre": "Maniak Mango Rush 500ml 4x1", "precio": 4.8}, {"cod": "Ca7", "nombre": "Cafetal Cafe Instantaneo 7gr 16x1", "precio": 0.89}, {"cod": "Sa145", "nombre": "Salsa Tomate Pomarola 145gr N 6X1", "precio": 1.36}, {"cod": "Mo500", "nombre": "Molitalia Spaghetti 500gr 5x1 N", "precio": 3.6}, {"cod": "Ja110", "nombre": "Jabon Protex Fresh 110gr 6x1", "precio": 3.65}, {"cod": "Sm700", "nombre": "Smirnoff Green Apple 700ml 1x1", "precio": 30.26}, {"cod": "Go269", "nombre": "GOLDEN 269ML AL 6P", "precio": 2.17}, {"cod": "Fl140", "nombre": "Florida Trozos Atun Vegetal 140g 6x1", "precio": 5.19}, {"cod": "Co39", "nombre": "Costa Cañonazo Extra 39g 24x1", "precio": 0.9}], "vacios": [{"nombre": "BOTELLA VERDE PILSEN CALLAO 630ML RT", "precio": 0.6}, {"nombre": "BOTELLA VERDE PILSEN CALLAO 1000ML RT", "precio": 0.6}, {"nombre": "CAJA PLAST 1000/1100ML X12BT", "precio": 3.8}, {"nombre": "BOTELLA AMBAR CUSQUENA 620ML RT", "precio": 0.6}, {"nombre": "BOTELLA AMBAR CERV 1000ML ULTRA RT", "precio": 0.6}, {"nombre": "CAJA PLAST 620/630/650ML X12BT", "precio": 3.8}, {"nombre": "BOTELLA AMBAR CERVECERA 650ML RT", "precio": 0.6}, {"nombre": "BOT VERDE PILSEN CALLAO 310ML RT", "precio": 0.5}, {"nombre": "BOT AMBAR CUSQUENA 310ML RT", "precio": 0.5}, {"nombre": "BOT AMBAR 305ML RT", "precio": 0.5}, {"nombre": "CAJA PLAST 330MLX24BT", "precio": 3.8}, {"nombre": "BOTELLA AMBAR BUD 600 RT", "precio": 0.5}, {"nombre": "CAJA PLAST BUD 600 X12BT", "precio": 3.0}, {"nombre": "BOTELLA AMBAR STD 620ML RT", "precio": 0.6}, {"nombre": "CAJA PLAST ABI 630ML X12BT", "precio": 3.0}, {"nombre": "BOTELLA CRISTAL CERV BARENA 650ML", "precio": 0.6}, {"nombre": "BOTELLA CRISTAL CERV BARENA 330ML", "precio": 0.3}, {"nombre": "BOTELLA VERDE PILSEN CALLAO 310ML RT", "precio": 0.3}, {"nombre": "CAJA PLAST 310MLX24BT CS", "precio": 3.0}]};
+  const ESTADOS = {
+    sin:       { t: 'Sin anomalías', c: 'est-sin' },
+    pendiente: { t: 'Pendiente',     c: 'est-pend' },
+    pagado:    { t: 'Pagado',        c: 'est-ok' },
+    parcial:   { t: 'Pago parcial',  c: 'est-parcial' },
+    no_pagado: { t: 'No pagado',     c: 'est-mal' },
+    sobrante:  { t: 'Sobrante',      c: 'est-sobr' }
+  };
+  const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+
+  let control = [];
+  let catalogo = JSON.parse(JSON.stringify(CATALOGO_BASE));
+  let flota = {};             // placa -> { bk, reparto, conductor }
+  let fechaCtl = null;        // 'YYYY-MM-DD' | 'mes'
+  let filtroCtl = 'todos';
+  let idCtlEditando = null;
+  let idxCat = null;
+
+  /* ---------- almacenamiento ---------- */
+  function cargarControl() {
+    try { control = JSON.parse(localStorage.getItem(CLAVE_CONTROL) || '[]'); } catch (e) { control = []; }
+    try { const c = JSON.parse(localStorage.getItem(CLAVE_CATALOGO) || 'null'); if (c && c.llenos) catalogo = c; } catch (e) { /* */ }
+    try { flota = JSON.parse(localStorage.getItem(CLAVE_FLOTA) || '{}') || {}; } catch (e) { flota = {}; }
+    idxCat = null;
+  }
+  function guardarControlLocal() {
+    try { localStorage.setItem(CLAVE_CONTROL, JSON.stringify(control)); } catch (e) { /* */ }
+  }
+  function guardarCatalogoLocal() {
+    try { localStorage.setItem(CLAVE_CATALOGO, JSON.stringify(catalogo)); } catch (e) { /* */ }
+    idxCat = null;
+  }
+  function guardarFlotaLocal() {
+    try { localStorage.setItem(CLAVE_FLOTA, JSON.stringify(flota)); } catch (e) { /* */ }
+  }
+
+  /* ---------- utilidades ---------- */
+  function normNombre(s) {
+    return String(s == null ? '' : s).toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/\./g, '').replace(/\s+/g, ' ').trim();
+  }
+  function isoDeFecha(f) {
+    f = String(f || '').trim();
+    let m = f.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
+    if (m) return (m[3].length === 2 ? '20' + m[3] : m[3]) + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0');
+    m = f.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? m[0] : '';
+  }
+  function fechaCorta(iso) {
+    const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? m[3] + '/' + m[2] + '/' + m[1] : (iso || '');
+  }
+  function diaSemana(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    return isNaN(d) ? '' : DIAS[d.getDay()];
+  }
+  function hoyIso() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function soles(n) { return 'S/ ' + (Math.round((+n || 0) * 100) / 100).toFixed(2); }
+  function unirY(lista) {
+    if (lista.length <= 1) return lista.join('');
+    return lista.slice(0, -1).join(', ') + ' y ' + lista[lista.length - 1];
+  }
+  function num(v) {
+    if (typeof v === 'number') return v;
+    const n = parseFloat(String(v == null ? '' : v).replace(',', '.'));
+    return isNaN(n) ? 0 : n;
+  }
+
+  /* ---------- catálogo de precios ---------- */
+  function indexarCatalogo() {
+    idxCat = { llenos: {}, vacios: {} };
+    catalogo.llenos.forEach(function (p) { idxCat.llenos[normNombre(p.nombre)] = p.precio; });
+    catalogo.vacios.forEach(function (p) { idxCat.vacios[normNombre(p.nombre)] = p.precio; });
+  }
+  function precioLleno(nombre) {
+    if (!idxCat) indexarCatalogo();
+    const p = idxCat.llenos[normNombre(nombre)];
+    return p == null ? null : p;
+  }
+  function precioVacio(nombre) {
+    if (!idxCat) indexarCatalogo();
+    const n = normNombre(nombre);
+    const p = idxCat.vacios[n];
+    if (p != null) return p;
+    if (n.indexOf('CAJA PLAST') !== -1) return precios.cajaPlast;
+    if (n.indexOf('BOTELLA') === 0) return precios.botella;
+    if (/\bBOT\b/.test(n)) return precios.bot;
+    return 0;
+  }
+
+  /* ---------- generación desde el PDF ---------- */
+  function descVacio(nombre) {
+    const n = normNombre(nombre);
+    const m = n.match(/(\d{3,4}(?:\/\d{3,4})*)\s*ML/) || n.match(/\b(\d{3,4})\b/);
+    let tam = m ? m[1] : '';
+    if (tam.indexOf('/') !== -1) { const t = tam.split('/'); tam = t[Math.floor((t.length - 1) / 2)]; }
+    const caja = n.indexOf('CAJA PLAST') !== -1;
+    return { clave: (caja ? 'cpc' : 'bot') + '|' + (tam || n), caja: caja, tam: tam, nombre: nombre };
+  }
+  function textoVacios(items) {
+    const grupos = {}, orden = [];
+    items.forEach(function (it) {
+      const d = descVacio(it.nombre);
+      if (!grupos[d.clave]) { grupos[d.clave] = { d: d, n: 0 }; orden.push(d.clave); }
+      grupos[d.clave].n += Math.abs(it.diferencia);
+    });
+    return unirY(orden.map(function (k) {
+      const g = grupos[k], d = g.d;
+      if (!d.tam) return g.n + ' ' + d.nombre;
+      return d.caja ? `${g.n} cpc ${d.tam}ml RT` : `${g.n} botella${g.n === 1 ? '' : 's'} ${d.tam}ml RT`;
+    }));
+  }
+  function calcularDesdeLiq(l) {
+    const liq = l.productos.concat(l.bloqueados).filter(function (it) { return it.diferencia !== 0; });
+    const vacSobr = l.vacios.filter(function (it) { return it.diferencia > 0; });
+    const vacFalt = l.vacios.filter(function (it) { return it.diferencia < 0; });
+    let montoLiquido = 0; const sinPrecio = [];
+    liq.forEach(function (it) {
+      if (it.diferencia >= 0) return;
+      const p = precioLleno(it.nombre);
+      if (p == null) sinPrecio.push(it.nombre); else montoLiquido += -it.diferencia * p;
+    });
+    const montoPagar = vacFalt.reduce(function (a, it) { return a + (-it.diferencia) * precioVacio(it.nombre); }, 0);
+    const soloSobrLiq = liq.length > 0 && liq.every(function (it) { return it.diferencia > 0; });
+    return {
+      producto: liq.map(function (it) { return it.nombre + (it.diferencia > 0 ? ' (sobra)' : ''); }).join(', '),
+      cantidad: unirY(liq.map(function (it) { return String(Math.abs(it.diferencia)); })),
+      montoLiquido: Math.round(montoLiquido * 100) / 100,
+      sinPrecio: sinPrecio,
+      responsableSugerido: liq.length === 0 ? 'S/N' : (soloSobrLiq ? 'SOBRANTE' : ''),
+      sobrantes: textoVacios(vacSobr),
+      faltantes: textoVacios(vacFalt),
+      montoPagar: Math.round(montoPagar * 100) / 100,
+      sinAnomalias: liq.length === 0 && vacSobr.length === 0 && vacFalt.length === 0,
+      soloSobrantes: vacFalt.length === 0 && liq.every(function (it) { return it.diferencia > 0; }) && (liq.length + vacSobr.length) > 0
+    };
+  }
+  function filaDesdeLiq(l) {
+    const id = 'ctl_' + l.id;
+    let r = control.find(function (x) { return x.id === id; });
+    if (!r) {
+      r = { id: id, reparto: '', bk: '', responsable: '', estado: '', montoPagado: 0, comentario: '',
+        estadoAuto: true, responsableAuto: true, comentarioAuto: true };
+      control.push(r);
+    }
+    const c = calcularDesdeLiq(l);
+    r.liqId = l.id; r.periodo = l.periodo;
+    r.fecha = isoDeFecha(l.fechaEntrega) || (l.fechaImportacion || '').slice(0, 10) || hoyIso();
+    r.conductor = l.conductor || ''; r.placa = l.placa || ''; r.viajeCodigo = l.numViaje || '';
+    r.producto = c.producto; r.cantidad = c.cantidad; r.montoLiquido = c.montoLiquido; r.sinPrecio = c.sinPrecio;
+    r.sobrantes = c.sobrantes; r.faltantes = c.faltantes; r.montoPagar = c.montoPagar;
+    const f = flota[r.placa] || {};
+    if (!r.bk) r.bk = f.bk || '';
+    if (!r.reparto) r.reparto = f.reparto || '';
+    if (r.responsableAuto) r.responsable = c.responsableSugerido;
+    if (r.estadoAuto) r.estado = c.sinAnomalias ? 'sin' : (c.soloSobrantes ? 'sobrante' : 'pendiente');
+    if (r.comentarioAuto) r.comentario = c.sinAnomalias ? 'Sin anomalias' : '';
+    return r;
+  }
+  function numerarViajes(filas) {
+    const grupos = {};
+    control.forEach(function (r) {
+      if (!r.liqId) return;
+      const k = r.fecha + '|' + r.placa;
+      (grupos[k] = grupos[k] || []).push(r);
+    });
+    const tocados = {};
+    filas.forEach(function (r) { tocados[r.fecha + '|' + r.placa] = true; });
+    const cambiados = [];
+    Object.keys(tocados).forEach(function (k) {
+      (grupos[k] || []).sort(function (a, b) { return String(a.viajeCodigo).localeCompare(String(b.viajeCodigo), undefined, { numeric: true }); })
+        .forEach(function (r, i) {
+          if (r.viajeManual) return;
+          if (String(r.viaje) !== String(i + 1)) { r.viaje = i + 1; cambiados.push(r); }
+        });
+    });
+    return cambiados;
+  }
+  // Llamado al importar PDF: crea/actualiza la fila de control de cada liquidación
+  function controlDesdeLiquidaciones(liqs) {
+    if (!liqs.length) return 0;
+    const filas = liqs.map(filaDesdeLiq);
+    const extra = numerarViajes(filas).filter(function (r) { return filas.indexOf(r) === -1; });
+    nubeGuardar(filas.concat(extra));
+    return filas.length;
+  }
+
+  /* ---------- cálculos ---------- */
+  function cobro(r) {
+    const total = num(r.montoPagar);
+    const pagado = r.estado === 'pagado' ? total : (r.estado === 'parcial' ? Math.min(total, num(r.montoPagado)) : 0);
+    const pend = (r.estado === 'pendiente' || r.estado === 'no_pagado' || r.estado === 'parcial') ? Math.max(0, total - pagado) : 0;
+    return { total: total, pagado: pagado, pend: pend };
+  }
+  function tieneAnomalia(r) { return r.estado !== 'sin'; }
+  function ctlDelPeriodo() {
+    if (periodoSel === 'todos') return control.slice();
+    return control.filter(function (r) { return r.periodo === periodoSel; });
+  }
+  function ctlVisibles() {
+    let lista = ctlDelPeriodo();
+    if (fechaCtl && fechaCtl !== 'mes') lista = lista.filter(function (r) { return r.fecha === fechaCtl; });
+    const t = $('buscadorCtl').value.toLowerCase().trim();
+    if (t) lista = lista.filter(function (r) {
+      return [r.conductor, r.placa, r.reparto, r.bk, r.producto, r.faltantes, r.comentario, r.responsable].join(' ').toLowerCase().indexOf(t) !== -1;
+    });
+    if (filtroCtl === 'anom') lista = lista.filter(tieneAnomalia);
+    if (filtroCtl === 'pend') lista = lista.filter(function (r) { return cobro(r).pend > 0; });
+    return lista.sort(function (a, b) {
+      return (b.fecha || '').localeCompare(a.fecha || '') || String(a.bk).localeCompare(String(b.bk), undefined, { numeric: true }) ||
+        String(a.placa).localeCompare(String(b.placa)) || String(a.viaje).localeCompare(String(b.viaje), undefined, { numeric: true });
+    });
+  }
+  function totalesCtl(lista) {
+    const t = { viajes: lista.length, anom: 0, liquido: 0, total: 0, pagado: 0, pend: 0 };
+    lista.forEach(function (r) {
+      const c = cobro(r);
+      if (tieneAnomalia(r)) t.anom++;
+      t.liquido += num(r.montoLiquido); t.total += c.total; t.pagado += c.pagado; t.pend += c.pend;
+    });
+    ['liquido', 'total', 'pagado', 'pend'].forEach(function (k) { t[k] = Math.round(t[k] * 100) / 100; });
+    return t;
+  }
+
+  /* ---------- render ---------- */
+  function renderDiasCtl() {
+    const lista = ctlDelPeriodo();
+    const conteo = {};
+    lista.forEach(function (r) { if (r.fecha) conteo[r.fecha] = (conteo[r.fecha] || 0) + 1; });
+    const dias = Object.keys(conteo).sort().reverse();
+    if (!fechaCtl || (fechaCtl !== 'mes' && !conteo[fechaCtl] && fechaCtl !== hoyIso())) fechaCtl = dias[0] || 'mes';
+    $('diasCtl').innerHTML = `<button type="button" class="chip-dia${fechaCtl === 'mes' ? ' activo' : ''}" data-dia="mes">Todo el mes (${lista.length})</button>` +
+      dias.map(function (d) {
+        return `<button type="button" class="chip-dia${fechaCtl === d ? ' activo' : ''}" data-dia="${d}">${diaSemana(d)} ${d.slice(8, 10)}/${d.slice(5, 7)} <span>(${conteo[d]})</span></button>`;
+      }).join('');
+    $('fechaCtl').value = fechaCtl !== 'mes' ? fechaCtl : '';
+  }
+
+  function celdaTexto(v, vacio) {
+    const s = v == null ? '' : String(v);
+    if (!s.trim()) return `<td class="txt-suave">${vacio || '—'}</td>`;
+    return `<td class="celda-larga" title="${escaparHtml(s)}">${escaparHtml(s)}</td>`;
+  }
+  function badgeEstado(r) {
+    const e = ESTADOS[r.estado] || ESTADOS.pendiente;
+    const extra = r.estado === 'parcial' ? ' ' + soles(r.montoPagado) : '';
+    return `<span class="badge ${e.c}">${e.t}${extra}</span>`;
+  }
+
+  function renderTablaCtl() {
+    const lista = ctlVisibles();
+    const total = (fechaCtl && fechaCtl !== 'mes') ? ctlDelPeriodo().filter(function (r) { return r.fecha === fechaCtl; }).length : ctlDelPeriodo().length;
+    $('cuerpoCtl').innerHTML = lista.length === 0
+      ? `<tr><td colspan="16" class="vacio">${total === 0 ? 'Sin registros para este día. Importa los PDF en la pestaña Liquidaciones o agrega un registro.' : 'Ningún registro coincide con el filtro.'}</td></tr>`
+      : lista.map(function (r) {
+        const c = cobro(r);
+        const aviso = r.sinPrecio && r.sinPrecio.length ? ` <span class="aviso-precio" title="Sin precio en catálogo: ${escaparHtml(r.sinPrecio.join(', '))}">⚠️</span>` : '';
+        return `<tr class="fila-clic ${ESTADOS[r.estado] ? 'fila-' + ESTADOS[r.estado].c : ''}" data-editar="${r.id}">
+          <td>${fechaCorta(r.fecha)}</td>
+          <td>${escaparHtml(r.conductor)}</td>
+          <td>${escaparHtml(r.placa)}</td>
+          ${celdaTexto(r.reparto, '<span class="falta-dato">falta</span>')}
+          <td>${escaparHtml(r.bk) || '<span class="falta-dato">—</span>'}</td>
+          <td>${escaparHtml(r.viaje)}</td>
+          ${celdaTexto(r.producto, 'S/N')}
+          ${celdaTexto(r.cantidad, 'S/N')}
+          <td>${num(r.montoLiquido) ? soles(r.montoLiquido) : '<span class="txt-suave">S/N</span>'}${aviso}</td>
+          ${celdaTexto(r.responsable, 'S/N')}
+          ${celdaTexto(r.sobrantes)}
+          ${celdaTexto(r.faltantes)}
+          <td class="${c.total ? 'texto-rojo' : ''}">${c.total ? soles(c.total) : '—'}</td>
+          <td>${badgeEstado(r)}</td>
+          ${celdaTexto(r.comentario, '')}
+          <td class="celda-acciones solo-editor"><button type="button" class="btn-eliminar btn-icono" data-eliminar-ctl="${r.id}" title="Eliminar">🗑</button></td>
+        </tr>`;
+      }).join('');
+    const largo = lista.length > 8;
+    $('btnExpandirCtl').style.display = largo ? '' : 'none';
+    if (!largo) $('wrapCtl').classList.remove('expandida');
+    $('btnExpandirCtl').textContent = $('wrapCtl').classList.contains('expandida') ? '⤡ Contraer' : '⤢ Ver todas';
+    $('contadorCtl').textContent = `${plural(lista.length, 'registro')}` + (lista.length !== total ? ` de ${total}` : '') +
+      ` · ${fechaCtl && fechaCtl !== 'mes' ? diaSemana(fechaCtl) + ' ' + fechaCorta(fechaCtl) : etiquetaPeriodo(periodoSel)}`;
+  }
+
+  function renderTilesCtl() {
+    const base = (fechaCtl && fechaCtl !== 'mes') ? ctlDelPeriodo().filter(function (r) { return r.fecha === fechaCtl; }) : ctlDelPeriodo();
+    const t = totalesCtl(base);
+    $('tilesCtl').innerHTML = `
+      <div class="stat-tile stat-hero"><div class="stat-label">Viajes</div><div class="stat-valor">${t.viajes}</div></div>
+      <div class="stat-tile stat-ambar"><div class="stat-label">Con anomalías</div><div class="stat-valor">${t.anom}</div></div>
+      <div class="stat-tile"><div class="stat-label">Monto líquido</div><div class="stat-valor stat-valor-soles">${soles(t.liquido)}</div></div>
+      <div class="stat-tile"><div class="stat-label">A pagar envases</div><div class="stat-valor stat-valor-soles">${soles(t.total)}</div></div>
+      <div class="stat-tile stat-verde"><div class="stat-label">Cobrado</div><div class="stat-valor stat-valor-soles">${soles(t.pagado)}</div></div>
+      <div class="stat-tile stat-rojo"><div class="stat-label">Pendiente</div><div class="stat-valor stat-valor-soles">${soles(t.pend)}</div></div>`;
+    return { base: base, t: t };
+  }
+
+  function renderResumenCtl(info) {
+    const base = info.base, t = info.t;
+    const titulo = fechaCtl && fechaCtl !== 'mes' ? `${diaSemana(fechaCtl)} ${fechaCorta(fechaCtl)}` : etiquetaPeriodo(periodoSel);
+    if (!base.length) { $('resumenCtl').innerHTML = '<p class="ayuda-guardar">Cuando haya registros aquí verás el resumen del día.</p>'; $('cuerpoRepartoCtl').innerHTML = ''; return; }
+    const pendientes = base.filter(function (r) { return cobro(r).pend > 0; });
+    const sinRep = base.filter(function (r) { return !String(r.reparto || '').trim(); }).length;
+    $('resumenCtl').innerHTML = `
+      <div class="cabecera-panel"><h3>📝 Resumen — ${titulo}</h3>
+        <button type="button" class="btn-secundario btn-chico" id="btnCopiarCtl">📋 Copiar resumen</button></div>
+      <ul class="lista-resumen">
+        <li><strong>${plural(t.viajes, 'viaje')}</strong> liquidados: <strong>${t.viajes - t.anom}</strong> sin anomalías y <strong>${t.anom}</strong> con anomalías.</li>
+        <li>Envases a pagar: <strong>${soles(t.total)}</strong> · cobrado <span class="texto-verde">${soles(t.pagado)}</span> · pendiente <span class="texto-rojo">${soles(t.pend)}</span>.</li>
+        <li>Faltantes de líquido valorizados: <strong>${soles(t.liquido)}</strong>.</li>
+        ${pendientes.length ? `<li>Pendientes de cobro: ${pendientes.map(function (r) {
+          return `<strong>${escaparHtml(r.reparto || r.placa)}</strong> (BK ${escaparHtml(r.bk || '-')}, v.${escaparHtml(r.viaje || '-')}) ${soles(cobro(r).pend)}`;
+        }).join('; ')}.</li>` : '<li>No hay cobros pendientes ✔</li>'}
+        ${sinRep ? `<li class="texto-rojo">${plural(sinRep, 'registro')} sin reparto asignado.</li>` : ''}
+      </ul>`;
+    $('btnCopiarCtl').addEventListener('click', function () {
+      const lineas = [`Control de liquidaciones — ${titulo}`,
+        `Viajes: ${t.viajes} | Sin anomalías: ${t.viajes - t.anom} | Con anomalías: ${t.anom}`,
+        `Envases a pagar: ${soles(t.total)} | Cobrado: ${soles(t.pagado)} | Pendiente: ${soles(t.pend)}`,
+        `Líquido faltante: ${soles(t.liquido)}`, ''];
+      base.filter(tieneAnomalia).forEach(function (r) {
+        const partes = [];
+        if (r.producto) partes.push(`líquido: ${r.producto} (${r.cantidad})`);
+        if (r.faltantes) partes.push(`faltan ${r.faltantes}`);
+        if (r.sobrantes) partes.push(`sobran ${r.sobrantes}`);
+        lineas.push(`- ${fechaCorta(r.fecha)} ${r.reparto || ''} BK${r.bk || '-'} ${r.placa} v.${r.viaje || '-'}: ${partes.join('; ')} → ${soles(cobro(r).total)} ${(ESTADOS[r.estado] || {}).t || ''}${r.comentario ? ' · ' + r.comentario : ''}`);
+      });
+      copiar(lineas.join('\n'), this);
+    });
+
+    // por reparto (del periodo completo)
+    const mapa = {};
+    ctlDelPeriodo().forEach(function (r) {
+      const k = String(r.reparto || '').trim() || '(sin reparto)';
+      const m = mapa[k] || (mapa[k] = { k: k, viajes: 0, anom: 0, total: 0, pagado: 0, pend: 0 });
+      const c = cobro(r);
+      m.viajes++; if (tieneAnomalia(r)) m.anom++;
+      m.total += c.total; m.pagado += c.pagado; m.pend += c.pend;
+    });
+    $('cuerpoRepartoCtl').innerHTML = Object.keys(mapa).map(function (k) { return mapa[k]; })
+      .sort(function (a, b) { return b.pend - a.pend || b.total - a.total; })
+      .map(function (m) {
+        return `<tr><td>${escaparHtml(m.k)}</td><td>${m.viajes}</td><td>${m.anom}</td><td>${soles(m.total)}</td>
+          <td class="texto-verde">${soles(m.pagado)}</td><td class="${m.pend ? 'texto-rojo' : ''}">${soles(m.pend)}</td></tr>`;
+      }).join('');
+  }
+
+  function renderCatalogo() {
+    const t = $('buscadorCat').value.toLowerCase().trim();
+    $('resumenCatalogo').textContent = `${catalogo.llenos.length} productos llenos · ${catalogo.vacios.length} envases vacíos`;
+    const fila = function (tipo, p, i) {
+      return `<tr><td>${escaparHtml(p.cod || '')}</td><td>${escaparHtml(p.nombre)}</td>
+        <td><input type="number" step="0.01" min="0" class="input-precio" data-cat="${tipo}" data-i="${i}" value="${(+p.precio).toFixed(2)}" ${puedeEditar() ? '' : 'disabled'}></td></tr>`;
+    };
+    const filtrar = function (lista, tipo) {
+      return lista.map(function (p, i) { return { p: p, i: i }; })
+        .filter(function (x) { return !t || (x.p.nombre + ' ' + (x.p.cod || '')).toLowerCase().indexOf(t) !== -1; })
+        .map(function (x) { return fila(tipo, x.p, x.i); }).join('') || '<tr><td colspan="3" class="vacio">Sin resultados</td></tr>';
+    };
+    $('cuerpoCatLlenos').innerHTML = filtrar(catalogo.llenos, 'llenos');
+    $('cuerpoCatVacios').innerHTML = filtrar(catalogo.vacios, 'vacios');
+  }
+
+  function renderControl() {
+    $('listaPlacas').innerHTML = Object.keys(flota).sort().map(function (p) { return `<option value="${escaparHtml(p)}">${escaparHtml((flota[p].bk ? 'BK ' + flota[p].bk + ' · ' : '') + (flota[p].reparto || ''))}</option>`; }).join('');
+    renderDiasCtl();
+    renderTablaCtl();
+    renderResumenCtl(renderTilesCtl());
+    const sinFila = liqsDelPeriodo().filter(function (l) { return !control.some(function (r) { return r.liqId === l.id; }); }).length;
+    $('btnGenerarCtl').textContent = sinFila ? `↻ Generar desde PDF (${sinFila} sin registro)` : '↻ Regenerar desde PDF';
+  }
+
+  /* ---------- eventos de la vista ---------- */
+  function mostrarPestana(tab) {
+    document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('activo', b.getAttribute('data-tab') === tab); });
+    $('vistaLiq').style.display = tab === 'liq' ? '' : 'none';
+    $('vistaCtl').style.display = tab === 'ctl' ? '' : 'none';
+    try { localStorage.setItem(CLAVE_TAB, tab); } catch (e) { /* */ }
+  }
+  $('tabs').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-tab]'); if (b) mostrarPestana(b.getAttribute('data-tab'));
+  });
+  $('selPeriodoCtl').addEventListener('change', function () {
+    periodoSel = this.value; periodoManual = true; fechaCtl = null; cerrarDetalle(); renderTodo();
+  });
+  $('diasCtl').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-dia]'); if (!b) return;
+    fechaCtl = b.getAttribute('data-dia'); renderControl();
+  });
+  $('fechaCtl').addEventListener('change', function () {
+    if (!this.value) { fechaCtl = 'mes'; renderControl(); return; }
+    fechaCtl = this.value;
+    const p = this.value.slice(0, 7);
+    if (periodoSel !== 'todos' && periodoSel !== p) { periodoSel = p; periodoManual = true; renderTodo(); } else renderControl();
+  });
+  $('btnHoyCtl').addEventListener('click', function () { $('fechaCtl').value = hoyIso(); $('fechaCtl').dispatchEvent(new Event('change')); });
+  $('buscadorCtl').addEventListener('input', renderTablaCtl);
+  $('filtroCtl').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-filtro]'); if (!b) return;
+    filtroCtl = b.getAttribute('data-filtro');
+    this.querySelectorAll('[data-filtro]').forEach(function (x) { x.classList.toggle('activo', x === b); });
+    renderTablaCtl();
+  });
+  $('btnExpandirCtl').addEventListener('click', function () { $('wrapCtl').classList.toggle('expandida'); renderTablaCtl(); });
+  $('cuerpoCtl').addEventListener('click', function (e) {
+    const del = e.target.closest('[data-eliminar-ctl]');
+    if (del) {
+      const r = control.find(function (x) { return x.id === del.getAttribute('data-eliminar-ctl'); });
+      if (r && confirm(`¿Eliminar el registro de ${r.placa || '?'} del ${fechaCorta(r.fecha)} (viaje ${r.viaje || '-'})?`)) {
+        control = control.filter(function (x) { return x !== r; });
+        guardarControlLocal(); nubeEliminar([r.id]);
+        registrarActividad('eliminó control', `${fechaCorta(r.fecha)} ${r.placa} v.${r.viaje || '-'}`);
+        renderControl();
+      }
+      return;
+    }
+    const fila = e.target.closest('[data-editar]');
+    if (fila) abrirEdicionCtl(fila.getAttribute('data-editar'));
+  });
+  $('btnGenerarCtl').addEventListener('click', function () {
+    const liqs = liqsDelPeriodo();
+    if (!liqs.length) { alert('No hay liquidaciones importadas en este periodo.'); return; }
+    const n = controlDesdeLiquidaciones(liqs);
+    registrarActividad('generó control', `${plural(n, 'registro')} desde PDF (${etiquetaPeriodo(periodoSel)})`);
+    renderControl();
+    aviso(`${plural(n, 'registro')} generados/actualizados. Se conservan reparto, BK, estado y comentarios que ya tenías.`, 'info');
+  });
+
+  /* ---------- edición ---------- */
+  const CAMPOS_CTL = ['fecha', 'conductor', 'placa', 'reparto', 'bk', 'viaje', 'producto', 'cantidad', 'montoLiquido',
+    'responsable', 'sobrantes', 'faltantes', 'montoPagar', 'estado', 'montoPagado', 'comentario'];
+  function abrirEdicionCtl(id) {
+    const r = id ? control.find(function (x) { return x.id === id; }) : null;
+    idCtlEditando = r ? r.id : null;
+    const base = r || {
+      fecha: fechaCtl && fechaCtl !== 'mes' ? fechaCtl : hoyIso(), estado: 'sin', comentario: 'Sin anomalias',
+      producto: '', cantidad: '', montoLiquido: 0, responsable: 'S/N', sobrantes: '', faltantes: '', montoPagar: 0, montoPagado: 0, viaje: 1
+    };
+    CAMPOS_CTL.forEach(function (k) {
+      const el = $('ctl_' + k); if (!el) return;
+      el.value = base[k] == null ? '' : base[k];
+    });
+    $('tituloDlgCtl').textContent = r ? `Registro ${fechaCorta(r.fecha)} · ${r.placa || ''} · viaje ${r.viaje || '-'}` : 'Nuevo registro';
+    $('origenCtl').textContent = r && r.liqId ? `Generado desde el PDF (viaje ${r.viajeCodigo || '-'}). Al re-importar el PDF se actualizan las cantidades y montos; se conservan reparto, BK, estado y comentario.` : '';
+    $('btnEliminarCtlDlg').style.display = r ? '' : 'none';
+    document.querySelectorAll('#formCtl input, #formCtl textarea, #formCtl select').forEach(function (el) { el.disabled = !puedeEditar(); });
+    $('btnGuardarCtl').style.display = puedeEditar() ? '' : 'none';
+    pintarCampoPagado();
+    $('dlgCtl').showModal();
+  }
+  function pintarCampoPagado() { $('campoPagado').style.display = $('ctl_estado').value === 'parcial' ? '' : 'none'; }
+  $('ctl_estado').addEventListener('change', pintarCampoPagado);
+  $('ctl_placa').addEventListener('change', function () {
+    const f = flota[this.value.trim().toUpperCase()];
+    if (!f) return;
+    if (!$('ctl_bk').value) $('ctl_bk').value = f.bk || '';
+    if (!$('ctl_reparto').value) $('ctl_reparto').value = f.reparto || '';
+    if (!$('ctl_conductor').value) $('ctl_conductor').value = f.conductor || '';
+  });
+  $('btnAgregarCtl').addEventListener('click', function () { abrirEdicionCtl(null); });
+  $('formCtl').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const accion = e.submitter && e.submitter.value;
+    if (accion === 'cancelar') { $('dlgCtl').close(); return; }
+    if (accion === 'eliminar') {
+      const r = control.find(function (x) { return x.id === idCtlEditando; });
+      if (r && confirm('¿Eliminar este registro?')) {
+        control = control.filter(function (x) { return x !== r; });
+        guardarControlLocal(); nubeEliminar([r.id]);
+        registrarActividad('eliminó control', `${fechaCorta(r.fecha)} ${r.placa} v.${r.viaje || '-'}`);
+        $('dlgCtl').close(); renderControl();
+      }
+      return;
+    }
+    if (!puedeEditar()) return;
+    const v = {};
+    CAMPOS_CTL.forEach(function (k) { const el = $('ctl_' + k); if (el) v[k] = el.value.trim(); });
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.fecha)) { alert('Indica la fecha.'); return; }
+    v.placa = v.placa.toUpperCase();
+    ['montoLiquido', 'montoPagar', 'montoPagado'].forEach(function (k) { v[k] = Math.round(num(v[k]) * 100) / 100; });
+    let r = control.find(function (x) { return x.id === idCtlEditando; });
+    const nuevo = !r;
+    if (!r) { r = { id: 'ctl_m_' + Date.now() + '_' + Math.floor(Math.random() * 100000) }; control.push(r); }
+    if (!nuevo) {
+      if (v.estado !== r.estado) r.estadoAuto = false;
+      if (v.responsable !== (r.responsable || '')) r.responsableAuto = false;
+      if (v.comentario !== (r.comentario || '')) r.comentarioAuto = false;
+      if (String(v.viaje) !== String(r.viaje || '')) r.viajeManual = true;
+    }
+    Object.assign(r, v);
+    r.periodo = v.fecha.slice(0, 7);
+    if (r.placa) {
+      flota[r.placa] = Object.assign({}, flota[r.placa], { bk: r.bk || (flota[r.placa] || {}).bk || '', reparto: r.reparto || (flota[r.placa] || {}).reparto || '', conductor: r.conductor || (flota[r.placa] || {}).conductor || '' });
+      guardarFlotaLocal(); nubeGuardarConfig('flota', flota);
+    }
+    nubeGuardar([r]);
+    registrarActividad(nuevo ? 'agregó control' : 'editó control',
+      `${fechaCorta(r.fecha)} ${r.reparto || ''} ${r.placa} v.${r.viaje || '-'} → ${(ESTADOS[r.estado] || {}).t || ''}${r.montoPagar ? ' ' + soles(r.montoPagar) : ''}`);
+    $('dlgCtl').close();
+    if (periodoSel !== 'todos' && periodoSel !== r.periodo) { periodoSel = r.periodo; periodoManual = true; }
+    fechaCtl = r.fecha;
+    renderTodo();
+  });
+
+  /* ---------- catálogo: edición ---------- */
+  $('buscadorCat').addEventListener('input', renderCatalogo);
+  document.querySelector('.grid-catalogo').addEventListener('change', function (e) {
+    const inp = e.target.closest('.input-precio'); if (!inp || !puedeEditar()) return;
+    const p = catalogo[inp.getAttribute('data-cat')][+inp.getAttribute('data-i')];
+    p.precio = Math.max(0, num(inp.value));
+    inp.value = p.precio.toFixed(2);
+    guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo);
+    registrarActividad('cambió precio', `${p.nombre}: S/ ${p.precio.toFixed(2)}`);
+    renderTodo();
+  });
+
+  /* ---------- importar Excel (control histórico + catálogo) ---------- */
+  function valorCelda(c) {
+    let v = c ? c.value : null;
+    if (v && typeof v === 'object' && !(v instanceof Date)) {
+      if ('result' in v) v = v.result;
+      else if (v.richText) v = v.richText.map(function (t) { return t.text; }).join('');
+      else if ('text' in v) v = v.text;
+    }
+    return v;
+  }
+  function textoCelda(c) {
+    const v = valorCelda(c);
+    if (v == null) return '';
+    if (v instanceof Date) return v.toISOString().slice(0, 10);
+    return String(v).trim();
+  }
+  function buscarCelda(ws, prueba) {
+    for (let r = 1; r <= Math.min(ws.rowCount, 40); r++) {
+      for (let c = 1; c <= 25; c++) {
+        const t = textoCelda(ws.getRow(r).getCell(c));
+        if (t && prueba(normNombre(t))) return { r: r, c: c };
+      }
+    }
+    return null;
+  }
+  function estadoDesdeTexto(o, comentario, responsable, montoPagar) {
+    const t = normNombre(o);
+    let m;
+    if (/NO\s*PAGADO/.test(t)) return { estado: 'no_pagado' };
+    if ((m = t.match(/^PAGO\s*\(\s*([\d.,]+)\s*\)/))) return { estado: 'parcial', montoPagado: num(m[1]) };
+    if (/^PAGAD/.test(t)) return { estado: 'pagado' };
+    if (t) return { estado: 'pendiente', nota: o };
+    if (/SIN ANOMAL/.test(normNombre(comentario))) return { estado: 'sin' };
+    if (/SOBRANTE/.test(normNombre(responsable)) && !montoPagar) return { estado: 'sobrante' };
+    return { estado: montoPagar ? 'pendiente' : 'sin' };
+  }
+  function limpiarSN(s) { return /^S\/?N$/i.test(String(s || '').trim()) ? '' : String(s || '').trim(); }
+
+  async function importarExcelControl(archivo) {
+    if (typeof ExcelJS === 'undefined') { alert('No se pudo cargar el lector de Excel.'); return; }
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.load(await archivo.arrayBuffer());
+    let nuevos = 0, actualizados = 0, catLlenos = 0, catVacios = 0;
+    const cambiados = [];
+    const flotaFechas = {};
+    const previos = control.slice();   // solo se fusiona con lo que ya existía antes de este Excel
+
+    wb.eachSheet(function (ws) {
+      // Catálogo de productos llenos: cabecera "COD | Producto | Precio"
+      const pc = buscarCelda(ws, function (t) { return t === 'COD'; });
+      if (pc) {
+        const llenos = [];
+        for (let r = pc.r + 1; r <= ws.rowCount; r++) {
+          const row = ws.getRow(r);
+          const cod = textoCelda(row.getCell(pc.c)), nom = textoCelda(row.getCell(pc.c + 1)), pr = valorCelda(row.getCell(pc.c + 2));
+          if (!nom) { if (!cod) break; continue; }
+          llenos.push({ cod: cod, nombre: nom, precio: num(pr) });
+        }
+        if (llenos.length) { catalogo.llenos = llenos; catLlenos = llenos.length; }
+      }
+      const pv = buscarCelda(ws, function (t) { return /^PRODUCTOS VACIOS/.test(t); });
+      if (pv) {
+        const vacios = [];
+        for (let r = pv.r + 2; r <= ws.rowCount; r++) {
+          const row = ws.getRow(r);
+          const nom = textoCelda(row.getCell(pv.c)), pr = valorCelda(row.getCell(pv.c + 1));
+          if (!nom) break;
+          vacios.push({ nombre: nom, precio: num(pr) });
+        }
+        if (vacios.length) { catalogo.vacios = vacios; catVacios = vacios.length; }
+      }
+
+      // Hoja de control mensual: cabecera "FECHA | CONDUCTOR | PLACA | ..."
+      const pf = buscarCelda(ws, function (t) { return t === 'FECHA'; });
+      if (!pf) return;
+      const cab = {};
+      for (let c = 1; c <= 30; c++) {
+        const t = normNombre(textoCelda(ws.getRow(pf.r).getCell(c)));
+        if (!t) continue;
+        const k = t === 'FECHA' ? 'fecha' : t === 'CONDUCTOR' ? 'conductor' : t === 'PLACA' ? 'placa' : t === 'REPARTO' ? 'reparto' :
+          t === 'BK' ? 'bk' : t === 'VIAJE' ? 'viaje' : t === 'PRODUCTO' ? 'producto' : /^CANTIDAD/.test(t) ? 'cantidad' :
+          t === 'MONTO' ? 'montoLiquido' : t === 'RESPONSABLE' ? 'responsable' : /^SOBRANTES/.test(t) ? 'sobrantes' :
+          /^FALTANTES/.test(t) ? 'faltantes' : /^MONTO A PAGAR/.test(t) ? 'montoPagar' : /PAGADO/.test(t) ? 'pago' :
+          /^COMENTARIO/.test(t) ? 'comentario' : null;
+        if (k && !cab[k]) cab[k] = c;
+      }
+      if (!cab.fecha || !cab.placa) return;
+      let vacias = 0;
+      for (let r = pf.r + 1; r <= ws.rowCount && vacias < 15; r++) {
+        const row = ws.getRow(r);
+        const g = function (k) { return cab[k] ? row.getCell(cab[k]) : null; };
+        const fv = valorCelda(g('fecha'));
+        const placa = textoCelda(g('placa')).toUpperCase();
+        if (!fv || !placa) { vacias++; continue; }
+        vacias = 0;
+        const fecha = fv instanceof Date ? fv.toISOString().slice(0, 10) : isoDeFecha(String(fv));
+        if (!fecha) continue;
+        const viaje = textoCelda(g('viaje'));
+        const montoPagar = num(valorCelda(g('montoPagar')));
+        const comentario = textoCelda(g('comentario'));
+        const responsable = limpiarSN(textoCelda(g('responsable')));
+        const est = estadoDesdeTexto(textoCelda(g('pago')), comentario, responsable, montoPagar);
+        const datos = {
+          fecha: fecha, periodo: fecha.slice(0, 7), conductor: textoCelda(g('conductor')), placa: placa,
+          reparto: textoCelda(g('reparto')), bk: textoCelda(g('bk')), viaje: viaje,
+          producto: limpiarSN(textoCelda(g('producto'))), cantidad: limpiarSN(textoCelda(g('cantidad'))),
+          montoLiquido: num(limpiarSN(valorCelda(g('montoLiquido')))), responsable: responsable,
+          sobrantes: textoCelda(g('sobrantes')), faltantes: textoCelda(g('faltantes')), montoPagar: montoPagar,
+          estado: est.estado, montoPagado: est.montoPagado || 0,
+          comentario: est.nota ? (est.nota + (comentario ? ' · ' + comentario : '')) : comentario,
+          estadoAuto: false, responsableAuto: false, comentarioAuto: false, viajeManual: true
+        };
+        let ex = previos.find(function (x) { return x.fecha === fecha && String(x.placa).toUpperCase() === placa && String(x.viaje) === viaje; });
+        if (ex) {
+          // Se respetan cantidades del PDF si existen; del Excel se toma lo que llenaste a mano
+          ['reparto', 'bk', 'responsable', 'estado', 'montoPagado', 'comentario', 'conductor'].forEach(function (k) { if (datos[k] !== '' && datos[k] != null) ex[k] = datos[k]; });
+          ['producto', 'cantidad', 'sobrantes', 'faltantes'].forEach(function (k) { if (!ex[k] && datos[k]) ex[k] = datos[k]; });
+          if (!ex.montoPagar && datos.montoPagar) ex.montoPagar = datos.montoPagar;
+          if (!ex.montoLiquido && datos.montoLiquido) ex.montoLiquido = datos.montoLiquido;
+          ex.estadoAuto = ex.responsableAuto = ex.comentarioAuto = false;
+          actualizados++;
+        } else {
+          ex = Object.assign({ id: ('ctl_x_' + fecha + '_' + placa + '_' + viaje).replace(/[^\w-]/g, '') }, datos);
+          const dup = control.find(function (x) { return x.id === ex.id; });
+          if (dup) ex.id += '_' + Math.floor(Math.random() * 100000);
+          control.push(ex); nuevos++;
+        }
+        cambiados.push(ex);
+        if (!flotaFechas[placa] || flotaFechas[placa] <= fecha) {
+          flotaFechas[placa] = fecha;
+          flota[placa] = { bk: datos.bk || (flota[placa] || {}).bk || '', reparto: datos.reparto || (flota[placa] || {}).reparto || '', conductor: datos.conductor || (flota[placa] || {}).conductor || '' };
+        }
+      }
+    });
+
+    if (catLlenos || catVacios) { guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo); }
+    if (Object.keys(flotaFechas).length) { guardarFlotaLocal(); nubeGuardarConfig('flota', flota); }
+    if (cambiados.length) nubeGuardar(cambiados);
+    const partes = [];
+    if (nuevos || actualizados) partes.push(`${nuevos} registros nuevos, ${actualizados} actualizados`);
+    if (catLlenos || catVacios) partes.push(`catálogo: ${catLlenos} llenos y ${catVacios} vacíos`);
+    if (!partes.length) { alert('No se encontraron hojas de control (cabecera FECHA / PLACA) ni catálogo (COD / Productos Vacios) en el archivo.'); return; }
+    registrarActividad('importó Excel de control', partes.join(' · '));
+    const periodos = cambiados.map(function (r) { return r.periodo; }).sort();
+    if (periodos.length) { periodoSel = periodos[periodos.length - 1]; periodoManual = true; fechaCtl = null; }
+    renderTodo();
+    aviso('Excel importado: ' + partes.join(' · '), 'info');
+  }
+  $('btnImportarExcelCtl').addEventListener('click', function () { $('inputExcelCtl').click(); });
+  $('inputExcelCtl').addEventListener('change', function (e) {
+    const f = e.target.files[0]; if (!f) return;
+    importarExcelControl(f).catch(function (err) { console.error(err); alert('No se pudo leer el Excel: ' + err.message); })
+      .then(function () { e.target.value = ''; });
+  });
+
+  /* ---------- exportar Excel en el mismo formato ---------- */
+  function nombreHoja(p) {
+    const partes = p.split('-');
+    return MESES[parseInt(partes[1], 10) - 1] + '_' + partes[0].slice(2);
+  }
+  function textoPago(r) {
+    if (r.estado === 'pagado') return 'Pagado';
+    if (r.estado === 'no_pagado') return 'No pagado';
+    if (r.estado === 'parcial') return 'Pago (' + String(num(r.montoPagado)).replace('.', ',') + ')';
+    if (r.estado === 'pendiente') return 'Pendiente';
+    return '';
+  }
+  const RELLENOS = { pagado: 'FF00B050', parcial: 'FFC6EFCE', no_pagado: 'FFFF0000', pendiente: 'FFFFC7CE', sobrante: 'FFFFC000' };
+  function relleno(argb) { return { type: 'pattern', pattern: 'solid', fgColor: { argb: argb } }; }
+
+  $('btnExportarCtl').addEventListener('click', async function () {
+    const lista = ctlDelPeriodo();
+    if (!lista.length) { alert('No hay registros de control en este periodo.'); return; }
+    const wb = new ExcelJS.Workbook();
+    const borde = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    const porPeriodo = {};
+    lista.forEach(function (r) { (porPeriodo[r.periodo] = porPeriodo[r.periodo] || []).push(r); });
+    Object.keys(porPeriodo).sort().forEach(function (p) {
+      const ws = wb.addWorksheet(nombreHoja(p), { views: [{ state: 'frozen', ySplit: 7 }] });
+      ws.columns = [{ width: 3 }, { width: 12 }, { width: 12 }, { width: 11 }, { width: 13 }, { width: 6 }, { width: 7 },
+        { width: 38 }, { width: 12 }, { width: 10 }, { width: 15 }, { width: 34 }, { width: 40 }, { width: 13 }, { width: 15 }, { width: 40 }];
+      ws.getCell('A1').value = MESES[parseInt(p.slice(5), 10) - 1].toUpperCase();
+      ws.getCell('A1').font = { bold: true, size: 14 };
+      ws.mergeCells('F1:L1'); ws.getCell('F1').value = 'ANOMALIAS EN LIQUIDACIONES';
+      ws.getCell('F1').font = { bold: true, size: 14 }; ws.getCell('F1').alignment = { horizontal: 'center' };
+      [['N1', 'Sobrante', 'FFFFC000'], ['O1', 'Realizado', 'FF00B050'], ['P1', 'No realizado', 'FFFF0000']].forEach(function (x) {
+        ws.getCell(x[0]).value = x[1]; ws.getCell(x[0]).fill = relleno(x[2]); ws.getCell(x[0]).font = { bold: true }; ws.getCell(x[0]).border = borde;
+      });
+      ws.mergeCells('H6:K6'); ws.getCell('H6').value = 'ANOMALIAS LIQUIDACION DE REPARTO LIQUIDO';
+      ws.mergeCells('L6:O6'); ws.getCell('L6').value = 'ANOMALIAS LIQUIDACION DE REPARTO ENVASES';
+      ['H6', 'L6'].forEach(function (c) { ws.getCell(c).font = { bold: true, color: { argb: 'FFFFFFFF' } }; ws.getCell(c).fill = relleno('FF3D4094'); ws.getCell(c).alignment = { horizontal: 'center' }; });
+      const cab = ['FECHA ', 'CONDUCTOR', 'PLACA', 'Reparto', 'BK', 'VIAJE', 'PRODUCTO', 'CANTIDAD Unid.', 'MONTO', 'RESPONSABLE', 'Sobrantes vacios', 'Faltantes vacios', 'Monto a Pagar', 'Pagado/No pagado', 'COMENTARIO'];
+      cab.forEach(function (t, i) {
+        const c = ws.getRow(7).getCell(i + 2);
+        c.value = t; c.font = { bold: true }; c.fill = relleno('FFD9D9F3'); c.border = borde; c.alignment = { vertical: 'middle', wrapText: true };
+      });
+      porPeriodo[p].slice().sort(function (a, b) {
+        return a.fecha.localeCompare(b.fecha) || String(a.bk).localeCompare(String(b.bk), undefined, { numeric: true }) ||
+          String(a.viaje).localeCompare(String(b.viaje), undefined, { numeric: true });
+      }).forEach(function (r, i) {
+        const sinLiq = !r.producto;
+        const fila = ws.getRow(8 + i);
+        const vals = [new Date(r.fecha + 'T00:00:00Z'), isNaN(+r.conductor) || !r.conductor ? r.conductor : +r.conductor, r.placa, r.reparto,
+          isNaN(+r.bk) || !r.bk ? r.bk : +r.bk, isNaN(+r.viaje) || !r.viaje ? r.viaje : +r.viaje,
+          sinLiq ? 'S/N' : r.producto, sinLiq ? 'S/N' : r.cantidad, sinLiq ? 'S/N' : (num(r.montoLiquido) || null), r.responsable || 'S/N',
+          r.sobrantes || null, r.faltantes || null, num(r.montoPagar) || null, textoPago(r) || null, r.comentario || null];
+        vals.forEach(function (v, j) { const c = fila.getCell(j + 2); c.value = v; c.border = borde; });
+        fila.getCell(2).numFmt = 'dd/mm/yyyy';
+        fila.getCell(10).numFmt = '#,##0.00'; fila.getCell(14).numFmt = '#,##0.00';
+        if (RELLENOS[r.estado]) fila.getCell(15).fill = relleno(RELLENOS[r.estado]);
+      });
+    });
+    // Hoja resumen por día
+    const ws = wb.addWorksheet('Resumen');
+    ws.columns = [{ header: 'Fecha', width: 12 }, { header: 'Viajes', width: 9 }, { header: 'Con anomalías', width: 14 }, { header: 'Monto líquido', width: 14 },
+      { header: 'A pagar envases', width: 16 }, { header: 'Cobrado', width: 12 }, { header: 'Pendiente', width: 12 }];
+    ws.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } }; ws.getRow(1).fill = relleno('FF3D4094');
+    const porDia = {};
+    lista.forEach(function (r) { (porDia[r.fecha] = porDia[r.fecha] || []).push(r); });
+    Object.keys(porDia).sort().forEach(function (d) {
+      const t = totalesCtl(porDia[d]);
+      ws.addRow([new Date(d + 'T00:00:00Z'), t.viajes, t.anom, t.liquido, t.total, t.pagado, t.pend]);
+    });
+    const tt = totalesCtl(lista);
+    const tot = ws.addRow(['TOTAL', tt.viajes, tt.anom, tt.liquido, tt.total, tt.pagado, tt.pend]); tot.font = { bold: true };
+    ws.getColumn(1).numFmt = 'dd/mm/yyyy';
+    [4, 5, 6, 7].forEach(function (c) { ws.getColumn(c).numFmt = '"S/" #,##0.00'; });
+    const buf = await wb.xlsx.writeBuffer();
+    descargar(`Liquidaciones_Control_${sufijoArchivo()}.xlsx`, buf, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  });
+
+  function iniciarControl() {
+    cargarControl();
+    let tab = 'liq';
+    try { tab = localStorage.getItem(CLAVE_TAB) || 'liq'; } catch (e) { /* */ }
+    mostrarPestana(tab);
+    renderCatalogo();
+  }
+
 
   /* =====================================================================
      NUBE (Supabase): datos compartidos + tiempo real + actividad
@@ -1476,11 +2481,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       r.actualizado = ahora;
       if (sb) { pendientes.up[r.id] = true; delete pendientes.del[r.id]; }
     });
-    guardarLocal();
+    guardarLocal(); guardarControlLocal();
     if (sb) { guardarPendientes(); sincronizarPendientes(); }
   }
   function nubeEliminar(ids) {
-    guardarLocal();
+    guardarLocal(); guardarControlLocal();
     if (!sb) return;
     ids.forEach(function (id) { pendientes.del[id] = true; delete pendientes.up[id]; });
     guardarPendientes();
@@ -1490,6 +2495,28 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (!sb || !usuario) return;
     sb.from('liquidaciones_config').upsert({ clave: 'precios', valor: precios, actualizado_por: nombreUsuario() })
       .then(function (r) { if (r.error) console.error('Precios no guardados en la nube:', r.error); });
+  }
+  function nubeGuardarConfig(clave, valor) {
+    if (!sb || !usuario) return;
+    sb.from('liquidaciones_config').upsert({ clave: clave, valor: valor, actualizado_por: nombreUsuario() })
+      .then(function (r) { if (r.error) console.error('Configuración "' + clave + '" no guardada en la nube:', r.error); });
+  }
+  function esCtl(id) { return String(id).indexOf('ctl_') === 0; }
+  function filaNubeCtl(r) {
+    return { id: r.id, periodo: r.periodo, fecha: r.fecha || null, placa: r.placa || null, datos: r,
+      subido_por: r.subidoPor || null, updated_at: r.actualizado || new Date().toISOString() };
+  }
+  async function subirEnLotes(tabla, filas) {
+    for (let i = 0; i < filas.length; i += 200) {
+      const r = await sb.from(tabla).upsert(filas.slice(i, i + 200));
+      if (r.error) throw r.error;
+    }
+  }
+  async function borrarEnLotes(tabla, ids) {
+    for (let i = 0; i < ids.length; i += 200) {
+      const r = await sb.from(tabla).delete().in('id', ids.slice(i, i + 200));
+      if (r.error) throw r.error;
+    }
   }
   function registrarActividad(accion, detalle) {
     if (!sb || !usuario) return;
@@ -1507,47 +2534,51 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   async function sincronizarPendientes() {
     if (!sb || !usuario || sincronizando || !numPendientes()) { pintarEstadoNube(); return; }
     sincronizando = true;
+    let huboError = false;
     try {
       const upIds = Object.keys(pendientes.up);
       if (upIds.length) {
-        const filas = liquidaciones.filter(function (l) { return pendientes.up[l.id]; }).map(filaNube);
-        for (let i = 0; i < filas.length; i += 200) {
-          const r = await sb.from('liquidaciones').upsert(filas.slice(i, i + 200));
-          if (r.error) throw r.error;
-        }
+        await subirEnLotes('liquidaciones', liquidaciones.filter(function (l) { return pendientes.up[l.id]; }).map(filaNube));
+        await subirEnLotes('liquidaciones_control', control.filter(function (r) { return pendientes.up[r.id]; }).map(filaNubeCtl));
         upIds.forEach(function (id) { delete pendientes.up[id]; });
       }
       const delIds = Object.keys(pendientes.del);
       if (delIds.length) {
-        for (let i = 0; i < delIds.length; i += 200) {
-          const r = await sb.from('liquidaciones').delete().in('id', delIds.slice(i, i + 200));
-          if (r.error) throw r.error;
-        }
+        await borrarEnLotes('liquidaciones', delIds.filter(function (id) { return !esCtl(id); }));
+        await borrarEnLotes('liquidaciones_control', delIds.filter(esCtl));
         delIds.forEach(function (id) { delete pendientes.del[id]; });
       }
       guardarPendientes();
       if (estadoNube === 'error') estadoNube = 'en-linea';
     } catch (err) {
       console.error('Error al sincronizar con Supabase:', err);
-      estadoNube = 'error';
+      estadoNube = 'error'; huboError = true;
       aviso('No se pudo subir a la nube: ' + (err.message || err) + '. Se reintentará automáticamente.', 'err');
     } finally {
       sincronizando = false;
       pintarEstadoNube();
+      // Si llegaron cambios mientras se subía, se suben enseguida
+      if (!huboError && numPendientes()) setTimeout(sincronizarPendientes, 50);
     }
   }
 
   /* ---- lectura ---- */
-  async function descargarDeNube() {
+  async function leerTabla(tabla) {
     let filas = [], desde = 0;
     for (;;) {
-      const r = await sb.from('liquidaciones').select('datos').order('id').range(desde, desde + 999);
+      const r = await sb.from(tabla).select('datos').order('id').range(desde, desde + 999);
       if (r.error) throw r.error;
       filas = filas.concat(r.data || []);
       if (!r.data || r.data.length < 1000) break;
       desde += 1000;
     }
-    const remotas = filas.map(function (f) { return f.datos; }).filter(Boolean);
+    return filas.map(function (f) { return f.datos; }).filter(Boolean);
+  }
+  async function descargarDeNube() {
+    const remotas = await leerTabla('liquidaciones');
+    let remotasCtl = [];
+    try { remotasCtl = await leerTabla('liquidaciones_control'); }
+    catch (e) { console.error(e); aviso('Falta la tabla "liquidaciones_control" en Supabase: vuelve a ejecutar el SQL actualizado.', 'err'); remotasCtl = null; }
     remotas.forEach(normalizarRegistro);
     const idsRemotos = {};
     remotas.forEach(function (r) { idsRemotos[r.id] = true; });
@@ -1555,6 +2586,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     // La primera vez, lo que solo estaba en este equipo se marca para subir (no se pierde).
     let primera = false;
     try { primera = !localStorage.getItem(CLAVE_SYNC_INICIAL); } catch (e) { /* */ }
+    if (remotasCtl) {
+      const idsCtl = {};
+      remotasCtl.forEach(function (r) { idsCtl[r.id] = true; });
+      let primeraCtl = false;
+      try { primeraCtl = !localStorage.getItem(CLAVE_SYNC_INICIAL + 'Ctl'); } catch (e) { /* */ }
+      if (primeraCtl) {
+        control.forEach(function (r) { if (!idsCtl[r.id]) pendientes.up[r.id] = true; });
+        try { localStorage.setItem(CLAVE_SYNC_INICIAL + 'Ctl', '1'); } catch (e) { /* */ }
+      }
+      const localesCtl = control.filter(function (r) { return pendientes.up[r.id]; });
+      const idsLocCtl = {};
+      localesCtl.forEach(function (r) { idsLocCtl[r.id] = true; });
+      control = remotasCtl.filter(function (r) { return !pendientes.del[r.id] && !idsLocCtl[r.id]; }).concat(localesCtl);
+      guardarControlLocal();
+    }
     if (primera) {
       liquidaciones.forEach(function (l) { if (!idsRemotos[l.id]) pendientes.up[l.id] = true; });
       try { localStorage.setItem(CLAVE_SYNC_INICIAL, '1'); } catch (e) { /* */ }
@@ -1566,10 +2612,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     liquidaciones = remotas.filter(function (r) { return !pendientes.del[r.id] && !idsLocales[r.id]; }).concat(locales);
     guardarLocal();
 
-    const pr = await sb.from('liquidaciones_config').select('valor').eq('clave', 'precios');
-    if (!pr.error && pr.data && pr.data[0] && pr.data[0].valor) {
-      precios = Object.assign(precios, pr.data[0].valor); guardarPrecios(); pintarPrecios();
-    }
+    const pr = await sb.from('liquidaciones_config').select('clave,valor');
+    if (!pr.error && pr.data) pr.data.forEach(aplicarConfig);
     const ac = await sb.from('liquidaciones_actividad').select('*').order('created_at', { ascending: false }).limit(50);
     if (!ac.error) actividad = ac.data || [];
   }
@@ -1582,6 +2626,26 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       renderTodo();
       if (idAbierto) abrirDetalle(idAbierto, true);
     }, 150);
+  }
+  function aplicarConfig(fila) {
+    if (!fila || !fila.valor) return;
+    if (fila.clave === 'precios') { precios = Object.assign(precios, fila.valor); guardarPrecios(); pintarPrecios(); }
+    if (fila.clave === 'catalogo' && fila.valor.llenos) { catalogo = fila.valor; guardarCatalogoLocal(); }
+    if (fila.clave === 'flota') { flota = fila.valor; guardarFlotaLocal(); }
+  }
+  function aplicarCambioRemotoCtl(p) {
+    if (p.eventType === 'DELETE') {
+      const id = p.old && p.old.id;
+      if (!id) return;
+      control = control.filter(function (r) { return r.id !== id; });
+    } else {
+      const d = p.new && p.new.datos;
+      if (!d || pendientes.up[d.id]) return;
+      const i = control.findIndex(function (r) { return r.id === d.id; });
+      if (i !== -1) control[i] = d; else control.push(d);
+    }
+    guardarControlLocal();
+    renderDiferido();
   }
   function aplicarCambioRemoto(p) {
     if (p.eventType === 'DELETE') {
@@ -1603,10 +2667,9 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (canal) sb.removeChannel(canal);
     canal = sb.channel('liquidaciones-en-vivo')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'liquidaciones' }, aplicarCambioRemoto)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'liquidaciones_control' }, aplicarCambioRemotoCtl)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'liquidaciones_config' }, function (p) {
-        if (p.new && p.new.clave === 'precios' && p.new.valor) {
-          precios = Object.assign(precios, p.new.valor); guardarPrecios(); pintarPrecios(); renderDiferido();
-        }
+        if (p.new) { aplicarConfig(p.new); renderDiferido(); }
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'liquidaciones_actividad' }, function (p) {
         if (!p.new) return;
@@ -1744,6 +2807,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
 
   cargar();
+  iniciarControl();
   pintarPrecios();
   renderTodo();
   iniciarNube();
