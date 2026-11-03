@@ -590,6 +590,49 @@
     .atajos { display: none; }
   }
 
+  /* selector de productos */
+  .adder { display: grid; grid-template-columns: minmax(0, 1fr) 70px 78px 36px; gap: 6px; align-items: center; }
+  .adder .btn-agregar { padding: 7px 0; font-size: 16px; line-height: 1; }
+  .combo { padding-right: 28px !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%236a7085' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 9px center; }
+  .combo-lista { position: fixed; z-index: 600; background: #fff; border: 1px solid var(--borde); border-radius: 10px; box-shadow: var(--sombra-alta); overflow-y: auto; padding: 4px; }
+  .combo-lista[hidden] { display: none; }
+  .combo-op { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 7px 10px; border-radius: 7px; cursor: pointer; font-size: 12.5px; }
+  .combo-op:hover, .combo-op.activo { background: var(--azul-claro); }
+  .combo-op.activo .combo-nombre { color: var(--azul); font-weight: 650; }
+  .combo-meta { flex: 0 0 auto; font-size: 11.5px; color: var(--gris-suave); font-variant-numeric: tabular-nums; }
+  .combo-vacio { padding: 10px; font-size: 12px; color: var(--gris-suave); }
+  .lineas.con-lineas { border: 1px solid var(--borde-suave); border-radius: 9px; background: #fafbff; padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+  .linea { display: grid; grid-template-columns: 54px 64px 12px 72px minmax(0, 1fr) 24px; gap: 5px; align-items: center;
+    grid-template-areas: "tipo nombre nombre nombre nombre quitar" ". cant x precio sub ."; background: #fff; border: 1px solid var(--borde-suave); border-radius: 8px; padding: 6px; }
+  .linea .tipo-linea { grid-area: tipo; } .linea .linea-nombre { grid-area: nombre; } .linea .linea-quitar { grid-area: quitar; }
+  .linea .linea-cant { grid-area: cant; } .linea .linea-x { grid-area: x; } .linea .linea-precio { grid-area: precio; } .linea .linea-sub { grid-area: sub; }
+  .linea input { padding: 5px 7px !important; font-size: 12px !important; }
+  .linea .linea-nombre { padding-right: 24px !important; }
+  .tipo-linea { padding: 4px 0; font-size: 10.5px; border-radius: 6px; text-transform: uppercase; letter-spacing: .03em; }
+  .linea-falta .tipo-linea { background: var(--rojo-claro); color: var(--rojo); }
+  .linea-sobra .tipo-linea { background: var(--verde-claro); color: var(--verde); }
+  .linea-x { color: var(--gris-tenue); text-align: center; font-size: 12px; }
+  .linea-sub { font-size: 12px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .linea-quitar { background: transparent; color: var(--gris-tenue); padding: 2px; font-size: 13px; }
+  .linea-quitar:hover { color: var(--rojo); background: var(--rojo-claro); }
+  .linea-total { text-align: right; font-size: 11.5px; color: var(--gris-suave); padding: 2px 4px 0; }
+  .editor-bloques { grid-template-columns: 0.9fr 1.45fr 1.45fr 0.95fr; }
+  body.solo-lectura .solo-editor-form { display: none; }
+
+  /* catálogo */
+  .barra-catalogo { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 10px 0 4px; }
+  .barra-catalogo .buscador-cat { margin: 0; }
+  .ayuda-formato { margin: 4px 0 10px !important; }
+  .nuevo-producto { display: grid; grid-template-columns: 90px 100px minmax(0, 1fr) 110px auto; gap: 6px; margin-bottom: 10px; }
+  .nuevo-producto input, .nuevo-producto select { padding: 7px 9px; min-width: 0; }
+  @media (max-width: 1500px) { .editor-bloques { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) {
+    .nuevo-producto { grid-template-columns: 1fr 1fr; }
+    .nuevo-producto input#npNombre { grid-column: 1 / -1; }
+
+  }
+
 </style>
 </head>
 <body>
@@ -841,7 +884,14 @@
           </section>
           <section class="bloque-form bloque-liq">
             <h4>🍺 Anomalías de líquido</h4>
-            <label>Producto<textarea id="ctl_producto" rows="2" placeholder="Vacío = S/N"></textarea></label>
+            <div class="adder solo-editor-form">
+              <input type="text" class="combo" data-cat="llenos" id="addLiqNombre" placeholder="Escribe o elige un producto…" autocomplete="off">
+              <input type="number" min="0" step="1" id="addLiqCant" placeholder="Cant." title="Cantidad">
+              <select id="addLiqTipo" title="¿Falta o sobra?"><option value="falta">Falta</option><option value="sobra">Sobra</option></select>
+              <button type="button" class="btn-agregar btn-chico" data-add="liq" title="Agregar a la lista">+</button>
+            </div>
+            <div class="lineas" id="lineasLiq"></div>
+            <label>Producto (texto)<textarea id="ctl_producto" rows="2" placeholder="Vacío = S/N"></textarea></label>
             <div class="grid-form g-3">
               <label>Cantidad<input type="text" id="ctl_cantidad"></label>
               <label>Monto (S/)<input type="number" step="0.01" min="0" id="ctl_montoLiquido"></label>
@@ -850,6 +900,13 @@
           </section>
           <section class="bloque-form bloque-env">
             <h4>🍾 Anomalías de envases</h4>
+            <div class="adder solo-editor-form">
+              <input type="text" class="combo" data-cat="vacios" id="addEnvNombre" placeholder="Escribe o elige un envase…" autocomplete="off">
+              <input type="number" min="0" step="1" id="addEnvCant" placeholder="Cant." title="Cantidad">
+              <select id="addEnvTipo" title="¿Falta o sobra?"><option value="falta">Falta</option><option value="sobra">Sobra</option></select>
+              <button type="button" class="btn-agregar btn-chico" data-add="env" title="Agregar a la lista">+</button>
+            </div>
+            <div class="lineas" id="lineasEnv"></div>
             <div class="grid-form g-2">
               <label>Sobrantes vacíos<textarea id="ctl_sobrantes" rows="2"></textarea></label>
               <label>Faltantes vacíos<textarea id="ctl_faltantes" rows="2"></textarea></label>
@@ -900,15 +957,30 @@
     </div>
 
     <div class="panel">
-      <details class="catalogo">
-        <summary><strong>📚 Catálogo de precios</strong> <span class="contador" id="resumenCatalogo"></span></summary>
-        <p class="ayuda-guardar">Precios usados para valorizar faltantes de líquido y de envases. Se cargan con "Importar Excel" (hoja Productos) o se editan aquí.</p>
-        <input type="search" id="buscadorCat" placeholder="Buscar producto..." class="buscador-cat">
+      <details class="catalogo" open>
+        <summary><strong>📚 Catálogo de productos y precios</strong> <span class="contador" id="resumenCatalogo"></span></summary>
+        <p class="ayuda-guardar">Estos productos aparecen en el desplegable del registro y sus precios valorizan los faltantes de líquido y de envases.</p>
+        <div class="barra-catalogo">
+          <input type="search" id="buscadorCat" placeholder="Buscar producto o código..." class="buscador-cat">
+          <div class="grupo-botones">
+            <button type="button" class="btn-agregar btn-chico solo-editor" id="btnImportarCat">📥 Importar Excel de productos</button>
+            <input type="file" id="inputExcelCat" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <button type="button" class="btn-secundario btn-chico" id="btnExportarCat">⬇️ Exportar catálogo</button>
+          </div>
+        </div>
+        <p class="ayuda-guardar ayuda-formato">El Excel puede tener tu hoja <strong>Productos</strong> (COD · Producto · Precio y "Productos Vacios") o una tabla simple con columnas <strong>Producto</strong> y <strong>Precio</strong> (opcionales: Código, Tipo = Lleno/Vacío).</p>
+        <form class="nuevo-producto solo-editor" id="formNuevoProd" autocomplete="off">
+          <select id="npTipo"><option value="llenos">Lleno</option><option value="vacios">Vacío</option></select>
+          <input type="text" id="npCod" placeholder="Código">
+          <input type="text" id="npNombre" placeholder="Nombre del producto" required>
+          <input type="number" id="npPrecio" step="0.01" min="0" placeholder="Precio S/" required>
+          <button type="submit" class="btn-secundario btn-chico">+ Agregar al catálogo</button>
+        </form>
         <div class="grid-catalogo">
           <div class="tabla-wrap tabla-compacta"><table class="tabla-mapa">
-            <thead><tr><th>Cod</th><th>Producto lleno</th><th>Precio</th></tr></thead><tbody id="cuerpoCatLlenos"></tbody></table></div>
+            <thead><tr><th>Cod</th><th>Producto lleno</th><th>Precio</th><th class="solo-editor"></th></tr></thead><tbody id="cuerpoCatLlenos"></tbody></table></div>
           <div class="tabla-wrap tabla-compacta"><table class="tabla-mapa">
-            <thead><tr><th></th><th>Envase vacío</th><th>Precio</th></tr></thead><tbody id="cuerpoCatVacios"></tbody></table></div>
+            <thead><tr><th></th><th>Envase vacío</th><th>Precio</th><th class="solo-editor"></th></tr></thead><tbody id="cuerpoCatVacios"></tbody></table></div>
         </div>
       </details>
     </div>
@@ -924,6 +996,7 @@
 
 <div class="aviso-flotante" id="avisoFlotante" role="status" aria-live="polite"></div>
 
+<div class="combo-lista" id="comboLista" role="listbox" hidden></div>
 <button type="button" class="volver-registro" id="btnVolverRegistro" hidden>↩ Volver al registro que estás llenando</button>
 
 <dialog id="dlgLogin">
@@ -1893,6 +1966,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   let idCtlEditando = null;
   let editorAbierto = false;
   let editorSucio = false;
+  let itemsEd = { liq: [], env: [] };
   let idxCat = null;
 
   /* ---------- almacenamiento ---------- */
@@ -2005,6 +2079,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const montoPagar = vacFalt.reduce(function (a, it) { return a + (-it.diferencia) * precioVacio(it.nombre); }, 0);
     const soloSobrLiq = liq.length > 0 && liq.every(function (it) { return it.diferencia > 0; });
     return {
+      itemsLiq: liq.map(function (it) {
+        const p = precioLleno(it.nombre);
+        return { nombre: it.nombre, cant: Math.abs(it.diferencia), precio: p == null ? 0 : p, tipo: it.diferencia < 0 ? 'falta' : 'sobra' };
+      }),
+      itemsEnv: vacSobr.concat(vacFalt).map(function (it) {
+        return { nombre: it.nombre, cant: Math.abs(it.diferencia), precio: precioVacio(it.nombre), tipo: it.diferencia < 0 ? 'falta' : 'sobra' };
+      }),
       producto: liq.map(function (it) { return it.nombre + (it.diferencia > 0 ? ' (sobra)' : ''); }).join(', '),
       cantidad: unirY(liq.map(function (it) { return String(Math.abs(it.diferencia)); })),
       montoLiquido: Math.round(montoLiquido * 100) / 100,
@@ -2031,6 +2112,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     r.conductor = l.conductor || ''; r.placa = l.placa || ''; r.viajeCodigo = l.numViaje || '';
     r.producto = c.producto; r.cantidad = c.cantidad; r.montoLiquido = c.montoLiquido; r.sinPrecio = c.sinPrecio;
     r.sobrantes = c.sobrantes; r.faltantes = c.faltantes; r.montoPagar = c.montoPagar;
+    r.itemsLiq = c.itemsLiq; r.itemsEnv = c.itemsEnv;
     const f = flota[r.placa] || {};
     if (!r.bk) r.bk = f.bk || '';
     if (!r.reparto) r.reparto = f.reparto || '';
@@ -2252,12 +2334,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $('resumenCatalogo').textContent = `${catalogo.llenos.length} productos llenos · ${catalogo.vacios.length} envases vacíos`;
     const fila = function (tipo, p, i) {
       return `<tr><td>${escaparHtml(p.cod || '')}</td><td>${escaparHtml(p.nombre)}</td>
-        <td><input type="number" step="0.01" min="0" class="input-precio" data-cat="${tipo}" data-i="${i}" value="${(+p.precio).toFixed(2)}" ${puedeEditar() ? '' : 'disabled'}></td></tr>`;
+        <td><input type="number" step="0.01" min="0" class="input-precio" data-cat="${tipo}" data-i="${i}" value="${(+p.precio).toFixed(2)}" ${puedeEditar() ? '' : 'disabled'}></td>
+        <td class="solo-editor"><button type="button" class="btn-eliminar btn-icono" data-quitar-cat="${tipo}" data-i="${i}" title="Quitar del catálogo">✕</button></td></tr>`;
     };
     const filtrar = function (lista, tipo) {
       return lista.map(function (p, i) { return { p: p, i: i }; })
         .filter(function (x) { return !t || (x.p.nombre + ' ' + (x.p.cod || '')).toLowerCase().indexOf(t) !== -1; })
-        .map(function (x) { return fila(tipo, x.p, x.i); }).join('') || '<tr><td colspan="3" class="vacio">Sin resultados</td></tr>';
+        .map(function (x) { return fila(tipo, x.p, x.i); }).join('') || '<tr><td colspan="4" class="vacio">Sin resultados</td></tr>';
     };
     $('cuerpoCatLlenos').innerHTML = filtrar(catalogo.llenos, 'llenos');
     $('cuerpoCatVacios').innerHTML = filtrar(catalogo.vacios, 'vacios');
@@ -2345,6 +2428,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const el = $('ctl_' + k); if (!el) return;
       el.value = base[k] == null ? '' : base[k];
     });
+    itemsEd = { liq: JSON.parse(JSON.stringify(base.itemsLiq || [])), env: JSON.parse(JSON.stringify(base.itemsEnv || [])) };
+    ['addLiqNombre', 'addLiqCant', 'addEnvNombre', 'addEnvCant'].forEach(function (id) { $(id).value = ''; });
+    $('addLiqTipo').value = 'falta'; $('addEnvTipo').value = 'falta';
+    renderLineas();
     $('tituloDlgCtl').textContent = r ? `✏️ ${diaSemana(r.fecha)} ${fechaCorta(r.fecha)} · ${r.placa || ''} · BK ${r.bk || '-'} · viaje ${r.viaje || '-'}` : '➕ Nuevo registro';
     $('origenCtl').textContent = r && r.liqId ? `Generado desde el PDF (viaje ${r.viajeCodigo || '-'}). Al re-importar el PDF se actualizan las cantidades y montos; se conservan reparto, BK, estado y comentario.` : '';
     $('btnEliminarCtlDlg').style.display = r ? '' : 'none';
@@ -2374,6 +2461,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   }
   $('formCtl').addEventListener('input', function () { marcarSucio(true); });
   $('formCtl').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !(e.ctrlKey || e.metaKey) && e.target.tagName === 'INPUT') {
+      e.preventDefault();
+      if (e.target.id === 'addLiqCant' || e.target.id === 'addLiqNombre') agregarLinea('liq');
+      if (e.target.id === 'addEnvCant' || e.target.id === 'addEnvNombre') agregarLinea('env');
+      return;
+    }
     if (e.key === 'Escape') { e.preventDefault(); if (!editorSucio || confirm('¿Cerrar sin guardar?')) cerrarEditor(); }
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('btnGuardarCtl').click(); }
   });
@@ -2430,6 +2523,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       if (String(v.viaje) !== String(r.viaje || '')) r.viajeManual = true;
     }
     Object.assign(r, v);
+    r.itemsLiq = itemsEd.liq; r.itemsEnv = itemsEd.env;
+    r.sinPrecio = itemsEd.liq.filter(function (it) { return it.tipo === 'falta' && !num(it.precio); }).map(function (it) { return it.nombre; });
     r.periodo = v.fecha.slice(0, 7);
     if (r.placa) {
       flota[r.placa] = Object.assign({}, flota[r.placa], { bk: r.bk || (flota[r.placa] || {}).bk || '', reparto: r.reparto || (flota[r.placa] || {}).reparto || '', conductor: r.conductor || (flota[r.placa] || {}).conductor || '' });
@@ -2457,6 +2552,181 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     }
   });
 
+  /* ---------- líneas de productos en el editor ---------- */
+  function renderLineas() {
+    [['liq', 'lineasLiq', 'llenos'], ['env', 'lineasEnv', 'vacios']].forEach(function (g) {
+      const lista = itemsEd[g[0]];
+      const cont = $(g[1]);
+      if (!lista.length) { cont.innerHTML = ''; cont.classList.remove('con-lineas'); return; }
+      cont.classList.add('con-lineas');
+      const total = lista.reduce(function (a, it) { return a + (it.tipo === 'falta' ? num(it.cant) * num(it.precio) : 0); }, 0);
+      cont.innerHTML = lista.map(function (it, i) {
+        return `<div class="linea linea-${it.tipo}" data-grupo="${g[0]}" data-i="${i}">
+          <button type="button" class="tipo-linea" data-accion="tipo" title="Cambiar falta/sobra">${it.tipo === 'falta' ? 'Falta' : 'Sobra'}</button>
+          <input type="text" class="combo linea-nombre" data-cat="${g[2]}" data-campo="nombre" value="${escaparHtml(it.nombre)}" autocomplete="off">
+          <input type="number" min="0" step="1" class="linea-cant" data-campo="cant" value="${num(it.cant)}" title="Cantidad">
+          <span class="linea-x">×</span>
+          <input type="number" min="0" step="0.01" class="linea-precio" data-campo="precio" value="${num(it.precio).toFixed(2)}" title="Precio unitario S/">
+          <span class="linea-sub ${it.tipo === 'falta' ? 'texto-rojo' : 'txt-suave'}">${it.tipo === 'falta' ? soles(num(it.cant) * num(it.precio)) : '—'}</span>
+          <button type="button" class="linea-quitar" data-accion="quitar" title="Quitar">✕</button>
+        </div>`;
+      }).join('') + `<div class="linea-total">Total faltante: <strong>${soles(total)}</strong></div>`;
+      if (!puedeEditar()) cont.querySelectorAll('input,button').forEach(function (el) { el.disabled = true; });
+    });
+  }
+  // Arma los textos del registro (como en el Excel) a partir de las líneas
+  function textosDesdeLineas(grupo) {
+    const lista = itemsEd[grupo];
+    if (grupo === 'liq') {
+      $('ctl_producto').value = lista.map(function (it) { return it.nombre + (it.tipo === 'sobra' ? ' (sobra)' : ''); }).join(', ');
+      $('ctl_cantidad').value = unirY(lista.map(function (it) { return String(num(it.cant)); }));
+      $('ctl_montoLiquido').value = (Math.round(lista.reduce(function (a, it) { return a + (it.tipo === 'falta' ? num(it.cant) * num(it.precio) : 0); }, 0) * 100) / 100).toFixed(2);
+      const soloSobra = lista.length && lista.every(function (it) { return it.tipo === 'sobra'; });
+      if (soloSobra && !$('ctl_responsable').value.trim().replace(/^S\/N$/i, '')) $('ctl_responsable').value = 'SOBRANTE';
+      if (lista.length && /^S\/N$/i.test($('ctl_responsable').value.trim()) && !soloSobra) $('ctl_responsable').value = '';
+    } else {
+      const comoDif = function (tipo) {
+        return lista.filter(function (it) { return it.tipo === tipo; })
+          .map(function (it) { return { nombre: it.nombre, diferencia: (tipo === 'falta' ? -1 : 1) * num(it.cant) }; });
+      };
+      $('ctl_sobrantes').value = textoVacios(comoDif('sobra'));
+      $('ctl_faltantes').value = textoVacios(comoDif('falta'));
+      $('ctl_montoPagar').value = (Math.round(lista.reduce(function (a, it) { return a + (it.tipo === 'falta' ? num(it.cant) * num(it.precio) : 0); }, 0) * 100) / 100).toFixed(2);
+    }
+    if ($('ctl_estado').value === 'sin' && (itemsEd.liq.length || itemsEd.env.length)) {
+      const hayFalta = itemsEd.liq.concat(itemsEd.env).some(function (it) { return it.tipo === 'falta'; });
+      $('ctl_estado').value = hayFalta ? 'pendiente' : 'sobrante';
+      if (/^sin anomal/i.test($('ctl_comentario').value.trim())) $('ctl_comentario').value = '';
+      pintarCampoPagado();
+    }
+    marcarSucio(true);
+  }
+  function precioDe(cat, nombre) {
+    const p = cat === 'llenos' ? precioLleno(nombre) : (function () { if (!idxCat) indexarCatalogo(); const x = idxCat.vacios[normNombre(nombre)]; return x == null ? precioVacio(nombre) : x; })();
+    return p == null ? 0 : p;
+  }
+  function agregarLinea(grupo) {
+    const pre = grupo === 'liq' ? 'addLiq' : 'addEnv';
+    const nombre = $(pre + 'Nombre').value.trim();
+    const cant = num($(pre + 'Cant').value);
+    if (!nombre) { $(pre + 'Nombre').focus(); return; }
+    if (!cant) { $(pre + 'Cant').focus(); return; }
+    const cat = grupo === 'liq' ? 'llenos' : 'vacios';
+    const tipo = $(pre + 'Tipo').value;
+    const ex = itemsEd[grupo].find(function (it) { return normNombre(it.nombre) === normNombre(nombre) && it.tipo === tipo; });
+    if (ex) ex.cant = num(ex.cant) + cant;
+    else itemsEd[grupo].push({ nombre: nombreCatalogo(cat, nombre), cant: cant, precio: precioDe(cat, nombre), tipo: tipo });
+    $(pre + 'Nombre').value = ''; $(pre + 'Cant').value = '';
+    renderLineas(); textosDesdeLineas(grupo);
+    $(pre + 'Nombre').focus();
+  }
+  function nombreCatalogo(cat, nombre) {
+    const p = catalogo[cat].find(function (x) { return normNombre(x.nombre) === normNombre(nombre); });
+    return p ? p.nombre : nombre;
+  }
+  document.querySelectorAll('[data-add]').forEach(function (b) {
+    b.addEventListener('click', function () { agregarLinea(b.getAttribute('data-add')); });
+  });
+  ['lineasLiq', 'lineasEnv'].forEach(function (id) {
+    const cont = $(id);
+    cont.addEventListener('click', function (e) {
+      const btn = e.target.closest('[data-accion]'); if (!btn) return;
+      const fila = btn.closest('.linea'), g = fila.getAttribute('data-grupo'), i = +fila.getAttribute('data-i');
+      if (btn.getAttribute('data-accion') === 'quitar') itemsEd[g].splice(i, 1);
+      else itemsEd[g][i].tipo = itemsEd[g][i].tipo === 'falta' ? 'sobra' : 'falta';
+      renderLineas(); textosDesdeLineas(g);
+    });
+    cont.addEventListener('change', function (e) {
+      const inp = e.target.closest('[data-campo]'); if (!inp) return;
+      const fila = inp.closest('.linea'), g = fila.getAttribute('data-grupo'), i = +fila.getAttribute('data-i');
+      const campo = inp.getAttribute('data-campo');
+      const it = itemsEd[g][i];
+      if (campo === 'nombre') {
+        const cat = g === 'liq' ? 'llenos' : 'vacios';
+        it.nombre = nombreCatalogo(cat, inp.value.trim()) || it.nombre;
+        const p = precioDe(cat, it.nombre); if (p) it.precio = p;
+      } else it[campo] = Math.max(0, num(inp.value));
+      renderLineas(); textosDesdeLineas(g);
+    });
+  });
+
+  /* ---------- desplegable con búsqueda (escribir o elegir) ---------- */
+  let comboInput = null, comboItems = [], comboSel = -1;
+  function comboOpciones(cat, texto) {
+    const tokens = normNombre(texto).split(' ').filter(Boolean);
+    return catalogo[cat].filter(function (p) {
+      const n = normNombre(p.nombre + ' ' + (p.cod || ''));
+      return tokens.every(function (t) { return n.indexOf(t) !== -1; });
+    }).slice(0, 60);
+  }
+  function comboAbrir(inp) {
+    comboInput = inp;
+    const cat = inp.getAttribute('data-cat');
+    comboItems = comboOpciones(cat, inp.value);
+    comboSel = comboItems.length ? 0 : -1;
+    const lista = $('comboLista');
+    lista.innerHTML = comboItems.length ? comboItems.map(function (p, i) {
+      return `<div class="combo-op${i === comboSel ? ' activo' : ''}" data-i="${i}" role="option">
+        <span class="combo-nombre">${escaparHtml(p.nombre)}</span>
+        <span class="combo-meta">${p.cod ? escaparHtml(p.cod) + ' · ' : ''}S/ ${num(p.precio).toFixed(2)}</span></div>`;
+    }).join('') : `<div class="combo-vacio">No está en el catálogo. Se usará el texto tal cual${cat === 'llenos' ? ' (precio 0, edítalo en la línea)' : ''}.</div>`;
+    lista.hidden = false;
+    comboPosicion();
+  }
+  function comboPosicion() {
+    if (!comboInput) return;
+    const r = comboInput.getBoundingClientRect();
+    const lista = $('comboLista');
+    const alto = Math.min(300, window.innerHeight - r.bottom - 12);
+    lista.style.left = Math.max(8, r.left) + 'px';
+    lista.style.width = Math.max(r.width, 320) + 'px';
+    if (alto < 160 && r.top > 220) { lista.style.top = ''; lista.style.bottom = (window.innerHeight - r.top + 4) + 'px'; lista.style.maxHeight = Math.min(300, r.top - 12) + 'px'; }
+    else { lista.style.bottom = ''; lista.style.top = (r.bottom + 4) + 'px'; lista.style.maxHeight = Math.max(160, alto) + 'px'; }
+  }
+  function comboCerrar() { $('comboLista').hidden = true; comboInput = null; comboItems = []; }
+  function comboElegir(i) {
+    const p = comboItems[i]; if (!p || !comboInput) return;
+    const inp = comboInput;
+    inp.value = p.nombre;
+    comboCerrar();
+    inp.dispatchEvent(new Event('change', { bubbles: true }));
+    if (inp.id === 'addLiqNombre') $('addLiqCant').focus();
+    else if (inp.id === 'addEnvNombre') $('addEnvCant').focus();
+  }
+  function comboMarcar() {
+    $('comboLista').querySelectorAll('.combo-op').forEach(function (el, i) {
+      el.classList.toggle('activo', i === comboSel);
+      if (i === comboSel) el.scrollIntoView({ block: 'nearest' });
+    });
+  }
+  document.addEventListener('focusin', function (e) {
+    if (e.target.classList && e.target.classList.contains('combo') && !e.target.disabled) comboAbrir(e.target);
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.classList && e.target.classList.contains('combo')) comboAbrir(e.target);
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.classList && e.target.classList.contains('combo') && !e.target.disabled && $('comboLista').hidden) comboAbrir(e.target);
+  });
+  document.addEventListener('focusout', function (e) {
+    if (e.target === comboInput) setTimeout(function () { if (document.activeElement !== comboInput) comboCerrar(); }, 150);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!comboInput || e.target !== comboInput || $('comboLista').hidden) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); comboSel = Math.min(comboItems.length - 1, comboSel + 1); comboMarcar(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); comboSel = Math.max(0, comboSel - 1); comboMarcar(); }
+    else if (e.key === 'Enter' && comboSel >= 0 && comboItems.length) { e.preventDefault(); e.stopPropagation(); comboElegir(comboSel); }
+    else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); comboCerrar(); }
+    else if (e.key === 'Tab') comboCerrar();
+  }, true);
+  $('comboLista').addEventListener('mousedown', function (e) {
+    const op = e.target.closest('.combo-op'); if (!op) return;
+    e.preventDefault();
+    comboElegir(+op.getAttribute('data-i'));
+  });
+  window.addEventListener('resize', comboPosicion);
+  document.addEventListener('scroll', function (e) { if (comboInput && !(e.target && e.target.id === 'comboLista')) comboPosicion(); }, true);
+
   /* ---------- catálogo: edición ---------- */
   $('buscadorCat').addEventListener('input', renderCatalogo);
   document.querySelector('.grid-catalogo').addEventListener('change', function (e) {
@@ -2467,6 +2737,147 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo);
     registrarActividad('cambió precio', `${p.nombre}: S/ ${p.precio.toFixed(2)}`);
     renderTodo();
+  });
+
+  document.querySelector('.grid-catalogo').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-quitar-cat]'); if (!b || !puedeEditar()) return;
+    const tipo = b.getAttribute('data-quitar-cat'), i = +b.getAttribute('data-i');
+    const p = catalogo[tipo][i];
+    if (!p || !confirm(`¿Quitar "${p.nombre}" del catálogo?`)) return;
+    catalogo[tipo].splice(i, 1);
+    guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo);
+    registrarActividad('quitó del catálogo', p.nombre);
+    renderCatalogo();
+  });
+  $('formNuevoProd').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!puedeEditar()) return;
+    const tipo = $('npTipo').value, nombre = $('npNombre').value.trim().replace(/\s+/g, ' ');
+    if (!nombre) return;
+    const precio = Math.max(0, num($('npPrecio').value));
+    const ex = catalogo[tipo].find(function (p) { return normNombre(p.nombre) === normNombre(nombre); });
+    if (ex) { ex.precio = precio; if ($('npCod').value.trim()) ex.cod = $('npCod').value.trim(); }
+    else catalogo[tipo].push({ cod: $('npCod').value.trim(), nombre: nombre, precio: precio });
+    guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo);
+    registrarActividad(ex ? 'cambió precio' : 'agregó al catálogo', `${nombre}: S/ ${precio.toFixed(2)}`);
+    this.reset(); $('npTipo').value = tipo;
+    $('buscadorCat').value = nombre; renderCatalogo();
+    aviso(ex ? 'Precio actualizado' : 'Producto agregado al catálogo', 'info');
+  });
+
+  // Lee productos y precios de una hoja: formato "Productos" (COD/Producto/Precio + Productos Vacios) o tabla simple
+  function leerCatalogoDeHoja(ws) {
+    const res = { llenos: [], vacios: [] };
+    const pc = buscarCelda(ws, function (t) { return t === 'COD'; });
+    if (pc) {
+      for (let r = pc.r + 1; r <= ws.rowCount; r++) {
+        const row = ws.getRow(r);
+        const cod = textoCelda(row.getCell(pc.c)), nom = textoCelda(row.getCell(pc.c + 1)), pr = valorCelda(row.getCell(pc.c + 2));
+        if (!nom) { if (!cod) break; continue; }
+        res.llenos.push({ cod: cod, nombre: nom, precio: num(pr) });
+      }
+    }
+    const pv = buscarCelda(ws, function (t) { return /^PRODUCTOS VACIOS/.test(t); });
+    if (pv) {
+      for (let r = pv.r + 2; r <= ws.rowCount; r++) {
+        const row = ws.getRow(r);
+        const nom = textoCelda(row.getCell(pv.c)), pr = valorCelda(row.getCell(pv.c + 1));
+        if (!nom) break;
+        res.vacios.push({ nombre: nom, precio: num(pr) });
+      }
+    }
+    if (res.llenos.length || res.vacios.length) return res;
+
+    // Tabla simple: buscar fila de cabecera con "Producto" y "Precio"
+    let fila = null, cols = null;
+    for (let r = 1; r <= Math.min(ws.rowCount, 20) && !fila; r++) {
+      const c = {};
+      for (let k = 1; k <= 30; k++) {
+        const t = normNombre(textoCelda(ws.getRow(r).getCell(k)));
+        if (!t) continue;
+        if (!c.nombre && /^(PRODUCTO|DESCRIPCION|NOMBRE|ARTICULO|MATERIAL|ENVASE)/.test(t)) c.nombre = k;
+        else if (!c.precio && /(PRECIO|P UNIT|VALOR|COSTO)/.test(t)) c.precio = k;
+        else if (!c.cod && /^(COD|CODIGO|SKU)\b/.test(t)) c.cod = k;
+        else if (!c.tipo && /^(TIPO|CATEGORIA|CLASE)/.test(t)) c.tipo = k;
+      }
+      if (c.nombre && c.precio) { fila = r; cols = c; }
+    }
+    if (!fila) return res;
+    const hojaVacios = /VAC|ENVASE/.test(normNombre(ws.name));
+    let vacias = 0;
+    for (let r = fila + 1; r <= ws.rowCount && vacias < 20; r++) {
+      const row = ws.getRow(r);
+      const nom = textoCelda(row.getCell(cols.nombre));
+      if (!nom) { vacias++; continue; }
+      vacias = 0;
+      const tipoTxt = cols.tipo ? normNombre(textoCelda(row.getCell(cols.tipo))) : '';
+      const n = normNombre(nom);
+      const esVacio = tipoTxt ? /VAC|ENVASE/.test(tipoTxt) : (hojaVacios || /^(BOTELLA|BOT |CAJA PLAST|JABA|ENVASE)/.test(n));
+      const item = { nombre: nom, precio: num(valorCelda(row.getCell(cols.precio))) };
+      if (esVacio) res.vacios.push(item); else { item.cod = cols.cod ? textoCelda(row.getCell(cols.cod)) : ''; res.llenos.push(item); }
+    }
+    return res;
+  }
+  async function importarCatalogoExcel(archivo) {
+    if (typeof ExcelJS === 'undefined') { alert('No se pudo cargar el lector de Excel.'); return; }
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.load(await archivo.arrayBuffer());
+    const leido = { llenos: [], vacios: [] };
+    wb.eachSheet(function (ws) {
+      const r = leerCatalogoDeHoja(ws);
+      leido.llenos = leido.llenos.concat(r.llenos); leido.vacios = leido.vacios.concat(r.vacios);
+    });
+    if (!leido.llenos.length && !leido.vacios.length) {
+      alert('No encontré productos en el Excel. Debe tener una columna "Producto" y otra "Precio" (o tu hoja Productos con COD / Producto / Precio).');
+      return;
+    }
+    const reemplazar = confirm(`Encontré ${leido.llenos.length} productos llenos y ${leido.vacios.length} envases vacíos.\n\n` +
+      'Aceptar = REEMPLAZAR todo el catálogo por el del Excel.\nCancelar = solo ACTUALIZAR precios y AGREGAR los nuevos.');
+    let nuevos = 0, actualizados = 0;
+    ['llenos', 'vacios'].forEach(function (tipo) {
+      if (reemplazar && leido[tipo].length) { catalogo[tipo] = []; }
+      leido[tipo].forEach(function (p) {
+        const ex = catalogo[tipo].find(function (x) { return normNombre(x.nombre) === normNombre(p.nombre); });
+        if (ex) { ex.precio = p.precio; if (p.cod) ex.cod = p.cod; actualizados++; }
+        else { catalogo[tipo].push(p); nuevos++; }
+      });
+    });
+    guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo);
+    const txt = reemplazar ? `catálogo reemplazado: ${catalogo.llenos.length} llenos y ${catalogo.vacios.length} vacíos`
+      : `${nuevos} productos nuevos y ${actualizados} precios actualizados`;
+    registrarActividad('importó catálogo', txt);
+    renderTodo();
+    aviso('Catálogo: ' + txt, 'info');
+  }
+  $('btnImportarCat').addEventListener('click', function () { $('inputExcelCat').click(); });
+  $('inputExcelCat').addEventListener('change', function (e) {
+    const f = e.target.files[0]; if (!f) return;
+    importarCatalogoExcel(f).catch(function (err) { console.error(err); alert('No se pudo leer el Excel: ' + err.message); })
+      .then(function () { e.target.value = ''; });
+  });
+  $('btnExportarCat').addEventListener('click', async function () {
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('Productos');
+    ws.columns = [{ width: 3 }, { width: 3 }, { width: 3 }, { width: 12 }, { width: 46 }, { width: 10 }, { width: 4 }, { width: 4 }, { width: 46 }, { width: 10 }];
+    const azul = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3D4094' } };
+    ws.mergeCells('D11:F11'); ws.getCell('D11').value = 'Productos Llenos';
+    ws.mergeCells('I11:J11'); ws.getCell('I11').value = 'Productos Vacios';
+    ['D11', 'I11'].forEach(function (c) { ws.getCell(c).font = { bold: true, size: 13 }; });
+    [['D12', 'COD'], ['E12', 'Producto'], ['F12', 'Precio'], ['I12', 'Producto'], ['J12', 'Precio']].forEach(function (x) {
+      ws.getCell(x[0]).value = x[1]; ws.getCell(x[0]).font = { bold: true, color: { argb: 'FFFFFFFF' } }; ws.getCell(x[0]).fill = azul;
+    });
+    catalogo.llenos.forEach(function (p, i) {
+      const r = ws.getRow(13 + i);
+      r.getCell(4).value = p.cod || ''; r.getCell(5).value = p.nombre; r.getCell(6).value = num(p.precio); r.getCell(6).numFmt = '0.00';
+    });
+    catalogo.vacios.forEach(function (p, i) {
+      const r = ws.getRow(13 + i);
+      r.getCell(9).value = p.nombre; r.getCell(10).value = num(p.precio); r.getCell(10).numFmt = '0.00';
+    });
+    ws.getCell('D3').value = 'Edita precios o agrega filas y vuelve a importar con "📥 Importar Excel de productos".';
+    ws.getCell('D3').font = { italic: true, color: { argb: 'FF6A7085' } };
+    const buf = await wb.xlsx.writeBuffer();
+    descargar('Catalogo_productos_precios.xlsx', buf, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   });
 
   /* ---------- importar Excel (control histórico + catálogo) ---------- */
