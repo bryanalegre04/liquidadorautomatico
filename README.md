@@ -9,6 +9,11 @@ Página web (un solo archivo `index.html`) para calcular las liquidaciones de in
 - Calcula el saldo de envases en S/ (Botella, Caja Plast, Bot). Los precios se pueden editar.
 - Muestra un resumen de cada liquidación y del periodo, por conductor, con botón **Copiar resumen**.
 - Exporta a **Excel (.xlsx)**, con respaldo y restauración en JSON.
+- **Control diario** (pestaña 📋), con el mismo formato del Excel *Liquidaciones_Segsol*:
+  - Se llena a mano con **+ Agregar registro** (importar PDF no lo modifica). Los productos se eligen de un desplegable con búsqueda y se valorizan con el catálogo de precios.
+  - Tú completas reparto, BK, responsable, estado de pago (Pagado, Pago parcial, No pagado, Sobrante) y comentario. El BK y el reparto se recuerdan por placa.
+  - Muestra el resumen del día con lo pendiente de cobro, un cuadro por reparto y un botón para copiar el resumen.
+  - **Importar Excel** carga tus hojas mensuales anteriores y la hoja *Productos* (catálogo). **Exportar Excel** genera una hoja por mes con el mismo formato y colores, más una hoja *Resumen*.
 - **Supabase**: datos compartidos en tiempo real, modo lectura para los demás y registro de actividad.
 
 ## Publicar en GitHub Pages

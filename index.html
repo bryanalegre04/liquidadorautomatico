@@ -647,7 +647,7 @@
     </span>
   </div>
   <h1>Liquidación de Inventario</h1>
-  <p class="subtitulo">Importa el PDF "Acuerdo de liquidación de inventario" de cada camión. Las liquidaciones se guardan por periodo (mes) y cada una genera su registro en el control diario de anomalías.</p>
+  <p class="subtitulo">Importa el PDF "Acuerdo de liquidación de inventario" de cada camión. Las liquidaciones se guardan por periodo (mes) El control diario de anomalías se llena a mano en su pestaña.</p>
 
   <div class="banner-lectura">👁 Estás en <strong>modo lectura</strong>: ves en tiempo real todo lo que se sube. Para importar o modificar, inicia sesión.</div>
 
@@ -811,7 +811,6 @@
         </div>
         <div class="grupo-botones">
           <button type="button" class="btn-agregar solo-editor" id="btnAgregarCtl">+ Agregar registro</button>
-          <button type="button" class="btn-secundario solo-editor" id="btnGenerarCtl">↻ Generar desde PDF</button>
           <button type="button" class="btn-secundario solo-editor" id="btnImportarExcelCtl">📥 Importar Excel</button>
           <input type="file" id="inputExcelCtl" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
           <button type="button" class="btn-secundario" id="btnExportarCtl">⬇️ Exportar Excel</button>
@@ -1434,7 +1433,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (importados) {
       periodoSel = ultimoPeriodo;
       nubeGuardar(cambiados);
-      controlDesdeLiquidaciones(cambiados);
       registrarActividad('importó', plural(cambiados.length, 'liquidación', 'liquidaciones') + ': ' +
         cambiados.map(function (r) { return (r.conductor || '?') + ' v.' + (r.numViaje || '-') + ' (' + etiquetaPeriodo(r.periodo) + ')'; }).join(', '));
       renderTodo();
@@ -2217,7 +2215,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const lista = ctlVisibles();
     const total = (fechaCtl && fechaCtl !== 'mes') ? ctlDelPeriodo().filter(function (r) { return r.fecha === fechaCtl; }).length : ctlDelPeriodo().length;
     $('cuerpoCtl').innerHTML = lista.length === 0
-      ? `<tr><td colspan="16" class="vacio">${total === 0 ? 'Sin registros para este día. Importa los PDF en la pestaña Liquidaciones o agrega un registro.' : 'Ningún registro coincide con el filtro.'}</td></tr>`
+      ? `<tr><td colspan="16" class="vacio">${total === 0 ? 'Sin registros para este día. Usa «+ Agregar registro» para llenarlo.' : 'Ningún registro coincide con el filtro.'}</td></tr>`
       : lista.map(function (r) {
         const c = cobro(r);
         const aviso = r.sinPrecio && r.sinPrecio.length ? ` <span class="aviso-precio" title="Sin precio en catálogo: ${escaparHtml(r.sinPrecio.join(', '))}">⚠️</span>` : '';
@@ -2351,8 +2349,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     renderDiasCtl();
     renderTablaCtl();
     renderResumenCtl(renderTilesCtl());
-    const sinFila = liqsDelPeriodo().filter(function (l) { return !control.some(function (r) { return r.liqId === l.id; }); }).length;
-    $('btnGenerarCtl').textContent = sinFila ? `↻ Generar desde PDF (${sinFila} sin registro)` : '↻ Regenerar desde PDF';
   }
 
   /* ---------- eventos de la vista ---------- */
@@ -2404,15 +2400,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const fila = e.target.closest('[data-editar]');
     if (fila && fila.getAttribute('data-editar') !== idCtlEditando) abrirEdicionCtl(fila.getAttribute('data-editar'));
   });
-  $('btnGenerarCtl').addEventListener('click', function () {
-    const liqs = liqsDelPeriodo();
-    if (!liqs.length) { alert('No hay liquidaciones importadas en este periodo.'); return; }
-    const n = controlDesdeLiquidaciones(liqs);
-    registrarActividad('generó control', `${plural(n, 'registro')} desde PDF (${etiquetaPeriodo(periodoSel)})`);
-    renderControl();
-    aviso(`${plural(n, 'registro')} generados/actualizados. Se conservan reparto, BK, estado y comentarios que ya tenías.`, 'info');
-  });
-
   /* ---------- edición ---------- */
   const CAMPOS_CTL = ['fecha', 'conductor', 'placa', 'reparto', 'bk', 'viaje', 'producto', 'cantidad', 'montoLiquido',
     'responsable', 'sobrantes', 'faltantes', 'montoPagar', 'estado', 'montoPagado', 'comentario'];
@@ -2433,7 +2420,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $('addLiqTipo').value = 'falta'; $('addEnvTipo').value = 'falta';
     renderLineas();
     $('tituloDlgCtl').textContent = r ? `✏️ ${diaSemana(r.fecha)} ${fechaCorta(r.fecha)} · ${r.placa || ''} · BK ${r.bk || '-'} · viaje ${r.viaje || '-'}` : '➕ Nuevo registro';
-    $('origenCtl').textContent = r && r.liqId ? `Generado desde el PDF (viaje ${r.viajeCodigo || '-'}). Al re-importar el PDF se actualizan las cantidades y montos; se conservan reparto, BK, estado y comentario.` : '';
+    $('origenCtl').textContent = r && r.liqId ? `Registro creado antes desde el PDF (viaje ${r.viajeCodigo || '-'}). Ya no se actualiza al importar PDF: lo que guardes aquí es lo que queda.` : '';
     $('btnEliminarCtlDlg').style.display = r ? '' : 'none';
     document.querySelectorAll('#formCtl input, #formCtl textarea, #formCtl select').forEach(function (el) { el.disabled = !puedeEditar(); });
     $('btnGuardarCtl').style.display = puedeEditar() ? '' : 'none';
