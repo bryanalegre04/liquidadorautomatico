@@ -633,9 +633,384 @@
 
   }
 
+  /* =====================================================================
+     CONTROL POR UNIDAD
+  ===================================================================== */
+  [hidden] { display: none !important; }
+  .nav-dia { display: inline-flex; align-items: center; gap: 4px; }
+  .nav-dia .btn-chico { padding: 6px 9px; }
+  .segmento { display: inline-flex; background: #eceef6; border-radius: 10px; padding: 3px; gap: 3px; }
+  .segmento button { background: transparent; border: none; color: var(--gris-suave); padding: 7px 14px; font-size: 13px; border-radius: 8px; }
+  .segmento button.activo { background: #fff; color: var(--azul); box-shadow: 0 1px 3px rgba(22,26,70,.12); }
+  .stat-revision .stat-valor small { font-size: 16px; opacity: .75; font-weight: 700; }
+  .barra-progreso { height: 6px; background: rgba(255,255,255,.25); border-radius: 99px; margin-top: 8px; overflow: hidden; }
+  .barra-progreso span { display: block; height: 100%; background: #fff; border-radius: 99px; transition: width .3s; }
+
+  .barra-comunicar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; padding: 10px 12px; background: #f4fbf7; border: 1px solid #cfeedd; border-radius: 12px; }
+  .etq-comunicar { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: #08784a; margin-right: 4px; }
+  .btn-wsp { background: #1faa59; color: #fff; border: 1px solid #1faa59; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radio-sm); font-weight: 650; padding: 8px 14px; font-size: 13px; }
+  .btn-wsp:hover { background: #178a48; }
+  a.btn-wsp.btn-chico { padding: 5px 10px; }
+  .panel-links { margin-top: 12px; border: 1px solid var(--borde); border-radius: 12px; padding: 14px 16px; background: #fff; box-shadow: var(--sombra); }
+  .panel-links h3 { margin: 0; font-size: 14px; color: var(--azul); }
+  .aviso-link { background: var(--ambar-claro); color: #7a5200; border-radius: 9px; padding: 9px 12px; font-size: 12.5px; margin: 8px 0; }
+  .link-fila { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 0; border-top: 1px solid var(--borde-suave); font-size: 12.5px; }
+  .link-fila input { padding: 6px 8px; font-size: 11.5px; color: var(--gris-suave); width: 100%; }
+
+  .tablero-unidades { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 14px; align-items: start; }
+  .tarjeta-unidad { background: #fff; border: 1px solid var(--borde); border-left: 5px solid var(--borde); border-radius: 14px; box-shadow: var(--sombra); display: flex; flex-direction: column; overflow: hidden; transition: box-shadow .15s; }
+  .tarjeta-unidad:hover { box-shadow: 0 2px 4px rgba(22,26,70,.06), 0 10px 26px rgba(22,26,70,.08); }
+  .tarjeta-unidad.con-editor { grid-column: 1 / -1; box-shadow: 0 0 0 2px var(--azul), var(--sombra-alta); }
+  .tarjeta-unidad.u-ok { border-left-color: var(--verde); }
+  .tarjeta-unidad.u-anom { border-left-color: #f0b400; }
+  .tarjeta-unidad.u-pend { border-left-color: var(--rojo); }
+  .tarjeta-unidad.u-sinrev { border-left-color: #b9bed0; border-style: dashed; border-left-style: solid; background: #fcfcfe; }
+  .tarjeta-unidad.u-nosalio { opacity: .62; border-left-color: #cfd3df; }
+  .tu-cab { display: flex; align-items: center; gap: 12px; padding: 12px 14px 10px; }
+  .tu-bk { flex: 0 0 auto; width: 54px; height: 54px; border-radius: 12px; background: var(--azul); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+  .tu-bk small { font-size: 9.5px; font-weight: 700; letter-spacing: .08em; opacity: .75; margin-bottom: 2px; }
+  .u-sinrev .tu-bk, .u-nosalio .tu-bk { background: #9aa0b3; }
+  .tu-id { flex: 1; min-width: 0; }
+  .tu-placa { font-size: 16px; font-weight: 800; letter-spacing: .03em; }
+  .tu-rep { font-size: 12.5px; color: var(--gris-suave); margin-top: 1px; }
+  .tu-estado { flex: 0 0 auto; font-size: 11.5px; font-weight: 750; padding: 4px 10px; border-radius: 999px; background: #eef0f4; color: var(--gris-suave); white-space: nowrap; }
+  .u-ok .tu-estado { background: var(--verde-claro); color: var(--verde); }
+  .u-anom .tu-estado { background: var(--ambar-claro); color: var(--ambar); }
+  .u-pend .tu-estado { background: var(--rojo-claro); color: var(--rojo); }
+  .tu-cuerpo { padding: 0 10px 8px; display: flex; flex-direction: column; gap: 6px; }
+  .tu-nota { margin: 2px 4px 4px; font-size: 12.5px; color: var(--gris-tenue); font-style: italic; }
+  .tu-nota-ok { color: var(--verde); font-style: normal; font-weight: 600; }
+  .viaje-fila { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 9px 10px; border-radius: 10px; background: #f8f9fc; border: 1px solid transparent; cursor: pointer; transition: background .12s, border-color .12s; }
+  .viaje-fila:hover, .viaje-fila:focus-visible { background: var(--azul-claro); border-color: var(--azul-medio); outline: none; }
+  .viaje-fila.editando { background: #fff7da; border-color: #f0d27a; }
+  .viaje-fila.fila-recien { animation: brillo 1.6s ease; }
+  .viaje-num { font-weight: 800; font-size: 13px; color: var(--azul); line-height: 1.2; }
+  .viaje-num span { display: block; font-size: 10.5px; font-weight: 650; color: var(--gris-tenue); text-transform: uppercase; }
+  .viaje-det { display: flex; flex-direction: column; gap: 3px; font-size: 13px; line-height: 1.4; min-width: 0; word-break: break-word; }
+  .det-ok { color: var(--verde); font-weight: 650; }
+  .det-falta { color: #9a2a20; font-weight: 600; }
+  .det-liq { color: #3d4094; font-weight: 600; }
+  .det-sobra { color: #08784a; }
+  .det-com { color: var(--gris-suave); font-size: 12.5px; }
+  .det-resp { color: var(--gris-tenue); font-size: 11.5px; }
+  .viaje-lado { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .viaje-monto { font-weight: 800; font-size: 14px; color: var(--rojo); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .viaje-lado .badge { white-space: nowrap; }
+  .tu-totales { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 8px 14px; background: #fafbff; border-top: 1px solid var(--borde-suave); font-size: 12.5px; color: var(--gris-suave); }
+  .tu-totales b { color: var(--gris-texto); font-variant-numeric: tabular-nums; }
+  .tu-totales .texto-rojo b { color: var(--rojo); }
+  .tu-acciones { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 8px 12px 10px; border-top: 1px solid var(--borde-suave); margin-top: auto; }
+  .tu-acc-edit, .tu-acc-com { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+  .tu-acciones button, .tu-acciones .btn-wsp { padding: 6px 11px; font-size: 12.5px; }
+  .btn-ok-rapido { background: var(--verde-claro); color: var(--verde); border: 1px solid #bfe8d2; }
+  .btn-ok-rapido:hover { background: #cdf0dd; }
+  .btn-tenue { color: var(--gris-suave) !important; }
+  .btn-icono-txt { padding: 6px 9px !important; }
+  .editor-slot { margin: 4px 0 2px; border-top: 2px solid var(--azul); border-bottom: 2px solid var(--azul); background: #f6f7fe; border-radius: 10px; }
+  .editor-slot .editor-ctl { position: static; max-width: none; padding: 12px 12px 14px; }
+  .editor-slot.editor-suelto { grid-column: 1 / -1; background: #fff; border: 2px solid var(--azul); }
+  .vacio-tablero { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--gris-suave); border: 2px dashed var(--borde); border-radius: 14px; background: #fcfcfe; }
+  .vacio-tablero p { max-width: 560px; margin: 8px auto 0; font-size: 13px; }
+  .vacio-icono { font-size: 34px; margin-bottom: 6px; }
+
+  /* flota y resumen por unidad */
+  .nueva-unidad { display: grid; grid-template-columns: 60px 100px minmax(0, 1fr) 110px 120px auto; gap: 6px; margin-bottom: 10px; }
+  .nueva-unidad input { padding: 7px 9px; min-width: 0; }
+  .tabla-flota { max-height: 380px; }
+  .tabla-flota table, .tabla-ranking table { min-width: 0 !important; }
+  .tabla-flota td { padding: 4px 6px; }
+  .tabla-flota input[type="text"], .tabla-flota input[type="tel"] { width: 100%; padding: 5px 7px; font-size: 12.5px; border-color: transparent; background: transparent; }
+  .tabla-flota input[type="text"]:hover, .tabla-flota input[type="tel"]:hover { border-color: var(--borde); background: #fff; }
+  .tabla-flota input:focus { background: #fff; }
+  .tabla-flota .in-corto { width: 52px; } .tabla-flota .in-medio { min-width: 96px; }
+  .tabla-flota .fila-inactiva td { opacity: .5; }
+  .celda-centro { text-align: center; }
+  .tabla-ranking { max-height: 440px; }
+  .tabla-ranking td { white-space: nowrap; }
+  .mini-barra { display: inline-block; width: 54px; height: 6px; background: var(--rojo-claro); border-radius: 99px; overflow: hidden; vertical-align: middle; margin-right: 6px; }
+  .mini-barra span { display: block; height: 100%; background: var(--verde); }
+
+  /* vista para tripulaciones (?tripulacion) */
+  body.modo-tripulacion main, body.modo-tripulacion .volver-registro { display: none !important; }
+  .vista-trip { max-width: 980px; margin: 0 auto; padding: 18px 16px 48px; }
+  .trip-cab { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .trip-cab h1 { margin: 0; font-size: 24px; }
+  .trip-sub { margin: 4px 0 0; color: var(--gris-suave); font-weight: 600; text-transform: capitalize; }
+  .trip-filtros { display: flex; gap: 10px; flex-wrap: wrap; }
+  .trip-filtros label { display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; font-weight: 700; color: var(--gris-suave); }
+  .trip-filtros select { padding: 9px 12px; font-size: 14px; font-weight: 650; min-width: 170px; }
+  .trip-resumen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .trip-kpi { background: #fff; border: 1px solid var(--borde); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; }
+  .trip-kpi b { font-size: 24px; font-weight: 800; }
+  .trip-kpi span { font-size: 12px; color: var(--gris-suave); }
+  .trip-ok b { color: var(--verde); } .trip-anom b { color: var(--ambar); } .trip-pend b { color: var(--rojo); }
+  .trip-tablero { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .trip-tablero .viaje-fila { cursor: default; }
+  .trip-tablero .viaje-fila:hover { background: #f8f9fc; border-color: transparent; }
+  .trip-tablero .viaje-det { font-size: 14px; }
+  .trip-pie { text-align: center; color: var(--gris-tenue); font-size: 12px; margin-top: 18px; }
+
+  /* reporte para firmar */
+  .reporte-impresion { display: none; }
+  @media print {
+    @page { size: A4 landscape; margin: 9mm; }
+    body { background: #fff !important; }
+    body > *:not(#reporteImpresion) { display: none !important; }
+    .reporte-impresion { display: block !important; font: 10.5px/1.35 Arial, Helvetica, sans-serif; color: #000; }
+    .rp-cab { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 8px; }
+    .rp-cab h1 { font-size: 17px; margin: 0; }
+    .rp-cab p { margin: 2px 0 0; font-size: 12px; text-transform: capitalize; }
+    .rp-kpis { display: flex; gap: 14px; font-size: 11px; }
+    .rp-tabla { width: 100%; border-collapse: collapse; }
+    .rp-tabla th { background: #e8e8e8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 10px; text-transform: uppercase; }
+    .rp-tabla th, .rp-tabla td { border: 1px solid #555; padding: 4px 6px; vertical-align: top; text-align: left; }
+    .rp-tabla tr { page-break-inside: avoid; }
+    .rp-num { white-space: nowrap; text-align: right !important; }
+    .rp-firma { width: 160px; }
+    .rp-gris td { color: #777; }
+    .rp-pie { display: flex; justify-content: space-between; margin-top: 26px; font-size: 11px; }
+  }
+  @media (max-width: 900px) {
+    .nueva-unidad { grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1fr); }
+    .link-fila { grid-template-columns: 1fr auto auto; }
+    .link-fila input { grid-column: 1 / -1; grid-row: 2; }
+  }
+  @media (max-width: 700px) {
+    .tablero-unidades { grid-template-columns: minmax(0, 1fr); }
+    .tu-estado { display: none; }
+    .trip-resumen { grid-template-columns: 1fr 1fr 1fr; }
+    .trip-kpi b { font-size: 18px; }
+    .segmento { width: 100%; } .segmento button { flex: 1; padding: 7px 6px; }
+  }
+
+  /* =====================================================================
+     PRESENTACIÓN (ambos temas): encabezado y pie
+  ===================================================================== */
+  .hero { display: flex; align-items: center; gap: 16px; margin: 10px 0 18px; }
+  .hero-logo { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center;
+    background: linear-gradient(135deg, #4348d8, #7b80ff); box-shadow: 0 8px 24px rgba(91, 97, 240, .35); }
+  .hero-logo svg { width: 32px; height: 32px; }
+  .hero-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--azul); margin-bottom: 2px; }
+  .hero h1 { margin: 0; font-size: 28px; }
+  .hero .subtitulo { margin: 4px 0 0; }
+  .pie-app { text-align: center; color: var(--gris-tenue); font-size: 12px; margin: 26px 0 0; }
+  .pie-app b { color: var(--gris-suave); font-weight: 650; }
+  #btnTema { min-width: 92px; }
+
+  /* =====================================================================
+     TEMA OSCURO
+  ===================================================================== */
+  body.tema-oscuro {
+    --azul: #8a8fff; --azul-btn: #5b61f0; --azul-osc: #4c52e0; --azul-claro: rgba(123, 128, 255, .13); --azul-medio: rgba(123, 128, 255, .38);
+    --borde: #252b3a; --borde-suave: #1b2030; --fondo: #07080c; --superficie: #10131b; --superficie-2: #161a24; --superficie-3: #1d2230; --campo: #0b0e15;
+    --gris-texto: #e9ecf5; --gris-suave: #a0a8bd; --gris-tenue: #6d758b;
+    --verde: #34d399; --verde-claro: rgba(52, 211, 153, .13); --rojo: #f87171; --rojo-claro: rgba(248, 113, 113, .13);
+    --ambar: #fbbf24; --ambar-claro: rgba(251, 191, 36, .13);
+    --sombra: 0 1px 0 rgba(255, 255, 255, .03) inset, 0 10px 30px rgba(0, 0, 0, .45);
+    --sombra-alta: 0 18px 50px rgba(0, 0, 0, .6);
+    color-scheme: dark;
+    background: radial-gradient(1100px 520px at 15% -12%, rgba(91, 97, 240, .20), transparent 62%),
+                radial-gradient(900px 480px at 100% 0%, rgba(52, 211, 153, .07), transparent 60%), #07080c;
+    background-attachment: fixed;
+    color: var(--gris-texto);
+  }
+  body.tema-oscuro ::selection { background: rgba(123, 128, 255, .45); color: #fff; }
+  body.tema-oscuro ::-webkit-scrollbar { width: 11px; height: 11px; }
+  body.tema-oscuro ::-webkit-scrollbar-track { background: #0b0e15; }
+  body.tema-oscuro ::-webkit-scrollbar-thumb { background: #2a3142; border-radius: 99px; border: 2px solid #0b0e15; }
+  body.tema-oscuro ::-webkit-scrollbar-thumb:hover { background: #3a4359; }
+
+  /* superficies */
+  body.tema-oscuro .panel, body.tema-oscuro .tabla-wrap, body.tema-oscuro .stat-tile, body.tema-oscuro .tarjeta-unidad,
+  body.tema-oscuro .panel-links, body.tema-oscuro .trip-kpi, body.tema-oscuro .subpanel-liquidacion, body.tema-oscuro .bloque-form,
+  body.tema-oscuro .linea, body.tema-oscuro .combo-lista, body.tema-oscuro .editor-slot.editor-suelto, body.tema-oscuro dialog {
+    background: var(--superficie); border-color: var(--borde); color: var(--gris-texto);
+  }
+  body.tema-oscuro .panel { box-shadow: var(--sombra); }
+  body.tema-oscuro .ficha-liquidacion, body.tema-oscuro .total-envase-chip, body.tema-oscuro .zona-drop, body.tema-oscuro .precios-envases,
+  body.tema-oscuro .caja-resumen, body.tema-oscuro .lineas.con-lineas, body.tema-oscuro .tu-totales, body.tema-oscuro .vacio-tablero,
+  body.tema-oscuro .editor-slot, body.tema-oscuro .tabla-ctl tbody tr.fila-editor > td {
+    background: var(--superficie-2) !important; border-color: var(--borde);
+  }
+  body.tema-oscuro .zona-drop:hover, body.tema-oscuro .zona-drop.arrastrando { background: var(--azul-claro) !important; border-color: var(--azul); }
+  body.tema-oscuro .panel h2, body.tema-oscuro .panel h3, body.tema-oscuro h1, body.tema-oscuro .tu-placa { color: #f4f6fc; }
+  body.tema-oscuro .panel h2::before { background: linear-gradient(180deg, #7b80ff, #34d399); }
+  body.tema-oscuro .subtitulo, body.tema-oscuro .ayuda-guardar, body.tema-oscuro .contador { color: var(--gris-suave); }
+  body.tema-oscuro .cabecera-panel h3, body.tema-oscuro .editor-cabecera h3, body.tema-oscuro .panel-links h3 { color: #c3c6ff; }
+
+  /* barra superior, pestañas y segmentos */
+  body.tema-oscuro .barra-nube { background: linear-gradient(100deg, #0e1120, #181c33); border: 1px solid #232843; box-shadow: var(--sombra); }
+  body.tema-oscuro .tabs, body.tema-oscuro .segmento { background: var(--superficie); border: 1px solid var(--borde); }
+  body.tema-oscuro .tab, body.tema-oscuro .segmento button { color: var(--gris-suave); }
+  body.tema-oscuro .tab:hover, body.tema-oscuro .segmento button:hover { color: #fff; }
+  body.tema-oscuro .tab.activo, body.tema-oscuro .segmento button.activo { background: linear-gradient(135deg, #4348d8, #6d72f6); color: #fff; box-shadow: 0 4px 14px rgba(91, 97, 240, .35); }
+  body.tema-oscuro .banner-lectura { background: var(--azul-claro); border-color: var(--azul-medio); color: #c7c9ff; }
+
+  /* botones */
+  body.tema-oscuro .btn-agregar { background: linear-gradient(135deg, #4c52e0, #6d72f6); color: #fff; border: none; box-shadow: 0 4px 14px rgba(91, 97, 240, .35); }
+  body.tema-oscuro .btn-agregar:hover { background: linear-gradient(135deg, #5b61f0, #8a8fff); }
+  body.tema-oscuro .btn-secundario { background: var(--superficie-2); color: var(--gris-texto); border: 1px solid var(--borde); }
+  body.tema-oscuro .btn-secundario:hover { background: var(--superficie-3); border-color: #3a4160; color: #fff; }
+  body.tema-oscuro .btn-eliminar, body.tema-oscuro .btn-peligro { background: transparent; color: var(--rojo); border: 1px solid rgba(248, 113, 113, .35); }
+  body.tema-oscuro .btn-eliminar:hover, body.tema-oscuro .btn-peligro:hover { background: var(--rojo-claro); }
+  body.tema-oscuro .btn-ok-rapido { background: var(--verde-claro); color: #6ee7b7; border: 1px solid rgba(52, 211, 153, .32); }
+  body.tema-oscuro .btn-ok-rapido:hover { background: rgba(52, 211, 153, .22); }
+  body.tema-oscuro .btn-wsp { background: #16a34a; border-color: #16a34a; }
+  body.tema-oscuro .btn-wsp:hover { background: #15803d; }
+  body.tema-oscuro .volver-registro { background: linear-gradient(135deg, #4c52e0, #6d72f6); }
+  body.tema-oscuro .linea-quitar { color: var(--gris-tenue); }
+
+  /* campos */
+  body.tema-oscuro input[type="search"], body.tema-oscuro input[type="text"], body.tema-oscuro input[type="number"], body.tema-oscuro input[type="date"],
+  body.tema-oscuro input[type="month"], body.tema-oscuro input[type="email"], body.tema-oscuro input[type="password"], body.tema-oscuro input[type="url"],
+  body.tema-oscuro input[type="tel"], body.tema-oscuro select, body.tema-oscuro textarea, body.tema-oscuro .grid-precios input {
+    background-color: var(--campo); color: var(--gris-texto); border-color: var(--borde);
+  }
+  body.tema-oscuro input::placeholder, body.tema-oscuro textarea::placeholder { color: #5d657b; }
+  body.tema-oscuro input:focus, body.tema-oscuro select:focus, body.tema-oscuro textarea:focus { border-color: #7b80ff; box-shadow: 0 0 0 3px rgba(123, 128, 255, .22); }
+  body.tema-oscuro input:disabled, body.tema-oscuro select:disabled, body.tema-oscuro textarea:disabled { background-color: #0f1219; color: var(--gris-tenue); }
+  body.tema-oscuro .tabla-flota input[type="text"], body.tema-oscuro .tabla-flota input[type="tel"] { background-color: transparent; border-color: transparent; }
+  body.tema-oscuro .tabla-flota input[type="text"]:hover, body.tema-oscuro .tabla-flota input[type="tel"]:hover,
+  body.tema-oscuro .tabla-flota input:focus { background-color: var(--campo); border-color: var(--borde); }
+  input[type="text"].combo { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%236a7085' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 9px center; background-size: 12px 12px; }
+  body.tema-oscuro input[type="text"].combo { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%23a0a8bd' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+
+  /* chips */
+  body.tema-oscuro .chip-filtro-liq, body.tema-oscuro .chip-dia { background: var(--superficie-2); color: var(--gris-suave); border-color: var(--borde); }
+  body.tema-oscuro .chip-filtro-liq:hover, body.tema-oscuro .chip-dia:hover { background: var(--superficie-3); color: #fff; border-color: #3a4160; }
+  body.tema-oscuro .chip-filtro-liq.activo, body.tema-oscuro .chip-dia.activo { background: linear-gradient(135deg, #4c52e0, #6d72f6); color: #fff; border-color: transparent; }
+  body.tema-oscuro .chip-dia span { color: var(--gris-tenue); }
+  body.tema-oscuro .chip-dia.activo span { color: #dfe0ff; }
+
+  /* indicadores */
+  body.tema-oscuro .stat-tile .stat-label { color: var(--gris-suave); }
+  body.tema-oscuro .stat-tile .stat-valor { color: #f4f6fc; }
+  body.tema-oscuro .stat-tile.stat-verde .stat-valor { color: var(--verde); }
+  body.tema-oscuro .stat-tile.stat-rojo .stat-valor { color: var(--rojo); }
+  body.tema-oscuro .stat-tile.stat-ambar .stat-valor { color: var(--ambar); }
+  body.tema-oscuro .stat-tile.stat-hero { background: linear-gradient(135deg, #3f44d0, #7176f8); border-color: transparent; box-shadow: 0 10px 30px rgba(91, 97, 240, .35); }
+  body.tema-oscuro .stat-tile.stat-hero .stat-label { color: rgba(255, 255, 255, .8); }
+  body.tema-oscuro .stat-tile.stat-hero .stat-valor { color: #fff; }
+  body.tema-oscuro .stat-tile::before { background: #3a4160; }
+  body.tema-oscuro .stat-tile.stat-verde::before { background: var(--verde); }
+  body.tema-oscuro .stat-tile.stat-rojo::before { background: var(--rojo); }
+  body.tema-oscuro .stat-tile.stat-ambar::before { background: var(--ambar); }
+
+  /* tablas */
+  body.tema-oscuro thead th { background: #151926; color: #a9b0c6; border-bottom-color: var(--borde); }
+  body.tema-oscuro tbody td { border-bottom-color: #1a1f2c; color: var(--gris-texto); }
+  body.tema-oscuro tbody tr:nth-child(even) { background: rgba(255, 255, 255, .018); }
+  body.tema-oscuro tbody tr:hover, body.tema-oscuro .tabla-ctl tbody tr.fila-clic:hover td { background: rgba(123, 128, 255, .08); }
+  body.tema-oscuro tfoot td { background: #151926; border-top-color: var(--borde); color: #f4f6fc; }
+  body.tema-oscuro .tabla-mapa tbody tr.fila-activa, body.tema-oscuro .tabla-ctl tbody tr.fila-editando td { background: rgba(251, 191, 36, .11) !important; }
+  body.tema-oscuro .fila-grupo th.grupo-viaje { background: #151926; color: var(--gris-tenue); }
+  body.tema-oscuro .fila-grupo th.grupo-liq { background: rgba(123, 128, 255, .17); color: #c3c6ff; border-left-color: var(--superficie); }
+  body.tema-oscuro .fila-grupo th.grupo-env { background: rgba(52, 211, 153, .14); color: #6ee7b7; border-left-color: var(--superficie); }
+  body.tema-oscuro .tabla-ctl tbody tr.fila-editor > td { border-color: #6d72f6; }
+
+  /* textos de estado */
+  body.tema-oscuro .texto-rojo { color: var(--rojo); }
+  body.tema-oscuro .texto-verde { color: var(--verde); }
+  body.tema-oscuro .txt-suave { color: var(--gris-tenue); }
+  body.tema-oscuro .txt-falta, body.tema-oscuro .det-falta { color: #fca5a5; }
+  body.tema-oscuro .txt-sobra, body.tema-oscuro .det-sobra { color: #6ee7b7; }
+  body.tema-oscuro .det-liq { color: #c3c6ff; }
+  body.tema-oscuro .det-ok { color: var(--verde); }
+  body.tema-oscuro .falta-dato { color: var(--rojo); }
+
+  /* insignias */
+  body.tema-oscuro .badge-si, body.tema-oscuro .est-ok { background: var(--verde-claro); color: #6ee7b7; }
+  body.tema-oscuro .badge-alerta, body.tema-oscuro .est-pend { background: var(--rojo-claro); color: #fca5a5; }
+  body.tema-oscuro .badge-parcial { background: var(--ambar-claro); color: #fcd34d; }
+  body.tema-oscuro .badge-no, body.tema-oscuro .est-sin { background: var(--superficie-3); color: #aab1c5; }
+  body.tema-oscuro .est-parcial { background: rgba(163, 230, 53, .13); color: #bef264; }
+  body.tema-oscuro .est-mal { background: #dc2626; color: #fff; }
+  body.tema-oscuro .est-sobr { background: var(--ambar-claro); color: #fcd34d; }
+  body.tema-oscuro .msg-ok, body.tema-oscuro .veredicto-ok { background: var(--verde-claro); color: #6ee7b7; }
+  body.tema-oscuro .msg-warn, body.tema-oscuro .veredicto-neutro { background: var(--ambar-claro); color: #fcd34d; }
+  body.tema-oscuro .msg-err, body.tema-oscuro .veredicto-mal { background: var(--rojo-claro); color: #fca5a5; }
+
+  /* tarjetas por unidad */
+  body.tema-oscuro .tarjeta-unidad { box-shadow: 0 1px 0 rgba(255, 255, 255, .03) inset, 0 8px 24px rgba(0, 0, 0, .35); }
+  body.tema-oscuro .tarjeta-unidad:hover { box-shadow: 0 1px 0 rgba(255, 255, 255, .04) inset, 0 14px 34px rgba(0, 0, 0, .5); border-color: #303750; }
+  body.tema-oscuro .tarjeta-unidad.con-editor { box-shadow: 0 0 0 2px #6d72f6, var(--sombra-alta); }
+  body.tema-oscuro .tarjeta-unidad.u-ok { border-left-color: var(--verde); }
+  body.tema-oscuro .tarjeta-unidad.u-anom { border-left-color: var(--ambar); }
+  body.tema-oscuro .tarjeta-unidad.u-pend { border-left-color: var(--rojo); }
+  body.tema-oscuro .tarjeta-unidad.u-sinrev { background: #0d1017; border-left-color: #3a4053; }
+  body.tema-oscuro .tarjeta-unidad.u-nosalio { border-left-color: #2a3040; opacity: .55; }
+  body.tema-oscuro .tu-bk { background: linear-gradient(135deg, #4348d8, #7176f8); box-shadow: 0 6px 16px rgba(91, 97, 240, .35); }
+  body.tema-oscuro .u-sinrev .tu-bk, body.tema-oscuro .u-nosalio .tu-bk { background: #2a3042; box-shadow: none; color: #9aa1b5; }
+  body.tema-oscuro .tu-rep { color: var(--gris-suave); }
+  body.tema-oscuro .tu-estado { background: var(--superficie-3); color: #aab1c5; }
+  body.tema-oscuro .u-ok .tu-estado { background: var(--verde-claro); color: #6ee7b7; }
+  body.tema-oscuro .u-anom .tu-estado { background: var(--ambar-claro); color: #fcd34d; }
+  body.tema-oscuro .u-pend .tu-estado { background: var(--rojo-claro); color: #fca5a5; }
+  body.tema-oscuro .viaje-fila { background: var(--superficie-2); }
+  body.tema-oscuro .viaje-fila:hover, body.tema-oscuro .viaje-fila:focus-visible { background: rgba(123, 128, 255, .10); border-color: rgba(123, 128, 255, .35); }
+  body.tema-oscuro .viaje-fila.editando { background: rgba(251, 191, 36, .10); border-color: rgba(251, 191, 36, .4); }
+  body.tema-oscuro .viaje-num { color: #a5a9ff; }
+  body.tema-oscuro .viaje-monto { color: #fca5a5; }
+  body.tema-oscuro .tu-totales, body.tema-oscuro .tu-acciones { border-top-color: var(--borde-suave); }
+  body.tema-oscuro .tu-totales b { color: #f4f6fc; }
+  body.tema-oscuro .tu-totales .texto-rojo b { color: var(--rojo); }
+  body.tema-oscuro .trip-tablero .viaje-fila:hover { background: var(--superficie-2); border-color: transparent; }
+
+  /* comunicar, links, avisos */
+  body.tema-oscuro .barra-comunicar { background: rgba(52, 211, 153, .06); border-color: rgba(52, 211, 153, .22); }
+  body.tema-oscuro .etq-comunicar { color: #6ee7b7; }
+  body.tema-oscuro .aviso-link { background: var(--ambar-claro); color: #fcd34d; }
+  body.tema-oscuro .link-fila { border-top-color: var(--borde-suave); }
+  body.tema-oscuro .aviso-flotante { background: #1d2230; border: 1px solid #2f3650; color: #f4f6fc; }
+  body.tema-oscuro .aviso-flotante.aviso-err { background: #b91c1c; border-color: #b91c1c; }
+  body.tema-oscuro dialog::backdrop { background: rgba(0, 0, 0, .65); }
+
+  /* editor y desplegable */
+  body.tema-oscuro .bloque-form h4, body.tema-oscuro .bloque-form label, body.tema-oscuro .form-dialogo label { color: #a9b0c6; }
+  body.tema-oscuro .bloque-form { border-top-color: #3a4160; }
+  body.tema-oscuro .bloque-liq { border-top-color: #7b80ff; }
+  body.tema-oscuro .bloque-env { border-top-color: #34d399; }
+  body.tema-oscuro .bloque-pago { border-top-color: #fbbf24; }
+  body.tema-oscuro .combo-op:hover, body.tema-oscuro .combo-op.activo { background: var(--azul-claro); }
+  body.tema-oscuro .combo-op.activo .combo-nombre { color: #c3c6ff; }
+  body.tema-oscuro .editor-cambios { background: var(--ambar-claro); color: #fcd34d; }
+
+  /* liquidaciones (pestaña 1) */
+  body.tema-oscuro .campo-ficha-label { color: var(--gris-tenue); }
+  body.tema-oscuro .campo-ficha-valor { color: #f4f6fc; }
+  body.tema-oscuro .total-envase-chip .etiqueta { color: var(--gris-suave); }
+  body.tema-oscuro .precios-envases summary, body.tema-oscuro .catalogo summary { color: #c3c6ff; }
+  body.tema-oscuro .mini-barra { background: var(--rojo-claro); }
+  body.tema-oscuro .lista-actividad li { border-bottom-color: var(--borde-suave); }
+
+  /* impresión: siempre en claro */
+  @media print { body.tema-oscuro { background: #fff !important; color: #000; } }
+  @media (max-width: 700px) {
+    .viaje-fila { grid-template-columns: 34px minmax(0, 1fr); }
+    .viaje-lado { grid-column: 2; flex-direction: row; align-items: center; justify-content: space-between; }
+    .hero { align-items: flex-start; }
+    .hero-logo { width: 46px; height: 46px; border-radius: 13px; }
+    .hero h1 { font-size: 22px; }
+  }
+  .tabla-ranking table { font-size: 12.5px; }
+  .tabla-ranking th, .tabla-ranking td { padding-left: 7px; padding-right: 7px; }
+  .tabla-ranking td:nth-child(3) { white-space: normal; min-width: 110px; }
+  .tabla-ranking .mini-barra { width: 36px; }
+  .tabla-flota table { table-layout: fixed; width: 100%; }
+  .tabla-flota th:nth-child(1) { width: 58px; } .tabla-flota th:nth-child(2) { width: 92px; }
+  .tabla-flota th:nth-child(4) { width: 96px; } .tabla-flota th:nth-child(5) { width: 112px; }
+  .tabla-flota th:nth-child(6) { width: 54px; } .tabla-flota th:nth-child(7) { width: 52px; }
+  .tabla-flota .in-medio { min-width: 0; }
+  @media (min-width: 901px) { .nueva-unidad { grid-template-columns: 58px 92px minmax(0, 1fr) 96px 112px auto; } }
+  @media (max-width: 700px) { .tabla-flota table { min-width: 520px !important; } }
+  #vistaCtl .grid-2 { grid-template-columns: minmax(0, 1fr); }
+  #vistaCtl .grid-2 > .panel { margin-bottom: 18px; }
+
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem('liquidacionesTema')!=='claro')document.body.classList.add('tema-oscuro')}catch(e){document.body.classList.add('tema-oscuro')}</script>
 <main class="contenido">
   <div class="barra-nube">
     <span class="estado-nube" id="estadoNube">…</span>
@@ -643,11 +1018,22 @@
     <span class="barra-nube-botones">
       <button type="button" class="btn-agregar btn-chico" id="btnLogin" style="display:none">🔑 Iniciar sesión para subir</button>
       <button type="button" class="btn-secundario btn-chico" id="btnLogout" style="display:none">Cerrar sesión</button>
+      <button type="button" class="btn-secundario btn-chico" id="btnTema" title="Cambiar entre tema oscuro y claro">☀️ Claro</button>
       <button type="button" class="btn-secundario btn-chico" id="btnConexion">⚙️ Conexión</button>
     </span>
   </div>
-  <h1>Liquidación de Inventario</h1>
-  <p class="subtitulo">Importa el PDF "Acuerdo de liquidación de inventario" de cada camión. Las liquidaciones se guardan por periodo (mes) El control diario de anomalías se llena a mano en su pestaña.</p>
+  <header class="hero">
+    <div class="hero-logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9h15v13H3z"/><path d="M18 13h6l4 5v4h-10z"/><circle cx="8.5" cy="23.5" r="2.5" fill="#4c52e0"/><circle cx="23.5" cy="23.5" r="2.5" fill="#4c52e0"/><path d="M7 15l2.5 2.5L14 13"/>
+      </svg>
+    </div>
+    <div class="hero-txt">
+      <div class="hero-eyebrow">Operaciones de reparto</div>
+      <h1>Liquidación de Inventario</h1>
+      <p class="subtitulo">Importa el PDF «Acuerdo de liquidación de inventario» de cada camión, revisa cada unidad al cierre de la ruta y comunica las anomalías a las tripulaciones.</p>
+    </div>
+  </header>
 
   <div class="banner-lectura">👁 Estás en <strong>modo lectura</strong>: ves en tiempo real todo lo que se sube. Para importar o modificar, inicia sesión.</div>
 
@@ -796,7 +1182,7 @@
 
   <div id="vistaCtl" style="display:none">
     <div class="panel">
-      <h2>Control diario de anomalías en liquidaciones</h2>
+      <h2>Control diario de liquidación por unidad</h2>
       <div class="barra-tabla">
         <div class="grupo-botones grupo-fecha">
           <div class="campo campo-inline">
@@ -805,7 +1191,11 @@
           </div>
           <div class="campo campo-inline">
             <label for="fechaCtl">Día</label>
-            <input type="date" id="fechaCtl">
+            <div class="nav-dia">
+              <button type="button" class="btn-secundario btn-chico" id="btnDiaAnt" title="Día anterior">◀</button>
+              <input type="date" id="fechaCtl">
+              <button type="button" class="btn-secundario btn-chico" id="btnDiaSig" title="Día siguiente">▶</button>
+            </div>
             <button type="button" class="btn-secundario btn-chico" id="btnHoyCtl">Hoy</button>
           </div>
         </div>
@@ -818,21 +1208,35 @@
       </div>
       <div class="dias-ctl" id="diasCtl"></div>
       <div class="stat-tiles" id="tilesCtl"></div>
+      <div class="barra-comunicar">
+        <span class="etq-comunicar">📣 Comunicar a tripulaciones</span>
+        <button type="button" class="btn-wsp" id="btnMsgDia" title="Abre WhatsApp con el resumen del día para enviarlo al grupo">📲 Resumen del día por WhatsApp</button>
+        <button type="button" class="btn-secundario" id="btnCopiarMsgDia">📋 Copiar resumen</button>
+        <button type="button" class="btn-secundario" id="btnImprimirDia" title="Hoja con todas las unidades y espacio para la firma de cada responsable">🖨 Reporte para firmar</button>
+        <button type="button" class="btn-secundario" id="btnLinkTrip">🔗 Links para tripulaciones</button>
+      </div>
+      <div class="panel-links" id="panelLinks" hidden></div>
     </div>
 
     <div class="panel">
       <div class="barra-tabla">
-        <input type="search" id="buscadorCtl" placeholder="Buscar placa, reparto, producto, comentario...">
+        <div class="segmento" id="vistaCtlToggle" role="tablist">
+          <button type="button" data-vista="unidades">🚚 Por unidad</button>
+          <button type="button" data-vista="tabla">📄 Tabla (formato Excel)</button>
+        </div>
+        <input type="search" id="buscadorCtl" placeholder="Buscar BK, placa, reparto, producto, comentario...">
         <div class="grupo-botones" id="filtroCtl">
-          <button type="button" class="chip-filtro-liq activo" data-filtro="todos">Todos</button>
-          <button type="button" class="chip-filtro-liq" data-filtro="anom">Con anomalías</button>
-          <button type="button" class="chip-filtro-liq" data-filtro="pend">Pendientes de cobro</button>
+          <button type="button" class="chip-filtro-liq activo" data-filtro="todos">Todas</button>
+          <button type="button" class="chip-filtro-liq" data-filtro="sinrev" id="chipSinRev">⏳ Sin revisar</button>
+          <button type="button" class="chip-filtro-liq" data-filtro="anom">⚠️ Con anomalías</button>
+          <button type="button" class="chip-filtro-liq" data-filtro="pend">💰 Pendiente de cobro</button>
         </div>
       </div>
       <div class="fila-contador">
         <p class="contador" id="contadorCtl"></p>
         <button type="button" class="btn-secundario btn-chico" id="btnExpandirCtl" style="display:none">⤢ Ver todas</button>
       </div>
+      <div class="tablero-unidades" id="tableroCtl"></div>
       <div class="tabla-wrap tabla-ctl" id="wrapCtl">
         <table class="tabla-mapa">
           <colgroup>
@@ -858,7 +1262,8 @@
           <tbody id="cuerpoCtl"></tbody>
         </table>
       </div>
-      <p class="ayuda-guardar">Haz clic en una fila para llenarla: el formulario se abre debajo de la fila, sin tapar la tabla. Puedes ir a la pestaña Liquidaciones para verificar y volver; lo que escribiste se mantiene.</p>
+      <p class="ayuda-guardar" id="ayudaTablero">Cada tarjeta es una unidad del día. Usa <b>✔ Sin anomalías</b> para cerrar un viaje en un clic, <b>+ Registrar anomalía</b> para llenar el detalle (se abre dentro de la tarjeta) y <b>📲</b> para enviar a la tripulación lo que pasó en su ruta. Toca un viaje para editarlo.</p>
+      <p class="ayuda-guardar" id="ayudaTabla" hidden>Haz clic en una fila para llenarla: el formulario se abre debajo de la fila, sin tapar la tabla. Puedes ir a la pestaña Liquidaciones para verificar y volver; lo que escribiste se mantiene.</p>
   <div id="holderEditor" hidden>
     <div class="editor-ctl" id="editorCtl">
       <form id="formCtl" class="form-editor" autocomplete="off">
@@ -945,18 +1350,39 @@
     </div>
 
     <div class="grid-2">
-    <div class="panel">
-      <h2>Por reparto (periodo)</h2>
-      <div class="tabla-wrap tabla-compacta">
-        <table class="tabla-mapa">
-          <thead><tr><th>Reparto</th><th>Viajes</th><th>Con anomalías</th><th>A pagar</th><th>Cobrado</th><th>Pendiente</th></tr></thead>
-          <tbody id="cuerpoRepartoCtl"></tbody>
-        </table>
+      <div class="panel">
+        <h2>📊 Resumen del mes por unidad</h2>
+        <p class="ayuda-guardar">Ordenado por lo pendiente de cobro. Toca una unidad para ver su historial del mes.</p>
+        <div class="tabla-wrap tabla-compacta tabla-ranking">
+          <table class="tabla-mapa">
+            <thead><tr><th>BK</th><th>Placa</th><th>Reparto</th><th>Viajes</th><th>Con anom.</th><th>Sin anomalías</th><th>A pagar</th><th>Cobrado</th><th>Pendiente</th></tr></thead>
+            <tbody id="cuerpoRankingCtl"></tbody>
+            <tfoot id="pieRankingCtl"></tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="panel" id="panelFlota">
+        <h2>🚚 Flota y tripulaciones <span class="contador" id="resumenFlota"></span></h2>
+        <p class="ayuda-guardar">Las unidades <b>activas</b> aparecen cada día como «Sin revisar» hasta que registres su liquidación. Con el teléfono del reparto, el botón 📲 envía el mensaje directo a su WhatsApp.</p>
+        <form class="nueva-unidad solo-editor" id="formUnidad" autocomplete="off">
+          <input type="text" id="nuBk" placeholder="BK">
+          <input type="text" id="nuPlaca" placeholder="Placa" required>
+          <input type="text" id="nuReparto" placeholder="Reparto (responsable)">
+          <input type="text" id="nuConductor" placeholder="Conductor">
+          <input type="tel" id="nuTelefono" placeholder="Celular WhatsApp">
+          <button type="submit" class="btn-secundario btn-chico">+ Agregar unidad</button>
+        </form>
+        <div class="tabla-wrap tabla-compacta tabla-flota">
+          <table class="tabla-mapa">
+            <thead><tr><th>BK</th><th>Placa</th><th>Reparto</th><th>Conductor</th><th>Celular</th><th>Activa</th><th class="solo-editor"></th></tr></thead>
+            <tbody id="cuerpoFlota"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
     <div class="panel">
-      <details class="catalogo" open>
+      <details class="catalogo">
         <summary><strong>📚 Catálogo de productos y precios</strong> <span class="contador" id="resumenCatalogo"></span></summary>
         <p class="ayuda-guardar">Estos productos aparecen en el desplegable del registro y sus precios valorizan los faltantes de líquido y de envases.</p>
         <div class="barra-catalogo">
@@ -991,7 +1417,26 @@
     <h2>Actividad reciente</h2>
     <ul class="lista-actividad" id="listaActividad"></ul>
   </div>
+  <p class="pie-app">Liquidación de Inventario · Control diario por unidad — desarrollado por <b>William Bryan Alegre Porras</b></p>
 </main>
+
+<div id="vistaTrip" class="vista-trip" hidden>
+  <header class="trip-cab">
+    <div>
+      <h1>🚚 Anomalías de liquidación</h1>
+      <p class="trip-sub" id="tripSub"></p>
+    </div>
+    <div class="trip-filtros">
+      <label>Día<select id="tripDia"></select></label>
+      <label>Unidad<select id="tripBk"></select></label>
+    </div>
+  </header>
+  <div class="trip-resumen" id="tripResumen"></div>
+  <div class="tablero-unidades trip-tablero" id="tripTablero"></div>
+  <p class="trip-pie">Esta página se actualiza sola. Si algo de tu liquidación no está bien, comunícalo a tu supervisor.</p>
+</div>
+
+<div id="reporteImpresion" class="reporte-impresion"></div>
 
 <div class="aviso-flotante" id="avisoFlotante" role="status" aria-live="polite"></div>
 
@@ -1886,7 +2331,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   });
   $('btnRespaldo').addEventListener('click', function () {
     const fecha = new Date().toISOString().slice(0, 10);
-    descargar(`respaldo_liquidaciones_${fecha}.json`, JSON.stringify({ version: 3, precios: precios, liquidaciones: liquidaciones, control: control, catalogo: catalogo, flota: flota }, null, 1), 'application/json');
+    descargar(`respaldo_liquidaciones_${fecha}.json`, JSON.stringify({ version: 3, precios: precios, liquidaciones: liquidaciones, control: control, catalogo: catalogo, flota: flota, sinOperar: sinOperar }, null, 1), 'application/json');
   });
   $('btnRestaurar').addEventListener('click', function () { $('inputRespaldo').click(); });
   $('inputRespaldo').addEventListener('change', function (e) {
@@ -1910,6 +2355,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       });
       if (d.catalogo && d.catalogo.llenos) { catalogo = d.catalogo; guardarCatalogoLocal(); nubeGuardarConfig('catalogo', catalogo); }
       if (d.flota) { flota = d.flota; guardarFlotaLocal(); nubeGuardarConfig('flota', flota); }
+      if (d.sinOperar) { sinOperar = d.sinOperar; guardarSinOperarLocal(); nubeGuardarConfig('sinOperar', sinOperar); }
       nubeGuardar(cambiados); renderTodo();
       registrarActividad('restauró respaldo', `${agregadas} liquidaciones nuevas, ${actualizadas} actualizadas, ${(d.control || []).length} registros de control`);
       alert(`Respaldo restaurado: ${agregadas} nuevas, ${actualizadas} actualizadas.`);
@@ -1965,6 +2411,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   let editorAbierto = false;
   let editorSucio = false;
   let itemsEd = { liq: [], env: [] };
+  let placaNuevo = null;
+  let fechaCtlManual = false;  // true cuando el usuario eligió el día     // unidad donde se abrió un registro nuevo (vista por unidad)
   let idxCat = null;
 
   /* ---------- almacenamiento ---------- */
@@ -2190,10 +2638,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const conteo = {};
     lista.forEach(function (r) { if (r.fecha) conteo[r.fecha] = (conteo[r.fecha] || 0) + 1; });
     const dias = Object.keys(conteo).sort().reverse();
-    if (!fechaCtl || (fechaCtl !== 'mes' && !conteo[fechaCtl] && fechaCtl !== hoyIso())) fechaCtl = dias[0] || 'mes';
+    const fueraDePeriodo = fechaCtl && fechaCtl !== 'mes' && periodoSel !== 'todos' && fechaCtl.slice(0, 7) !== periodoSel;
+    if (!fechaCtl || fueraDePeriodo || !fechaCtlManual) fechaCtl = dias[0] || (periodoSel === hoyIso().slice(0, 7) ? hoyIso() : 'mes');
+    const chips = dias.slice();
+    if (fechaCtl !== 'mes' && chips.indexOf(fechaCtl) === -1) { chips.push(fechaCtl); chips.sort().reverse(); }
     $('diasCtl').innerHTML = `<button type="button" class="chip-dia${fechaCtl === 'mes' ? ' activo' : ''}" data-dia="mes">Todo el mes (${lista.length})</button>` +
-      dias.map(function (d) {
-        return `<button type="button" class="chip-dia${fechaCtl === d ? ' activo' : ''}" data-dia="${d}">${diaSemana(d)} ${d.slice(8, 10)}/${d.slice(5, 7)} <span>(${conteo[d]})</span></button>`;
+      chips.map(function (d) {
+        return `<button type="button" class="chip-dia${fechaCtl === d ? ' activo' : ''}" data-dia="${d}">${diaSemana(d)} ${d.slice(8, 10)}/${d.slice(5, 7)} <span>(${conteo[d] || 0})</span></button>`;
       }).join('');
     $('fechaCtl').value = fechaCtl !== 'mes' ? fechaCtl : '';
   }
@@ -2248,6 +2699,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function colocarEditor() {
     document.querySelectorAll('#cuerpoCtl tr.fila-editando').forEach(function (tr) { tr.classList.remove('fila-editando'); });
     if (!editorAbierto) return;
+    if (vistaLista === 'unidades') { colocarEditorUnidades(); return; }
     const tr = document.createElement('tr');
     tr.className = 'fila-editor';
     const td = document.createElement('td');
@@ -2267,8 +2719,17 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function renderTilesCtl() {
     const base = (fechaCtl && fechaCtl !== 'mes') ? ctlDelPeriodo().filter(function (r) { return r.fecha === fechaCtl; }) : ctlDelPeriodo();
     const t = totalesCtl(base);
-    $('tilesCtl').innerHTML = `
-      <div class="stat-tile stat-hero"><div class="stat-label">Viajes</div><div class="stat-valor">${t.viajes}</div></div>
+    let revision = '';
+    if (fechaCtl && fechaCtl !== 'mes') {
+      const us = unidadesDelDia(fechaCtl);
+      const rev = us.filter(function (u) { return u.registros.length || u.sinOperar; }).length;
+      const pct = us.length ? Math.round(rev * 100 / us.length) : 0;
+      revision = `<div class="stat-tile stat-hero stat-revision"><div class="stat-label">Unidades revisadas</div>
+        <div class="stat-valor">${rev}<small> / ${us.length}</small></div>
+        <div class="barra-progreso"><span style="width:${pct}%"></span></div></div>`;
+    }
+    $('tilesCtl').innerHTML = revision + `
+      <div class="stat-tile ${revision ? '' : 'stat-hero'}"><div class="stat-label">Viajes</div><div class="stat-valor">${t.viajes}</div></div>
       <div class="stat-tile stat-ambar"><div class="stat-label">Con anomalías</div><div class="stat-valor">${t.anom}</div></div>
       <div class="stat-tile"><div class="stat-label">Monto líquido</div><div class="stat-valor stat-valor-soles">${soles(t.liquido)}</div></div>
       <div class="stat-tile"><div class="stat-label">A pagar envases</div><div class="stat-valor stat-valor-soles">${soles(t.total)}</div></div>
@@ -2280,7 +2741,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function renderResumenCtl(info) {
     const base = info.base, t = info.t;
     const titulo = fechaCtl && fechaCtl !== 'mes' ? `${diaSemana(fechaCtl)} ${fechaCorta(fechaCtl)}` : etiquetaPeriodo(periodoSel);
-    if (!base.length) { $('resumenCtl').innerHTML = '<p class="ayuda-guardar">Cuando haya registros aquí verás el resumen del día.</p>'; $('cuerpoRepartoCtl').innerHTML = ''; return; }
+    if (!base.length) { $('resumenCtl').innerHTML = ''; return; }
     const pendientes = base.filter(function (r) { return cobro(r).pend > 0; });
     const sinRep = base.filter(function (r) { return !String(r.reparto || '').trim(); }).length;
     $('resumenCtl').innerHTML = `
@@ -2310,21 +2771,6 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       copiar(lineas.join('\n'), this);
     });
 
-    // por reparto (del periodo completo)
-    const mapa = {};
-    ctlDelPeriodo().forEach(function (r) {
-      const k = String(r.reparto || '').trim() || '(sin reparto)';
-      const m = mapa[k] || (mapa[k] = { k: k, viajes: 0, anom: 0, total: 0, pagado: 0, pend: 0 });
-      const c = cobro(r);
-      m.viajes++; if (tieneAnomalia(r)) m.anom++;
-      m.total += c.total; m.pagado += c.pagado; m.pend += c.pend;
-    });
-    $('cuerpoRepartoCtl').innerHTML = Object.keys(mapa).map(function (k) { return mapa[k]; })
-      .sort(function (a, b) { return b.pend - a.pend || b.total - a.total; })
-      .map(function (m) {
-        return `<tr><td>${escaparHtml(m.k)}</td><td>${m.viajes}</td><td>${m.anom}</td><td>${soles(m.total)}</td>
-          <td class="texto-verde">${soles(m.pagado)}</td><td class="${m.pend ? 'texto-rojo' : ''}">${soles(m.pend)}</td></tr>`;
-      }).join('');
   }
 
   function renderCatalogo() {
@@ -2345,10 +2791,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   }
 
   function renderControl() {
+    completarFlotaDesdeRegistros();
     $('listaPlacas').innerHTML = Object.keys(flota).sort().map(function (p) { return `<option value="${escaparHtml(p)}">${escaparHtml((flota[p].bk ? 'BK ' + flota[p].bk + ' · ' : '') + (flota[p].reparto || ''))}</option>`; }).join('');
     renderDiasCtl();
-    renderTablaCtl();
+    renderListaCtl();
     renderResumenCtl(renderTilesCtl());
+    renderRankingUnidades();
+    renderFlota();
+    if (modoTripulacion) renderTripulacion();
   }
 
   /* ---------- eventos de la vista ---------- */
@@ -2364,27 +2814,28 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     const b = e.target.closest('[data-tab]'); if (b) mostrarPestana(b.getAttribute('data-tab'));
   });
   $('selPeriodoCtl').addEventListener('change', function () {
-    periodoSel = this.value; periodoManual = true; fechaCtl = null; cerrarDetalle(); renderTodo();
+    periodoSel = this.value; periodoManual = true; fechaCtl = null; fechaCtlManual = false; cerrarDetalle(); renderTodo();
   });
   $('diasCtl').addEventListener('click', function (e) {
     const b = e.target.closest('[data-dia]'); if (!b) return;
-    fechaCtl = b.getAttribute('data-dia'); renderControl();
+    fechaCtl = b.getAttribute('data-dia'); fechaCtlManual = true; renderControl();
   });
   $('fechaCtl').addEventListener('change', function () {
+    fechaCtlManual = true;
     if (!this.value) { fechaCtl = 'mes'; renderControl(); return; }
     fechaCtl = this.value;
     const p = this.value.slice(0, 7);
     if (periodoSel !== 'todos' && periodoSel !== p) { periodoSel = p; periodoManual = true; renderTodo(); } else renderControl();
   });
   $('btnHoyCtl').addEventListener('click', function () { $('fechaCtl').value = hoyIso(); $('fechaCtl').dispatchEvent(new Event('change')); });
-  $('buscadorCtl').addEventListener('input', renderTablaCtl);
+  $('buscadorCtl').addEventListener('input', function () { renderListaCtl(); });
   $('filtroCtl').addEventListener('click', function (e) {
     const b = e.target.closest('[data-filtro]'); if (!b) return;
     filtroCtl = b.getAttribute('data-filtro');
     this.querySelectorAll('[data-filtro]').forEach(function (x) { x.classList.toggle('activo', x === b); });
-    renderTablaCtl();
+    renderListaCtl();
   });
-  $('btnExpandirCtl').addEventListener('click', function () { $('wrapCtl').classList.toggle('expandida'); renderTablaCtl(); });
+  $('btnExpandirCtl').addEventListener('click', function () { $('wrapCtl').classList.toggle('expandida'); renderListaCtl(); });
   $('cuerpoCtl').addEventListener('click', function (e) {
     const del = e.target.closest('[data-eliminar-ctl]');
     if (del) {
@@ -2403,14 +2854,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   /* ---------- edición ---------- */
   const CAMPOS_CTL = ['fecha', 'conductor', 'placa', 'reparto', 'bk', 'viaje', 'producto', 'cantidad', 'montoLiquido',
     'responsable', 'sobrantes', 'faltantes', 'montoPagar', 'estado', 'montoPagado', 'comentario'];
-  function abrirEdicionCtl(id) {
+  function abrirEdicionCtl(id, prefill) {
     if (editorAbierto && editorSucio && !confirm('Tienes cambios sin guardar en el registro abierto. ¿Descartarlos?')) return;
     const r = id ? control.find(function (x) { return x.id === id; }) : null;
     idCtlEditando = r ? r.id : null;
-    const base = r || {
+    const base = r || Object.assign({
       fecha: fechaCtl && fechaCtl !== 'mes' ? fechaCtl : hoyIso(), estado: 'sin', comentario: 'Sin anomalias',
       producto: '', cantidad: '', montoLiquido: 0, responsable: 'S/N', sobrantes: '', faltantes: '', montoPagar: 0, montoPagado: 0, viaje: 1
-    };
+    }, prefill || {});
+    placaNuevo = r ? null : ((prefill && prefill.placa) || null);
     CAMPOS_CTL.forEach(function (k) {
       const el = $('ctl_' + k); if (!el) return;
       el.value = base[k] == null ? '' : base[k];
@@ -2428,12 +2880,24 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     $('btnVerLiqCtl').style.display = r && r.liqId && liquidaciones.some(function (l) { return l.id === r.liqId; }) ? '' : 'none';
     pintarCampoPagado();
     editorAbierto = true; marcarSucio(false);
-    renderTablaCtl();
+    renderListaCtl();
     posicionarEditor();
-    setTimeout(function () { const f = puedeEditar() ? $(r ? 'ctl_reparto' : 'ctl_placa') : null; if (f && !f.value) f.focus({ preventScroll: true }); }, 50);
+    setTimeout(function () {
+      if (!puedeEditar()) return;
+      const f = !r && prefill && prefill.placa ? $('addEnvNombre') : $(r ? 'ctl_reparto' : 'ctl_placa');
+      if (f && (!f.value || f.id === 'addEnvNombre')) f.focus({ preventScroll: true });
+    }, 60);
   }
   // Deja la fila editada justo debajo de la cabecera de la tabla y el formulario a la vista
   function posicionarEditor() {
+    if (vistaLista === 'unidades') {
+      const ed = $('editorCtl');
+      const ancla = ed.closest('.tarjeta-unidad') || ed;
+      const viaje = idCtlEditando ? document.querySelector(`#tableroCtl [data-editar="${idCtlEditando}"]`) : null;
+      const top = (viaje || ancla).getBoundingClientRect().top;
+      if (top < 70 || top > window.innerHeight * 0.45) window.scrollBy({ top: top - 90, behavior: 'smooth' });
+      return;
+    }
     const wrap = $('wrapCtl');
     const filaEd = document.querySelector('#cuerpoCtl tr.fila-editando') || document.querySelector('#cuerpoCtl tr.fila-editor');
     if (filaEd) wrap.scrollTop = Math.max(0, filaEd.offsetTop - wrap.querySelector('thead').offsetHeight - 6);
@@ -2444,7 +2908,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function cerrarEditor() {
     editorAbierto = false; idCtlEditando = null; marcarSucio(false);
     $('btnVolverRegistro').hidden = true;
-    renderTablaCtl();
+    renderListaCtl();
   }
   $('formCtl').addEventListener('input', function () { marcarSucio(true); });
   $('formCtl').addEventListener('keydown', function (e) {
@@ -2521,7 +2985,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     registrarActividad(nuevo ? 'agregó control' : 'editó control',
       `${fechaCorta(r.fecha)} ${r.reparto || ''} ${r.placa} v.${r.viaje || '-'} → ${(ESTADOS[r.estado] || {}).t || ''}${r.montoPagar ? ' ' + soles(r.montoPagar) : ''}`);
     if (periodoSel !== 'todos' && periodoSel !== r.periodo) { periodoSel = r.periodo; periodoManual = true; }
-    if (fechaCtl !== 'mes') fechaCtl = r.fecha;
+    if (fechaCtl !== 'mes') { fechaCtl = r.fecha; fechaCtlManual = true; }
     let siguiente = null;
     if (accion === 'siguiente') {
       const visibles = ctlVisibles();
@@ -2534,7 +2998,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     aviso('✔ Registro guardado', 'info');
     if (siguiente) abrirEdicionCtl(siguiente);
     else {
-      const f = document.querySelector(`#cuerpoCtl tr[data-editar="${r.id}"]`);
+      const f = document.querySelector(`#vistaCtl [data-editar="${r.id}"]`);
       if (f) { f.classList.add('fila-recien'); setTimeout(function () { f.classList.remove('fila-recien'); }, 1600); }
     }
   });
@@ -3106,6 +3570,642 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     renderCatalogo();
   }
 
+  /* =====================================================================
+     VISTA POR UNIDAD · FLOTA · COMUNICACIÓN A TRIPULACIONES
+  ===================================================================== */
+  const CLAVE_VISTA_CTL = 'liquidacionesVistaCtl';
+  const CLAVE_SIN_OPERAR = 'liquidacionesSinOperar';
+  const paramsUrl = new URLSearchParams(location.search);
+  const modoTripulacion = paramsUrl.has('tripulacion');
+  const ESTADO_UNIDAD = {
+    sinrev:  { t: 'Sin revisar',          c: 'u-sinrev' },
+    ok:      { t: '✔ Sin anomalías',      c: 'u-ok' },
+    anom:    { t: 'Con anomalías',        c: 'u-anom' },
+    pend:    { t: 'Pendiente de cobro',   c: 'u-pend' },
+    nosalio: { t: 'No salió a ruta',      c: 'u-nosalio' }
+  };
+  let vistaLista = 'unidades';
+  let sinOperar = {};          // { 'YYYY-MM-DD': ['PLACA', ...] } unidades que no salieron ese día
+  let tripDia = paramsUrl.get('fecha') || null;
+  let tripBk = paramsUrl.get('bk') || '';
+  try { vistaLista = localStorage.getItem(CLAVE_VISTA_CTL) || 'unidades'; } catch (e) { /* */ }
+  try { sinOperar = JSON.parse(localStorage.getItem(CLAVE_SIN_OPERAR) || '{}') || {}; } catch (e) { sinOperar = {}; }
+  function guardarSinOperarLocal() { try { localStorage.setItem(CLAVE_SIN_OPERAR, JSON.stringify(sinOperar)); } catch (e) { /* */ } }
+
+  /* ---------- datos por unidad ---------- */
+  function claveUnidad(p) { return String(p == null ? '' : p).trim().toUpperCase(); }
+  function ordenUnidades(a, b) {
+    return String(a.bk || 'zzz').localeCompare(String(b.bk || 'zzz'), undefined, { numeric: true }) || a.placa.localeCompare(b.placa);
+  }
+  function ordenViaje(a, b) { return String(a.viaje || '').localeCompare(String(b.viaje || ''), undefined, { numeric: true }); }
+  function sumaCobro(regs) {
+    const t = { total: 0, pagado: 0, pend: 0, liquido: 0 };
+    regs.forEach(function (r) { const c = cobro(r); t.total += c.total; t.pagado += c.pagado; t.pend += c.pend; t.liquido += num(r.montoLiquido); });
+    Object.keys(t).forEach(function (k) { t[k] = Math.round(t[k] * 100) / 100; });
+    return t;
+  }
+  function nuevaUnidad(mapa, placa) {
+    const k = claveUnidad(placa);
+    if (!mapa[k]) {
+      const f = flota[k] || {};
+      mapa[k] = { placa: k, bk: f.bk || '', reparto: f.reparto || '', conductor: f.conductor || '', telefono: f.telefono || '', registros: [] };
+    }
+    return mapa[k];
+  }
+  function completarUnidad(u, r) {
+    u.registros.push(r);
+    if (r.bk) u.bk = r.bk;
+    if (r.reparto) u.reparto = r.reparto;
+    if (r.conductor) u.conductor = r.conductor;
+  }
+  function estadoUnidad(u) {
+    if (u.sinOperar) return 'nosalio';
+    if (!u.registros.length) return 'sinrev';
+    if (u.cobro.pend > 0) return 'pend';
+    if (u.registros.some(tieneAnomalia)) return 'anom';
+    return 'ok';
+  }
+  function unidadesDelDia(fecha) {
+    const mapa = {};
+    Object.keys(flota).forEach(function (p) { if (p && flota[p] && flota[p].activa !== false) nuevaUnidad(mapa, p); });
+    control.forEach(function (r) { if (r.fecha === fecha) completarUnidad(nuevaUnidad(mapa, r.placa), r); });
+    const noOp = sinOperar[fecha] || [];
+    return Object.keys(mapa).map(function (k) {
+      const u = mapa[k];
+      u.registros.sort(ordenViaje);
+      u.sinOperar = !u.registros.length && noOp.indexOf(k) !== -1;
+      u.cobro = sumaCobro(u.registros);
+      u.estado = estadoUnidad(u);
+      return u;
+    }).sort(ordenUnidades);
+  }
+  function unidadesDelPeriodo() {
+    const mapa = {};
+    ctlDelPeriodo().forEach(function (r) { completarUnidad(nuevaUnidad(mapa, r.placa), r); });
+    return Object.keys(mapa).map(function (k) {
+      const u = mapa[k];
+      u.registros.sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || '') || ordenViaje(a, b); });
+      u.cobro = sumaCobro(u.registros);
+      u.estado = estadoUnidad(u);
+      return u;
+    }).sort(ordenUnidades);
+  }
+  function deudaMes(placa, fecha) {
+    const mes = String(fecha || '').slice(0, 7);
+    return sumaCobro(control.filter(function (r) { return claveUnidad(r.placa) === placa && r.periodo === mes; }));
+  }
+  function siguienteViaje(u) {
+    return u.registros.reduce(function (m, r) { return Math.max(m, parseInt(r.viaje, 10) || 0); }, 0) + 1;
+  }
+  function diaLargo(iso) { return `${diaSemana(iso)} ${fechaCorta(iso)}`; }
+  // "BK 86", o "BK 86 (ABC-123)" si ese BK aparece en más de una placa de la lista
+  function nombresCortos(lista) {
+    const cuenta = {};
+    lista.forEach(function (u) { if (u.bk) cuenta[u.bk] = (cuenta[u.bk] || 0) + 1; });
+    return lista.map(function (u) { return u.bk ? 'BK ' + u.bk + (cuenta[u.bk] > 1 ? ' (' + u.placa + ')' : '') : u.placa; });
+  }
+
+  /* ---------- detalle legible de una anomalía ---------- */
+  function detalleAnomalia(r) {
+    const d = [];
+    if (r.itemsLiq && r.itemsLiq.length) {
+      r.itemsLiq.forEach(function (it) {
+        const monto = it.tipo === 'falta' && num(it.precio) ? ` (${soles(num(it.cant) * num(it.precio))})` : '';
+        d.push({ t: it.tipo === 'falta' ? 'liq' : 'sobra', x: `${it.tipo === 'falta' ? 'Falta' : 'Sobra'} líquido: ${num(it.cant)} ${it.nombre}${monto}` });
+      });
+    } else if (r.producto) {
+      d.push({ t: 'liq', x: `Líquido: ${r.producto}${r.cantidad ? ' (' + r.cantidad + ')' : ''}${num(r.montoLiquido) ? ' · ' + soles(r.montoLiquido) : ''}` });
+    }
+    if (r.faltantes) d.push({ t: 'falta', x: 'Faltan ' + r.faltantes });
+    if (r.sobrantes) d.push({ t: 'sobra', x: 'Sobran ' + r.sobrantes });
+    return d;
+  }
+  function comentarioUtil(r) { return r.comentario && !/^sin anomal/i.test(String(r.comentario).trim()) ? r.comentario : ''; }
+  function textoPagoMsg(r) {
+    const c = cobro(r);
+    if (r.estado === 'pagado') return 'Pagado ✅';
+    if (r.estado === 'parcial') return `Pago parcial: pagó ${soles(c.pagado)}, debe ${soles(c.pend)}`;
+    if (r.estado === 'no_pagado') return 'No pagado ❌';
+    if (r.estado === 'sobrante') return 'Sobrante';
+    return 'Pendiente de pago';
+  }
+
+  /* ---------- tarjetas ---------- */
+  function lineaViaje(r, conFecha) {
+    const c = cobro(r);
+    const e = ESTADOS[r.estado] || ESTADOS.pendiente;
+    const det = detalleAnomalia(r);
+    const com = comentarioUtil(r);
+    return `<div class="viaje-fila v-${e.c}" data-editar="${r.id}" tabindex="0">
+      <div class="viaje-num">${conFecha ? `<span>${diaSemana(r.fecha)} ${fechaCorta(r.fecha).slice(0, 5)}</span>` : ''}V${escaparHtml(r.viaje || '-')}</div>
+      <div class="viaje-det">
+        ${det.length ? det.map(function (d) { return `<div class="det det-${d.t}">${escaparHtml(d.x)}</div>`; }).join('') : `<div class="det det-ok">${r.estado === 'sin' ? 'Sin anomalías' : escaparHtml(e.t)}</div>`}
+        ${com ? `<div class="det det-com">💬 ${escaparHtml(com)}</div>` : ''}
+        ${r.responsable && !/^S\/?N$/i.test(r.responsable) ? `<div class="det det-resp">Responsable: ${escaparHtml(r.responsable)}</div>` : ''}
+      </div>
+      <div class="viaje-lado">
+        ${c.total ? `<div class="viaje-monto">${soles(c.total)}</div>` : ''}
+        ${badgeEstado(r)}
+      </div>
+    </div>`;
+  }
+  function tarjetaUnidad(u, fecha, opciones) {
+    opciones = opciones || {};
+    const est = ESTADO_UNIDAD[u.estado] || ESTADO_UNIDAD.sinrev;
+    const mes = opciones.mes;
+    const deuda = mes ? u.cobro : deudaMes(u.placa, fecha);
+    const sig = siguienteViaje(u);
+    const regs = mes ? u.registros.filter(tieneAnomalia) : u.registros;
+    const okMes = mes ? u.registros.length - regs.length : 0;
+    let cuerpo;
+    if (u.sinOperar) cuerpo = '<p class="tu-nota">Marcada como que no salió a ruta este día.</p>';
+    else if (!u.registros.length) cuerpo = '<p class="tu-nota">Aún no se registra su liquidación.</p>';
+    else cuerpo = regs.map(function (r) { return lineaViaje(r, mes); }).join('') +
+      (mes && okMes ? `<p class="tu-nota tu-nota-ok">✔ ${plural(okMes, 'viaje')} sin anomalías en el mes</p>` : '');
+    const totales = [];
+    if (u.cobro.total) totales.push(`<span>${mes ? 'A pagar en el mes' : 'A pagar hoy'} <b>${soles(u.cobro.total)}</b></span>`);
+    if (u.cobro.pend) totales.push(`<span class="texto-rojo">Pendiente <b>${soles(u.cobro.pend)}</b></span>`);
+    if (!mes && deuda.pend > u.cobro.pend + 0.004) totales.push(`<span>Deuda del mes <b class="texto-rojo">${soles(deuda.pend)}</b></span>`);
+    let acciones = '';
+    if (!opciones.soloLectura) {
+      const edit = [];
+      if (!mes && !u.sinOperar) {
+        edit.push(`<button type="button" class="btn-ok-rapido" data-accion="sin-anom" title="Registrar el viaje ${sig} sin anomalías">✔ ${u.registros.length ? 'Viaje ' + sig + ' sin anomalías' : 'Sin anomalías'}</button>`);
+        edit.push(`<button type="button" class="btn-secundario" data-accion="nuevo">+ ${u.registros.length ? 'Viaje ' + sig : 'Registrar anomalía'}</button>`);
+      }
+      if (!mes && !u.registros.length) edit.push(`<button type="button" class="btn-secundario btn-tenue" data-accion="${u.sinOperar ? 'reactivar' : 'no-salio'}">${u.sinOperar ? '↺ Sí salió' : '🚫 No salió'}</button>`);
+      const com = [];
+      if (u.registros.length && !mes) {
+        com.push(`<button type="button" class="btn-wsp" data-accion="whatsapp" title="${u.telefono ? 'Enviar al WhatsApp de ' + escaparHtml(u.reparto || u.placa) : 'Enviar por WhatsApp (elige el contacto)'}">📲 ${u.telefono ? 'Enviar' : 'WhatsApp'}</button>`);
+        com.push(`<button type="button" class="btn-secundario btn-icono-txt" data-accion="copiar" title="Copiar mensaje para la tripulación">📋</button>`);
+      }
+      if (edit.length || com.length) acciones = `<footer class="tu-acciones"><span class="solo-editor tu-acc-edit">${edit.join('')}</span><span class="tu-acc-com">${com.join('')}</span></footer>`;
+    }
+    return `<article class="tarjeta-unidad ${est.c}" data-unidad="${escaparHtml(u.placa)}">
+      <header class="tu-cab">
+        <div class="tu-bk">${u.bk ? `<small>BK</small>${escaparHtml(u.bk)}` : '<small>BK</small>—'}</div>
+        <div class="tu-id">
+          <div class="tu-placa">${escaparHtml(u.placa || 'Sin placa')}</div>
+          <div class="tu-rep">${escaparHtml(u.reparto || 'Sin reparto asignado')}${u.conductor ? ` · <span title="Conductor">🪪 ${escaparHtml(u.conductor)}</span>` : ''}</div>
+        </div>
+        <span class="tu-estado">${mes ? `${plural(u.registros.length, 'viaje')} · ${regs.length} con anomalías` : est.t}</span>
+      </header>
+      <div class="tu-cuerpo">${cuerpo}</div>
+      ${totales.length ? `<div class="tu-totales">${totales.join('')}</div>` : ''}
+      ${acciones}
+    </article>`;
+  }
+
+  /* ---------- render de la lista (tarjetas o tabla) ---------- */
+  function coincideBusqueda(u, t) {
+    if (!t) return true;
+    const texto = [u.placa, u.bk, 'bk' + u.bk, u.reparto, u.conductor].concat(u.registros.map(function (r) {
+      return [r.producto, r.faltantes, r.sobrantes, r.comentario, r.responsable].join(' ');
+    })).join(' ').toLowerCase();
+    return texto.indexOf(t) !== -1;
+  }
+  function pasaFiltro(u) {
+    if (filtroCtl === 'anom') return u.estado === 'anom' || u.estado === 'pend';
+    if (filtroCtl === 'pend') return u.cobro.pend > 0;
+    if (filtroCtl === 'sinrev') return u.estado === 'sinrev';
+    return true;
+  }
+  function renderListaCtl() {
+    const porUnidad = vistaLista === 'unidades';
+    $('tableroCtl').hidden = !porUnidad;
+    $('wrapCtl').hidden = porUnidad;
+    $('ayudaTabla').hidden = porUnidad;
+    $('ayudaTablero').hidden = !porUnidad;
+    document.querySelectorAll('#vistaCtlToggle [data-vista]').forEach(function (b) { b.classList.toggle('activo', b.getAttribute('data-vista') === vistaLista); });
+    const diaSel = fechaCtl && fechaCtl !== 'mes';
+    $('chipSinRev').hidden = !(porUnidad && diaSel);
+    if ($('chipSinRev').hidden && filtroCtl === 'sinrev') {
+      filtroCtl = 'todos';
+      document.querySelectorAll('#filtroCtl [data-filtro]').forEach(function (x) { x.classList.toggle('activo', x.getAttribute('data-filtro') === 'todos'); });
+    }
+    if (porUnidad) renderUnidadesCtl(); else renderTablaCtl();
+  }
+  function renderUnidadesCtl() {
+    $('holderEditor').appendChild($('editorCtl'));
+    const cont = $('tableroCtl');
+    const t = $('buscadorCtl').value.toLowerCase().trim();
+    const diaSel = fechaCtl && fechaCtl !== 'mes';
+    const todas = diaSel ? unidadesDelDia(fechaCtl) : unidadesDelPeriodo();
+    const lista = todas.filter(function (u) { return coincideBusqueda(u, t) && pasaFiltro(u); });
+    if (!todas.length) {
+      cont.innerHTML = `<div class="vacio-tablero"><div class="vacio-icono">🚚</div><strong>${diaSel ? 'No hay unidades para este día.' : 'Sin registros en este periodo.'}</strong>
+        <p>Agrega tus unidades en <b>Flota y tripulaciones</b> (más abajo) para que aparezcan cada día como «Sin revisar», o registra un viaje con <b>+ Agregar registro</b>.</p></div>`;
+    } else if (!lista.length) {
+      cont.innerHTML = '<div class="vacio-tablero"><strong>Ninguna unidad coincide con el filtro.</strong></div>';
+    } else {
+      cont.innerHTML = lista.map(function (u) { return tarjetaUnidad(u, fechaCtl, { mes: !diaSel }); }).join('');
+    }
+    colocarEditor();
+    if (diaSel) {
+      const rev = todas.filter(function (u) { return u.registros.length || u.sinOperar; }).length;
+      $('contadorCtl').textContent = `${lista.length === todas.length ? '' : lista.length + ' de '}${plural(todas.length, 'unidad', 'unidades')} · ${rev} revisadas · ${diaLargo(fechaCtl)}`;
+    } else {
+      $('contadorCtl').textContent = `${plural(lista.length, 'unidad', 'unidades')} con registros · ${etiquetaPeriodo(periodoSel)} · se muestran solo los viajes con anomalías`;
+    }
+    $('btnExpandirCtl').style.display = 'none';
+  }
+  function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+  function colocarEditorUnidades() {
+    document.querySelectorAll('#tableroCtl .editando, #tableroCtl .con-editor').forEach(function (e) { e.classList.remove('editando', 'con-editor'); });
+    const slot = document.createElement('div');
+    slot.className = 'editor-slot';
+    slot.appendChild($('editorCtl'));
+    const fila = idCtlEditando ? document.querySelector(`#tableroCtl .viaje-fila[data-editar="${cssEsc(idCtlEditando)}"]`) : null;
+    if (fila) { fila.classList.add('editando'); fila.after(slot); fila.closest('.tarjeta-unidad').classList.add('con-editor'); return; }
+    const card = placaNuevo ? document.querySelector(`#tableroCtl .tarjeta-unidad[data-unidad="${cssEsc(placaNuevo)}"]`) : null;
+    if (card) { card.querySelector('.tu-cuerpo').appendChild(slot); card.classList.add('con-editor'); return; }
+    const cont = $('tableroCtl');
+    const vacio = cont.querySelector('.vacio-tablero');
+    if (vacio) vacio.remove();
+    slot.classList.add('editor-suelto');
+    cont.insertBefore(slot, cont.firstChild);
+  }
+
+  /* ---------- acciones de las tarjetas ---------- */
+  function unidadPorPlaca(placa) {
+    const lista = fechaCtl && fechaCtl !== 'mes' ? unidadesDelDia(fechaCtl) : unidadesDelPeriodo();
+    return lista.find(function (u) { return u.placa === placa; });
+  }
+  function accionUnidad(acc, placa, boton) {
+    const u = unidadPorPlaca(placa);
+    if (!u) return;
+    const fecha = fechaCtl && fechaCtl !== 'mes' ? fechaCtl : hoyIso();
+    if (acc === 'whatsapp') { window.open(enlaceWhatsapp(mensajeUnidad(u, fecha), u.telefono), '_blank'); return; }
+    if (acc === 'copiar') { copiar(mensajeUnidad(u, fecha), boton); return; }
+    if (!puedeEditar()) return;
+    if (acc === 'sin-anom') {
+      const r = {
+        id: 'ctl_m_' + Date.now() + '_' + Math.floor(Math.random() * 100000),
+        fecha: fecha, periodo: fecha.slice(0, 7), placa: u.placa, bk: u.bk, reparto: u.reparto, conductor: u.conductor,
+        viaje: String(siguienteViaje(u)), producto: '', cantidad: '', montoLiquido: 0, responsable: 'S/N',
+        sobrantes: '', faltantes: '', montoPagar: 0, estado: 'sin', montoPagado: 0, comentario: 'Sin anomalias',
+        itemsLiq: [], itemsEnv: [], estadoAuto: false, responsableAuto: false, comentarioAuto: false, viajeManual: true
+      };
+      control.push(r);
+      nubeGuardar([r]);
+      registrarActividad('registró sin anomalías', `${fechaCorta(fecha)} BK ${u.bk || '-'} ${u.placa} v.${r.viaje}`);
+      renderTodo();
+      const f = document.querySelector(`#tableroCtl [data-editar="${r.id}"]`);
+      if (f) { f.classList.add('fila-recien'); setTimeout(function () { f.classList.remove('fila-recien'); }, 1600); }
+      return;
+    }
+    if (acc === 'nuevo') {
+      abrirEdicionCtl(null, {
+        fecha: fecha, placa: u.placa, bk: u.bk, reparto: u.reparto, conductor: u.conductor, viaje: siguienteViaje(u),
+        estado: 'pendiente', comentario: '', responsable: ''
+      });
+      return;
+    }
+    if (acc === 'no-salio' || acc === 'reactivar') {
+      const l = (sinOperar[fecha] || []).filter(function (p) { return p !== u.placa; });
+      if (acc === 'no-salio') l.push(u.placa);
+      if (l.length) sinOperar[fecha] = l; else delete sinOperar[fecha];
+      guardarSinOperarLocal(); nubeGuardarConfig('sinOperar', sinOperar);
+      registrarActividad(acc === 'no-salio' ? 'marcó no salió' : 'quitó no salió', `${fechaCorta(fecha)} BK ${u.bk || '-'} ${u.placa}`);
+      renderControl();
+    }
+  }
+  $('tableroCtl').addEventListener('click', function (e) {
+    if (e.target.closest('.editor-slot')) return;
+    const btn = e.target.closest('[data-accion]');
+    if (btn) {
+      const card = btn.closest('.tarjeta-unidad');
+      accionUnidad(btn.getAttribute('data-accion'), card ? card.getAttribute('data-unidad') : '', btn);
+      return;
+    }
+    const fila = e.target.closest('.viaje-fila[data-editar]');
+    if (fila && fila.getAttribute('data-editar') !== idCtlEditando) abrirEdicionCtl(fila.getAttribute('data-editar'));
+  });
+  $('tableroCtl').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || e.target.closest('.editor-slot')) return;
+    const fila = e.target.closest('.viaje-fila[data-editar]');
+    if (fila) { e.preventDefault(); abrirEdicionCtl(fila.getAttribute('data-editar')); }
+  });
+  $('vistaCtlToggle').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-vista]'); if (!b) return;
+    vistaLista = b.getAttribute('data-vista');
+    try { localStorage.setItem(CLAVE_VISTA_CTL, vistaLista); } catch (err) { /* */ }
+    renderListaCtl();
+  });
+  function moverDia(delta) {
+    const base = fechaCtl && fechaCtl !== 'mes' ? fechaCtl : hoyIso();
+    const d = new Date(base + 'T12:00:00');
+    d.setDate(d.getDate() + delta);
+    $('fechaCtl').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    $('fechaCtl').dispatchEvent(new Event('change'));
+  }
+  $('btnDiaAnt').addEventListener('click', function () { moverDia(-1); });
+  $('btnDiaSig').addEventListener('click', function () { moverDia(1); });
+
+  /* ---------- mensajes para las tripulaciones ---------- */
+  function enlaceWhatsapp(texto, telefono) {
+    let tel = String(telefono || '').replace(/\D/g, '');
+    if (tel.length === 9 && tel.charAt(0) === '9') tel = '51' + tel;
+    return 'https://wa.me/' + tel + '?text=' + encodeURIComponent(texto);
+  }
+  function mensajeUnidad(u, fecha) {
+    const L = [`🚚 *Liquidación del ${diaLargo(fecha)}*`, `*${u.bk ? 'BK ' + u.bk + ' · ' : ''}${u.placa}*${u.reparto ? ' — ' + u.reparto : ''}`, ''];
+    u.registros.forEach(function (r) {
+      const det = detalleAnomalia(r);
+      if (!det.length && r.estado === 'sin') { L.push(`Viaje ${r.viaje || '-'}: ✅ Sin anomalías`); return; }
+      L.push(`Viaje ${r.viaje || '-'}: ⚠️ ${det.map(function (d) { return d.x; }).join(' · ') || (ESTADOS[r.estado] || {}).t || ''}`);
+      if (cobro(r).total) L.push(`   💵 ${soles(cobro(r).total)} — ${textoPagoMsg(r)}`);
+      if (comentarioUtil(r)) L.push(`   📝 ${comentarioUtil(r)}`);
+    });
+    if (u.cobro.pend) { L.push(''); L.push(`💰 *Pendiente de pago: ${soles(u.cobro.pend)}*`); }
+    const deuda = deudaMes(u.placa, fecha);
+    if (deuda.pend > u.cobro.pend + 0.004) L.push(`📌 Deuda pendiente del mes: ${soles(deuda.pend)}`);
+    const link = linkTripulacion(u.bk, fecha);
+    if (link) { L.push(''); L.push('Ver detalle: ' + link); }
+    if (u.cobro.pend) L.push('Por favor regularizar con el supervisor. Gracias 🙌');
+    return L.join('\n');
+  }
+  function mensajeDia(fecha) {
+    const us = unidadesDelDia(fecha);
+    const conReg = us.filter(function (u) { return u.registros.length; });
+    const anom = us.filter(function (u) { return u.estado === 'anom' || u.estado === 'pend'; });
+    const ok = us.filter(function (u) { return u.estado === 'ok'; });
+    const sinRev = us.filter(function (u) { return u.estado === 'sinrev'; });
+    const t = sumaCobro(conReg.reduce(function (a, u) { return a.concat(u.registros); }, []));
+    const L = [`📋 *Liquidaciones del ${diaLargo(fecha)}*`,
+      `Unidades revisadas: ${us.length - sinRev.length} de ${us.length} · ✅ ${ok.length} sin anomalías · ⚠️ ${anom.length} con anomalías`, ''];
+    if (anom.length) {
+      L.push('⚠️ *Con anomalías*');
+      anom.forEach(function (u) {
+        L.push(`• *${u.bk ? 'BK ' + u.bk + ' · ' : ''}${u.placa}*${u.reparto ? ' (' + u.reparto + ')' : ''}`);
+        u.registros.filter(tieneAnomalia).forEach(function (r) {
+          const det = detalleAnomalia(r).map(function (d) { return d.x; }).join(' · ') || (ESTADOS[r.estado] || {}).t;
+          L.push(`   V${r.viaje || '-'}: ${det}${cobro(r).total ? ' → ' + soles(cobro(r).total) + ' ' + textoPagoMsg(r) : ''}`);
+        });
+      });
+      L.push('');
+    }
+    if (ok.length) L.push(`✅ *Sin anomalías:* ${nombresCortos(ok).join(', ')}`);
+    if (sinRev.length) L.push(`⏳ *Falta revisar:* ${nombresCortos(sinRev).join(', ')}`);
+    if (t.total) { L.push(''); L.push(`💰 Total a pagar: ${soles(t.total)} · Cobrado: ${soles(t.pagado)} · *Pendiente: ${soles(t.pend)}*`); }
+    const link = linkTripulacion('', fecha);
+    if (link) { L.push(''); L.push('Detalle por unidad: ' + link); }
+    return L.join('\n');
+  }
+  function diaElegido() {
+    if (fechaCtl && fechaCtl !== 'mes') return fechaCtl;
+    alert('Primero elige un día (los botones de días o el calendario).');
+    return null;
+  }
+  $('btnMsgDia').addEventListener('click', function () { const f = diaElegido(); if (f) window.open(enlaceWhatsapp(mensajeDia(f), ''), '_blank'); });
+  $('btnCopiarMsgDia').addEventListener('click', function () { const f = diaElegido(); if (f) copiar(mensajeDia(f), this); });
+
+  /* ---------- reporte imprimible para firmar ---------- */
+  $('btnImprimirDia').addEventListener('click', function () {
+    const fecha = diaElegido(); if (!fecha) return;
+    const us = unidadesDelDia(fecha);
+    const conReg = us.filter(function (u) { return u.registros.length; });
+    const t = sumaCobro(conReg.reduce(function (a, u) { return a.concat(u.registros); }, []));
+    const filas = [];
+    us.forEach(function (u) {
+      if (!u.registros.length) {
+        filas.push(`<tr class="rp-gris"><td>${escaparHtml(u.bk || '-')}</td><td>${escaparHtml(u.placa)}</td><td>${escaparHtml(u.reparto || '')}</td><td>—</td>
+          <td colspan="3">${u.sinOperar ? 'No salió a ruta' : 'Sin revisar'}</td><td></td></tr>`);
+        return;
+      }
+      u.registros.forEach(function (r, i) {
+        const det = detalleAnomalia(r).map(function (d) { return escaparHtml(d.x); }).join('<br>');
+        const com = comentarioUtil(r);
+        filas.push(`<tr>
+          ${i === 0 ? `<td rowspan="${u.registros.length}"><b>${escaparHtml(u.bk || '-')}</b></td><td rowspan="${u.registros.length}">${escaparHtml(u.placa)}</td><td rowspan="${u.registros.length}">${escaparHtml(u.reparto || '')}</td>` : ''}
+          <td>${escaparHtml(r.viaje || '-')}</td>
+          <td>${det || 'Sin anomalías'}${com ? `<br><i>Obs.: ${escaparHtml(com)}</i>` : ''}</td>
+          <td class="rp-num">${cobro(r).total ? soles(cobro(r).total) : '—'}</td>
+          <td>${r.estado === 'sin' ? '✔' : escaparHtml((ESTADOS[r.estado] || {}).t || '')}</td>
+          ${i === 0 ? `<td rowspan="${u.registros.length}" class="rp-firma"></td>` : ''}
+        </tr>`);
+      });
+    });
+    $('reporteImpresion').innerHTML = `
+      <div class="rp-cab">
+        <div><h1>Reporte de anomalías de liquidación</h1><p>${diaLargo(fecha)}</p></div>
+        <div class="rp-kpis">
+          <span>Unidades: <b>${us.length}</b></span><span>Con anomalías: <b>${us.filter(function (u) { return u.estado === 'anom' || u.estado === 'pend'; }).length}</b></span>
+          <span>A pagar: <b>${soles(t.total)}</b></span><span>Pendiente: <b>${soles(t.pend)}</b></span>
+        </div>
+      </div>
+      <table class="rp-tabla">
+        <thead><tr><th>BK</th><th>Placa</th><th>Reparto</th><th>Viaje</th><th>Detalle de la anomalía</th><th>A pagar</th><th>Estado</th><th>Firma del responsable</th></tr></thead>
+        <tbody>${filas.join('')}</tbody>
+      </table>
+      <div class="rp-pie"><div>Supervisor: _______________________________</div><div>Firma: ______________________</div><div>Fecha: ____/____/________</div></div>`;
+    registrarActividad('imprimió reporte', diaLargo(fecha));
+    setTimeout(function () { window.print(); }, 50);
+  });
+
+  /* ---------- link para tripulaciones (vista de solo lectura) ---------- */
+  function linkTripulacion(bk, fecha) {
+    if (location.protocol === 'file:') return '';
+    const u = new URL(location.origin + location.pathname);
+    u.searchParams.set('tripulacion', '1');
+    if (bk) u.searchParams.set('bk', bk);
+    if (fecha) u.searchParams.set('fecha', fecha);
+    const c = configNube();
+    const embebida = SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey;
+    if (c.url && c.anonKey && !embebida) u.searchParams.set('c', btoa(JSON.stringify({ u: c.url, k: c.anonKey })));
+    return u.toString();
+  }
+  $('btnLinkTrip').addEventListener('click', function () {
+    const panel = $('panelLinks');
+    if (!panel.hidden) { panel.hidden = true; return; }
+    const c = configNube();
+    const avisos = [];
+    if (location.protocol === 'file:') avisos.push('Esta página está abierta como archivo de tu computadora, así que no puede dar un link que abra otro celular. <b>Publícala en GitHub Pages</b> (está en el zip) y abre la página desde ese link: ahí este botón te dará los links para cada tripulación.');
+    if (!c.url || !c.anonKey) avisos.push('No hay conexión a Supabase: las tripulaciones no verían tus datos. Configúrala con <b>⚙️ Conexión</b>.');
+    const fecha = fechaCtl && fechaCtl !== 'mes' ? fechaCtl : '';
+    let html = `<div class="cabecera-panel"><h3>🔗 Links para tripulaciones (solo lectura)</h3><button type="button" class="btn-secundario btn-chico" data-cerrar-links>✕</button></div>`;
+    if (avisos.length) html += avisos.map(function (a) { return `<p class="aviso-link">${a}</p>`; }).join('');
+    if (location.protocol !== 'file:') {
+      const general = linkTripulacion('', '');
+      html += `<p class="ayuda-guardar">La tripulación abre el link en su celular y ve sus anomalías actualizadas al instante (sin poder modificar nada). Sin fecha, el link muestra siempre el último día con registros.</p>
+        <div class="link-fila"><span><b>Todas las unidades</b></span><input readonly value="${escaparHtml(general)}"><button type="button" class="btn-secundario btn-chico" data-copiar-link="${escaparHtml(general)}">📋 Copiar</button></div>`;
+      const us = (fecha ? unidadesDelDia(fecha) : unidadesDelPeriodo()).filter(function (u) { return u.bk; });
+      html += us.map(function (u) {
+        const l = linkTripulacion(u.bk, '');
+        return `<div class="link-fila"><span><b>BK ${escaparHtml(u.bk)}</b> · ${escaparHtml(u.placa)} ${u.reparto ? '· ' + escaparHtml(u.reparto) : ''}</span><input readonly value="${escaparHtml(l)}">
+          <button type="button" class="btn-secundario btn-chico" data-copiar-link="${escaparHtml(l)}">📋</button>
+          <a class="btn-wsp btn-chico" target="_blank" rel="noopener" href="${escaparHtml(enlaceWhatsapp('Link para ver las anomalías de liquidación de tu unidad (BK ' + u.bk + '): ' + l, u.telefono))}">📲</a></div>`;
+      }).join('');
+    }
+    panel.innerHTML = html;
+    panel.hidden = false;
+  });
+  $('panelLinks').addEventListener('click', function (e) {
+    if (e.target.closest('[data-cerrar-links]')) { this.hidden = true; return; }
+    const b = e.target.closest('[data-copiar-link]');
+    if (b) copiar(b.getAttribute('data-copiar-link'), b);
+    const inp = e.target.closest('input'); if (inp) inp.select();
+  });
+
+  /* ---------- flota y tripulaciones ---------- */
+  // Toda placa que aparece en los registros pasa a la flota (sin pisar lo que ya tenga), con su último BK y reparto
+  function completarFlotaDesdeRegistros() {
+    const ultimo = {};
+    control.forEach(function (r) {
+      const k = claveUnidad(r.placa);
+      if (!k || flota[k]) return;
+      if (!ultimo[k] || (r.fecha || '') >= (ultimo[k].fecha || '')) ultimo[k] = r;
+    });
+    // Fecha del último registro de cada placa: las que no liquidan hace más de 3 semanas quedan inactivas
+    const ultimaFecha = {};
+    control.forEach(function (r) { const k = claveUnidad(r.placa); if (k && (r.fecha || '') > (ultimaFecha[k] || '')) ultimaFecha[k] = r.fecha; });
+    const limite = new Date(); limite.setDate(limite.getDate() - 21);
+    const limiteIso = limite.toISOString().slice(0, 10);
+    let cambio = false;
+    Object.keys(flota).forEach(function (k) {
+      if (flota[k] && flota[k].activa === undefined && ultimaFecha[k]) { flota[k].activa = ultimaFecha[k] >= limiteIso; cambio = true; }
+    });
+    const nuevas = Object.keys(ultimo);
+    nuevas.forEach(function (k) {
+      const r = ultimo[k];
+      flota[k] = { bk: r.bk || '', reparto: r.reparto || '', conductor: r.conductor || '', telefono: '', activa: (r.fecha || '') >= limiteIso };
+      cambio = true;
+    });
+    if (!cambio) return;
+    guardarFlotaLocal();
+    if (sb && usuario) nubeGuardarConfig('flota', flota);
+  }
+  function renderFlota() {
+    const placas = Object.keys(flota).filter(Boolean).sort(function (a, b) {
+      return String(flota[a].bk || 'zzz').localeCompare(String(flota[b].bk || 'zzz'), undefined, { numeric: true }) || a.localeCompare(b);
+    });
+    const dis = puedeEditar() ? '' : 'disabled';
+    $('resumenFlota').textContent = `${placas.filter(function (p) { return flota[p].activa !== false; }).length} activas de ${placas.length}`;
+    $('cuerpoFlota').innerHTML = placas.length ? placas.map(function (p) {
+      const f = flota[p];
+      return `<tr class="${f.activa === false ? 'fila-inactiva' : ''}" data-placa="${escaparHtml(p)}">
+        <td><input type="text" data-campo="bk" value="${escaparHtml(f.bk || '')}" class="in-corto" ${dis}></td>
+        <td class="celda-placa">${escaparHtml(p)}</td>
+        <td><input type="text" data-campo="reparto" value="${escaparHtml(f.reparto || '')}" ${dis}></td>
+        <td><input type="text" data-campo="conductor" value="${escaparHtml(f.conductor || '')}" class="in-medio" ${dis}></td>
+        <td><input type="tel" data-campo="telefono" value="${escaparHtml(f.telefono || '')}" placeholder="9xx xxx xxx" class="in-medio" ${dis}></td>
+        <td class="celda-centro"><input type="checkbox" data-campo="activa" ${f.activa === false ? '' : 'checked'} ${dis} title="Debe liquidar cada día"></td>
+        <td class="solo-editor"><button type="button" class="btn-eliminar btn-icono" data-quitar-unidad title="Quitar de la flota">✕</button></td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="7" class="vacio">Aún no hay unidades. Agrégalas arriba o se irán sumando al registrar viajes.</td></tr>';
+  }
+  function guardarFlota(detalle) {
+    guardarFlotaLocal(); nubeGuardarConfig('flota', flota);
+    if (detalle) registrarActividad('actualizó flota', detalle);
+  }
+  $('cuerpoFlota').addEventListener('change', function (e) {
+    const inp = e.target.closest('[data-campo]'); if (!inp || !puedeEditar()) return;
+    const placa = inp.closest('tr').getAttribute('data-placa');
+    const campo = inp.getAttribute('data-campo');
+    flota[placa] = flota[placa] || {};
+    flota[placa][campo] = campo === 'activa' ? inp.checked : inp.value.trim();
+    guardarFlota(`${placa}: ${campo} → ${campo === 'activa' ? (inp.checked ? 'activa' : 'inactiva') : inp.value.trim()}`);
+    renderControl();
+  });
+  $('cuerpoFlota').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-quitar-unidad]'); if (!b || !puedeEditar()) return;
+    const placa = b.closest('tr').getAttribute('data-placa');
+    if (!confirm(`¿Quitar la unidad ${placa} de la flota? Sus registros se conservan.`)) return;
+    delete flota[placa];
+    guardarFlota('quitó ' + placa);
+    renderControl();
+  });
+  $('formUnidad').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!puedeEditar()) return;
+    const placa = claveUnidad($('nuPlaca').value);
+    if (!placa) return;
+    flota[placa] = Object.assign({}, flota[placa], {
+      bk: $('nuBk').value.trim(), reparto: $('nuReparto').value.trim(), conductor: $('nuConductor').value.trim(),
+      telefono: $('nuTelefono').value.trim(), activa: true
+    });
+    guardarFlota(`agregó ${placa} (BK ${flota[placa].bk || '-'})`);
+    this.reset();
+    renderControl();
+    aviso(`Unidad ${placa} agregada a la flota`, 'info');
+  });
+
+  /* ---------- resumen del mes por unidad ---------- */
+  function renderRankingUnidades() {
+    const us = unidadesDelPeriodo();
+    const filas = us.map(function (u) {
+      const an = u.registros.filter(tieneAnomalia).length;
+      return { u: u, an: an, pct: u.registros.length ? Math.round((u.registros.length - an) * 100 / u.registros.length) : 0 };
+    }).sort(function (a, b) { return b.u.cobro.pend - a.u.cobro.pend || b.an - a.an || ordenUnidades(a.u, b.u); });
+    $('cuerpoRankingCtl').innerHTML = filas.length ? filas.map(function (x) {
+      const u = x.u;
+      return `<tr class="fila-clic" data-ver-unidad="${escaparHtml(u.placa)}" title="Ver el historial del mes de esta unidad">
+        <td><b>${escaparHtml(u.bk || '—')}</b></td><td class="celda-placa">${escaparHtml(u.placa)}</td><td>${escaparHtml(u.reparto || '')}</td>
+        <td>${u.registros.length}</td><td>${x.an}</td>
+        <td><div class="mini-barra" title="${x.pct}% de viajes sin anomalías"><span style="width:${x.pct}%"></span></div><small>${x.pct}%</small></td>
+        <td>${u.cobro.total ? soles(u.cobro.total) : '—'}</td><td class="texto-verde">${u.cobro.pagado ? soles(u.cobro.pagado) : '—'}</td>
+        <td class="${u.cobro.pend ? 'texto-rojo' : ''}"><b>${u.cobro.pend ? soles(u.cobro.pend) : '—'}</b></td></tr>`;
+    }).join('') : '<tr><td colspan="9" class="vacio">Sin registros en este periodo.</td></tr>';
+    const t = sumaCobro(ctlDelPeriodo());
+    const an = ctlDelPeriodo().filter(tieneAnomalia).length;
+    $('pieRankingCtl').innerHTML = filas.length ? `<tr><td colspan="3">TOTAL ${escaparHtml(etiquetaPeriodo(periodoSel))}</td><td>${ctlDelPeriodo().length}</td><td>${an}</td><td></td>
+      <td>${soles(t.total)}</td><td>${soles(t.pagado)}</td><td>${soles(t.pend)}</td></tr>` : '';
+  }
+  $('cuerpoRankingCtl').addEventListener('click', function (e) {
+    const f = e.target.closest('[data-ver-unidad]'); if (!f) return;
+    $('buscadorCtl').value = f.getAttribute('data-ver-unidad').toLowerCase();
+    fechaCtl = 'mes'; fechaCtlManual = true; vistaLista = 'unidades';
+    renderControl();
+    $('tableroCtl').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ---------- vista para tripulaciones (?tripulacion) ---------- */
+  function renderTripulacion() {
+    const dias = Array.from(new Set(control.map(function (r) { return r.fecha; }).filter(Boolean))).sort().reverse().slice(0, 45);
+    if (!tripDia || (dias.indexOf(tripDia) === -1 && dias.length && !paramsUrl.get('fecha'))) tripDia = dias[0] || hoyIso();
+    $('tripDia').innerHTML = (dias.indexOf(tripDia) === -1 ? [tripDia] : []).concat(dias).map(function (d) {
+      return `<option value="${d}">${diaLargo(d)}</option>`;
+    }).join('');
+    $('tripDia').value = tripDia;
+    const todas = unidadesDelDia(tripDia).filter(function (u) { return u.registros.length || u.bk === tripBk; });
+    const bks = todas.map(function (u) { return u.bk; }).filter(Boolean);
+    $('tripBk').innerHTML = '<option value="">Todas las unidades</option>' + Array.from(new Set(bks.concat(tripBk ? [tripBk] : []))).sort(function (a, b) {
+      return String(a).localeCompare(String(b), undefined, { numeric: true });
+    }).map(function (b) { return `<option value="${escaparHtml(b)}">BK ${escaparHtml(b)}</option>`; }).join('');
+    $('tripBk').value = tripBk;
+    const us = tripBk ? todas.filter(function (u) { return String(u.bk) === String(tripBk); }) : todas;
+    const anom = us.filter(function (u) { return u.estado === 'anom' || u.estado === 'pend'; });
+    const ok = us.filter(function (u) { return u.estado === 'ok'; });
+    const t = sumaCobro(us.reduce(function (a, u) { return a.concat(u.registros); }, []));
+    $('tripSub').textContent = `${diaLargo(tripDia)}${tripBk ? ' · BK ' + tripBk : ''}`;
+    $('tripResumen').innerHTML = `
+      <div class="trip-kpi trip-ok"><b>${ok.length}</b><span>sin anomalías</span></div>
+      <div class="trip-kpi trip-anom"><b>${anom.length}</b><span>con anomalías</span></div>
+      <div class="trip-kpi trip-pend"><b>${soles(t.pend)}</b><span>pendiente de pago</span></div>`;
+    if (!us.length) { $('tripTablero').innerHTML = '<div class="vacio-tablero"><strong>Aún no hay registros para este día.</strong><p>Vuelve a revisar más tarde: la página se actualiza sola.</p></div>'; return; }
+    const orden = anom.concat(us.filter(function (u) { return anom.indexOf(u) === -1; }));
+    $('tripTablero').innerHTML = orden.map(function (u) { return tarjetaUnidad(u, tripDia, { soloLectura: true }); }).join('');
+  }
+  $('tripDia').addEventListener('change', function () { tripDia = this.value; renderTripulacion(); });
+  $('tripBk').addEventListener('change', function () { tripBk = this.value; renderTripulacion(); });
+  if (modoTripulacion) {
+    document.body.classList.add('modo-tripulacion');
+    $('vistaTrip').hidden = false;
+    document.title = 'Anomalías de liquidación';
+  }
+
+  /* ---------- tema oscuro / claro ---------- */
+  function pintarBotonTema() {
+    $('btnTema').textContent = document.body.classList.contains('tema-oscuro') ? '☀️ Claro' : '🌙 Oscuro';
+  }
+  $('btnTema').addEventListener('click', function () {
+    const oscuro = !document.body.classList.contains('tema-oscuro');
+    document.body.classList.toggle('tema-oscuro', oscuro);
+    try { localStorage.setItem('liquidacionesTema', oscuro ? 'oscuro' : 'claro'); } catch (e) { /* */ }
+    pintarBotonTema();
+  });
+  pintarBotonTema();
+
 
   /* =====================================================================
      NUBE (Supabase): datos compartidos + tiempo real + actividad
@@ -3123,6 +4223,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   let tablaCtlFalta = false;
 
   function configNube() {
+    // Un link para tripulaciones puede traer la conexión (?c=...): se guarda para las próximas visitas
+    try {
+      const cUrl = new URLSearchParams(location.search).get('c');
+      if (cUrl) {
+        const d = JSON.parse(atob(cUrl));
+        if (d && d.u && d.k && /^https:\/\//.test(d.u)) {
+          const cfg = { url: d.u, anonKey: d.k };
+          try { localStorage.setItem(CLAVE_CONFIG_NUBE, JSON.stringify(cfg)); } catch (e) { /* */ }
+          return cfg;
+        }
+      }
+    } catch (e) { /* link sin conexión válida */ }
     let c = { url: SUPABASE_CONFIG.url, anonKey: SUPABASE_CONFIG.anonKey };
     try {
       const g = JSON.parse(localStorage.getItem(CLAVE_CONFIG_NUBE) || 'null');
@@ -3322,6 +4434,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if (fila.clave === 'precios') { precios = Object.assign(precios, fila.valor); guardarPrecios(); pintarPrecios(); }
     if (fila.clave === 'catalogo' && fila.valor.llenos) { catalogo = fila.valor; guardarCatalogoLocal(); }
     if (fila.clave === 'flota') { flota = fila.valor; guardarFlotaLocal(); }
+    if (fila.clave === 'sinOperar') { sinOperar = fila.valor || {}; guardarSinOperarLocal(); }
   }
   function aplicarCambioRemotoCtl(p) {
     if (p.eventType === 'DELETE') {
